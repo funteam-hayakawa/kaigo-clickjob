@@ -1,0 +1,15 @@
+www/img/hospital
+www/img/seo_column/*
+!nophoto*.png
+www/sitemap.xml
+www/criteo/criteo.csv
+www/trovit/trovit.xml
+www/nttgoo/nttgoo.csv
+www/ascom/ascom.csv
+www/ascom/hoiku_ascom.csv
+www/journal/hoiku_journal.csv
+www/bizreach/bizreach.xml
+www/89inc/89inc.csv
+lib/logs/*
+*.swp
+*~
