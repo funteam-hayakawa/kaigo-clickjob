@@ -231,6 +231,7 @@ class SearchController extends AppController {
           ),
         );
         $officeCommonCond = array(
+          'Office.deleted' => 0,
           'Office.reply_kg_type >=' => 1,
           'Office.reply_kg_type <=' => 2,
           'Office.public' => 1,
