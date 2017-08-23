@@ -30,7 +30,7 @@ SEOテキスト
 検索エリア
 
 <?php echo $this->Form->create(false, array('type' => 'post',
-                                               'url' => array('controller' => 'search', 'action' => '')
+                                               'url' => array('controller' => 'search', 'action' => 'result')
 )); ?>
 <table>
   <tr>
