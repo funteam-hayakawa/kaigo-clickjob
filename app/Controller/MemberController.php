@@ -28,6 +28,13 @@ class MemberController extends AppController {
         $this->Cookie->httpOnly = true;
         $this->Auth->allow('registration');
     }
+    public function index(){
+        $this->response->disableCache();
+        if ($this->Auth->loggedIn()) {
+            $this->redirect('/member/mypage');
+        }
+        $this->logout();
+    }
     public function login() {
         $this->response->disableCache();
         if ($this->Auth->loggedIn()) {

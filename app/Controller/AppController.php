@@ -56,7 +56,8 @@ class AppController extends Controller {
                     'passwordHasher' => 'Blowfish'
                 )
             )
-        )
+        ),
+        'Security',
     );
     
     /* 人気求人ランキング
@@ -130,5 +131,15 @@ class AppController extends Controller {
         $cond['NOT']['OR'] = array(array('RecruitSheet.hw_no' => null), array('RecruitSheet.hw_no' => '')); /* ハロワ */
         $rc['hw'] = $this->RecruitSheet->find('count',array('conditions' => $cond));
         return $rc;
+    }
+ 
+    public function beforeFilter() {
+        $this->Security->blackHoleCallback = 'forceSSL';
+        $this->Security->requireSecure();
+    }
+    public function forceSSL() {
+        if (FORCE_SSL){
+            return $this->redirect('https://' . env('SERVER_NAME') . $this->here);
+        }
     }
 }
