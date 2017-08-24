@@ -209,9 +209,6 @@ class MemberController extends AppController {
             $saveData = array();
             $saveData['Member'] = $this->request->data['Member'];
             $saveData['Member']['id'] = $member['Member']['id'];
-            if ($member['Member']['email'] === $this->request->data['Member']['email']){
-                unset($saveData['Member']['email']);
-            }
             if ($this->Member->updateMemberInfo($saveData)){
                 $this->Flash->success(__('Your account has been saved.'));
                 return $this->redirect(array('action' => 'edit'));

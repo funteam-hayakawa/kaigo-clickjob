@@ -33,6 +33,14 @@ class AppModel extends Model {
     public function isUniqueEmail($check = null) {
         App::import('Model','Member');
         $Member = new Member;
-        return 0 == $Member->find('count', array('conditions' => array('Member.del_flg' => 0, 'Member.withdraw_flg' => 0, 'Member.email' => $check['email'])));
+        $cond = array(
+          'Member.del_flg' => 0, 
+          'Member.withdraw_flg' => 0, 
+          'Member.email' => $check['email'],
+        );
+        if (isset($this->data['Member']['id'])){
+          $cond['NOT'] = array('Member.id' => $this->data['Member']['id']);
+        }
+        return 0 == $Member->find('count', array('conditions' => $cond));
     }
 }

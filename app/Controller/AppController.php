@@ -134,6 +134,8 @@ class AppController extends Controller {
     }
  
     public function beforeFilter() {
+        $this->Security->validatePost = false;
+        $this->Security->csrfCheck = false;
         if (FORCE_SSL){
             $this->Security->blackHoleCallback = 'forceSSL';
             $this->Security->requireSecure();
