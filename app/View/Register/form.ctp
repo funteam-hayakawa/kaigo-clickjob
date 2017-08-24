@@ -30,13 +30,13 @@
                     return;
                  }
                  var result = JSON.parse(msg);
-                 $('#RegistrationCity option').remove();
+                 $('#RegistrationCities option').remove();
                  var opt = [];
                  opt.push(new Option('選択してください', ''));
                  $.each(result.value, function(i, e){
                    opt.push(new Option(e, i));
                  });
-                 $('#RegistrationCity').append(opt);
+                 $('#RegistrationCities').append(opt);
                }
              });//ajax
           });
@@ -82,7 +82,7 @@ echo $this->Form->create('Registration', array('type' => 'post', 'url' => array(
     <tr>
         <td>郵便番号</td>
         <td>
-          <?php echo $this->Form->input('Registration.postcode'); ?>
+          <?php echo $this->Form->input('Registration.postcode', array('required' => false)); ?>
         </td>
     </tr>
     <tr>
@@ -102,7 +102,7 @@ echo $this->Form->create('Registration', array('type' => 'post', 'url' => array(
         <td>市区町村</td>
         <td>
           <?php 
-                echo $this->Form->input('Registration.city', array(
+                echo $this->Form->input('Registration.cities', array(
                                         'type' => 'select', 
                                         'label' => false,
                                         'required' => false,
@@ -120,13 +120,13 @@ echo $this->Form->create('Registration', array('type' => 'post', 'url' => array(
     <tr>
         <td>メールアドレス</td>
         <td>
-          <?php echo $this->Form->input('Registration.mail'); ?>
+          <?php echo $this->Form->input('Registration.mail', array('required' => false)); ?>
         </td>
     </tr>
     <tr>
         <td>その他</td>
         <td>
-          <?php echo $this->Form->textarea('Registration.comment'); ?>
+          <?php echo $this->Form->textarea('Registration.comment', array('required' => false)); ?>
         </td>
     </tr>
     <tr>
