@@ -18,7 +18,19 @@ class RegisterController extends AppController {
           'fields' => array('name')
         )));
         $this->set('license', Configure::read("application_license"));
+        
+        if ($this->request->is('post')){
+            if ($this->Registration->saveRegistration($this->request->data)){
+                $this->Flash->success(__('has been saved.'));
+                return $this->redirect(array('action' => 'thanks'));
+            } else {
+                $this->Flash->error(__('has not been saved.'));
+            }
+        }
         $this->render("form");
+    }
+    public function thanks(){
+        $this->render("thanks");
     }
     
 }
