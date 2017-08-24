@@ -6,6 +6,12 @@
 
 <IfModule mod_rewrite.c>
 	RewriteEngine On
+
+        RewriteCond %{http_host} ^(.*\.jp)$
+        RewriteCond %{HTTP:X-Forwarded-Proto} !^https$
+        RewriteCond %{REQUEST_URI} !^ELB-HealthChecker
+        RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
