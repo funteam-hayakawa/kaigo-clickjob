@@ -134,12 +134,12 @@ class AppController extends Controller {
     }
  
     public function beforeFilter() {
-        $this->Security->blackHoleCallback = 'forceSSL';
-        $this->Security->requireSecure();
+        if (FORCE_SSL){
+            $this->Security->blackHoleCallback = 'forceSSL';
+            $this->Security->requireSecure();
+        }
     }
     public function forceSSL() {
-        if (FORCE_SSL){
-            return $this->redirect('https://' . env('SERVER_NAME') . $this->here);
-        }
+        return $this->redirect('https://' . env('SERVER_NAME') . $this->here);
     }
 }
