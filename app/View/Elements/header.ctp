@@ -6,6 +6,8 @@
 <?php echo $this->Html->link('お役立ちコンテンツ', '/content/knowhow'); ?><br/>
 <?php echo $this->Html->link('介護 NEWS・コラム', '/column'); ?><br/>
 <?php echo $this->Html->link('転職相談[無料]', '/register'); ?><br/>
+<?php echo $this->Html->link('お気に入り求人', '/favorite'); ?><br/>
+<?php echo $this->Html->link('最近見た求人', '/history'); ?><br/>
 <?php echo $this->Html->link('マイページ登録', '/member/registration'); ?><br/>
 <?php echo $this->Html->link('ログイン', '/member/login'); ?><br/>
 

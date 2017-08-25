@@ -9,7 +9,7 @@ echo $this->element('header');
 <?php echo $this->Html->link('ログアウト', '/member/logout'); ?><br/>
 
 <table>
-    <h2>お気に入り求人</h2>
+    <h2><?php echo $this->Html->link('お気に入り求人', '/member/favorite'); ?></h2>
     <?php foreach($favorite as $h): ?>
         <?php $rs = $h['RecruitSheet'] ?>
         <tr>
@@ -46,7 +46,7 @@ echo $this->element('header');
 </table>
 
 <table>
-    <h2>最近見た求人</h2>
+    <h2><?php echo $this->Html->link('最近見た求人', '/member/history'); ?></h2>
     <?php foreach($histories as $h): ?>
         <?php $rs = $h['RecruitSheet'] ?>
         <tr>

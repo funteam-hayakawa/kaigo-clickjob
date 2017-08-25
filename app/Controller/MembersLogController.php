@@ -2,7 +2,7 @@
 App::uses('AppController', 'Controller');
 
 class MembersLogController extends AppController { 
-    public $components = array();
+    public $components = array('Session');
     public $uses = array(
       'Member',
       'MembersRecruitsheetAccessHistory',
@@ -25,6 +25,7 @@ class MembersLogController extends AppController {
                     unset($this->request->data['recruit_sheet_id']);
                 }
             }
+            /* メンバーログイン済みの場合はDB格納 */
             if ($this->Auth->loggedIn()){
                 $member = $this->Auth->user();
                 if (!empty($member)){
@@ -63,6 +64,15 @@ class MembersLogController extends AppController {
                           'conditions' => array(
                             'MembersFavoriteRecruitsheets.favorite_flg' => 1,
                             'MembersFavoriteRecruitsheets.member_id' => $member['Member']['id'],
+                          ) + $this->commonSearchConditios['recruitSheet'] +
+                          $this->commonSearchConditios['office'],
+                          'joins' => array(
+                             array(
+                                 'type' => 'INNER',
+                                 'table' => 'office',
+                                 'alias' => 'Office',
+                                 'conditions' =>  array('`RecruitSheet`.`id` = `Office`.`id`')
+                             ),
                           ),
                         ));
                         if ($favoriteCnt >= 20){
@@ -97,8 +107,54 @@ class MembersLogController extends AppController {
                     exit();
                 }
             } else {
-                $retval['status'] = true;
-                $retval['msg'] = 'ログインしてください';
+              /* メンバーログインしてない場合はセッション保存 */
+                if (isset($this->request->data['recruit_sheet_id'])){
+                    $id = $this->request->data['recruit_sheet_id'];
+                    $flg = $this->request->data['favorite_flg'];
+                    $saved = array();
+                    if ($this->Session->check('favorite')){
+                        $saved = $this->Session->read('favorite');
+                    }
+                    foreach ($saved as $i => $time){
+                        if (!$this->isValidRecruitSheet($i)){
+                            unset($saved[$i]);
+                            $this->Session->delete('favorite.'.$i);
+                        }
+                    }
+                    if ($flg){
+                        if (isset($saved[$id])){
+                            $retval['status'] = true;
+                            $retval['msg'] = '既にお気に入りに登録済です';
+                            echo (json_encode($retval));
+                        } else {
+                            if (count($saved) >= 20){
+                                $retval['status'] = true;
+                                $retval['msg'] = 'お気に入り登録は最大20件までです。お気に入り求人を削除してください。';
+                                echo (json_encode($retval));
+                                exit();
+                            } else {
+                                $this->Session->write('favorite.'.$id, date('Y-m-d H:i:s'));
+                                $retval['status'] = true;
+                                $retval['msg'] = 'お気に入りに追加しました';
+                                echo (json_encode($retval));
+                            }
+                        }
+                    } else {
+                        if (isset($saved[$id])){
+                            $retval['status'] = true;
+                            $retval['msg'] = 'お気に入りから削除しました';
+                            $this->Session->delete('favorite.'.$id);
+                            echo (json_encode($retval));
+                        } else {
+                            $retval['status'] = true;
+                            $retval['msg'] = 'お気に入り登録されていません';
+                            echo (json_encode($retval));
+                        }
+                    }
+                    exit();
+                }
+                $retval['status'] = false;
+                $retval['msg'] = '不正な情報がpostされました';
                 echo (json_encode($retval));
                 exit();
             }
@@ -121,6 +177,7 @@ class MembersLogController extends AppController {
                     unset($this->request->data['recruit_sheet_id']);
                 }
             }
+            /* メンバーログイン済みの場合はDB格納 */
             if ($this->Auth->loggedIn()){
                 $member = $this->Auth->user();
                 if (!empty($member)){
@@ -161,8 +218,41 @@ class MembersLogController extends AppController {
                     exit();
                 }
             } else {
-                //$retval['status'] = true;
-                //$retval['msg'] = 'ログインしてください';
+              /* メンバーログインしてない場合はセッション保存 */
+                if (isset($this->request->data['recruit_sheet_id'])){
+                    $id = $this->request->data['recruit_sheet_id'];
+                    $saved = array();
+                    if ($this->Session->check('history')){
+                        $saved = $this->Session->read('history');
+                    }
+                    foreach ($saved as $i => $time){
+                        if (!$this->isValidRecruitSheet($i)){
+                            unset($saved[$i]);
+                            $this->Session->delete('history.'.$i);
+                        }
+                    }
+                    $this->Session->write('history.'.$id, date('Y-m-d H:i:s'));
+                    $saved = $this->Session->read('history');
+                    /* 古い順にソート */
+                    uasort($saved, function ($a, $b){
+                        return strtotime($a) - strtotime($b);
+                    });
+                    $ct = count($saved);
+                    $del = array();
+                    /* 20件を超えた履歴はセッションから削除 */
+                    if ($ct > 20){
+                        $del = array_slice($saved, 0, $ct - 20, true);
+                    }
+                    foreach ($del as $i => $t){
+                        $this->Session->delete('history.'.$i);
+                    }
+                    //$retval['status'] = true;
+                    //$retval['msg'] = '閲覧履歴を更新しました';
+                    //echo (json_encode($retval));
+                    exit();
+                }
+                //$retval['status'] = false;
+                //$retval['msg'] = '不正な情報がpostされました';
                 //echo (json_encode($retval));
                 exit();
             }
@@ -172,14 +262,5 @@ class MembersLogController extends AppController {
             $this->Auth->logout();
         }
         exit();
-    }
-    private function isValidRecruitSheet($recruitSheetId){
-        $r = $this->RecruitSheet->find('count', array(
-          'recursive' => 0,
-          'conditions' => array('RecruitSheet.recruit_sheet_id' => $recruitSheetId,) + 
-                                 $this->commonSearchConditios['recruitSheet'] + 
-                                 $this->commonSearchConditios['office'],
-        ));
-        return $r;
     }
 }

@@ -3,7 +3,7 @@ App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
 
 class MemberController extends AppController { 
-    public $components = array('Cookie', );
+    public $components = array('Cookie', 'Session');
     public $uses = array(
       'Member',
       'MembersMailConfirmTable',
@@ -24,7 +24,7 @@ class MemberController extends AppController {
         $this->Cookie->secure = COOKIE_SSL_FLG;
         $this->Cookie->key = COOLIE_ENCRYPT_SALT;
         $this->Cookie->httpOnly = true;
-        $this->Auth->allow('registration');
+        $this->Auth->allow('registration', 'sessionFavorite', 'sessionHistory');
     }
     public function index(){
         $this->response->disableCache();
@@ -96,40 +96,8 @@ class MemberController extends AppController {
             )));
         }
         if (!empty($member)){
-            $histories = $this->MembersRecruitsheetAccessHistory->find('all', array(
-              'conditions' => array('MembersRecruitsheetAccessHistory.member_id' => $member['Member']['id'],) + 
-                                     $this->commonSearchConditios['recruitSheet'] +
-                                     $this->commonSearchConditios['office'],
-              'joins' => array(
-                 array(
-                     'type' => 'INNER',
-                     'table' => 'office',
-                     'alias' => 'Office',
-                     'conditions' =>  array('`RecruitSheet`.`id` = `Office`.`id`')
-                 ),
-              ),
-              'order' => 'MembersRecruitsheetAccessHistory.modified DESC',
-              'limit' => 20,
-              'recursive' => 3,
-            ));
-            $favorite = $this->MembersFavoriteRecruitsheets->find('all', array(
-              'conditions' => array(
-                'MembersFavoriteRecruitsheets.favorite_flg' => 1,
-                'MembersFavoriteRecruitsheets.member_id' => $member['Member']['id'],
-              ) + $this->commonSearchConditios['recruitSheet'] +
-              $this->commonSearchConditios['office'],
-              'joins' => array(
-                 array(
-                     'type' => 'INNER',
-                     'table' => 'office',
-                     'alias' => 'Office',
-                     'conditions' =>  array('`RecruitSheet`.`id` = `Office`.`id`')
-                 ),
-              ),
-              'order' => 'MembersFavoriteRecruitsheets.modified DESC',
-              'limit' => 20,
-              'recursive' => 3,
-            ));
+            $histories = $this->findHistory($member);
+            $favorite = $this->findFavorite($member);
             $this->set('employment_type', Configure::read("employment_type"));
             $this->set(compact('histories', 'favorite'));
         } else {
@@ -229,5 +197,99 @@ class MemberController extends AppController {
         }
         /* メールアドレス入力フォーム */
         $this->render("mail_confirmation");
+    }
+    /* お気に入りリストページ、メンバー用 */
+    public function memberFavorite(){
+        $this->response->disableCache();
+        $member = $this->Auth->user();
+        if (!empty($member)){
+            $member = $this->Member->find('first', array('conditions' => array(
+              'Member.id' => $member['id'],
+              'Member.withdraw_flg' => 0,
+              'Member.del_flg' => 0
+            )));
+        }
+        if (!empty($member)){
+            $favorite = $this->findFavorite($member);
+            $this->set('employment_type', Configure::read("employment_type"));
+            $this->set(compact('favorite'));
+            $this->set('loggedIn', true);
+        } else {
+            $this->Member->clearLoginToken($this->Auth->user());
+            if ($this->Cookie->check('autoLoginToken')){
+                $token = $this->Cookie->destroy('autoLoginToken');
+            }
+            $this->Auth->logout();
+        }
+        $this->render("favorite");
+    }
+    /* 閲覧履歴ページ、メンバー用 */
+    public function memberHistory(){
+        $this->response->disableCache();
+        $member = $this->Auth->user();
+        if (!empty($member)){
+            $member = $this->Member->find('first', array('conditions' => array(
+              'Member.id' => $member['id'],
+              'Member.withdraw_flg' => 0,
+              'Member.del_flg' => 0
+            )));
+        }
+        if (!empty($member)){
+            $histories = $this->findHistory($member);
+            $this->set('employment_type', Configure::read("employment_type"));
+            $this->set(compact('histories'));
+            $this->set('loggedIn', true);
+        } else {
+            $this->Member->clearLoginToken($this->Auth->user());
+            if ($this->Cookie->check('autoLoginToken')){
+                $token = $this->Cookie->destroy('autoLoginToken');
+            }
+            $this->Auth->logout();
+        }
+        $this->render("history");
+    }
+    /* お気に入りリストページ、非メンバー用、セッションで管理 */
+    public function sessionFavorite(){
+        $this->response->disableCache();
+        /* ログインチェック、ログイン済ならメンバー用URLにリダイレクト */
+        if ($this->Auth->loggedIn()){
+            $member = $this->Auth->user();
+            if (!empty($member)){
+                $member = $this->Member->find('first', array('conditions' => array(
+                  'Member.id' => $member['id'],
+                  'Member.withdraw_flg' => 0,
+                  'Member.del_flg' => 0
+                )));
+            }
+            if (!empty($member)){
+                $this->redirect('/member/favorite');
+            }
+        }
+        $favorite = $this->findSessionFavorite();
+        $this->set('employment_type', Configure::read("employment_type"));
+        $this->set(compact('favorite'));
+        $this->render("favorite");
+    }
+    /* 閲覧履歴ページ、非メンバー用、セッションで管理 */
+    public function sessionHistory(){
+        $this->response->disableCache();
+        /* ログインチェック、ログイン済ならメンバー用URLにリダイレクト */
+        if ($this->Auth->loggedIn()){
+            $member = $this->Auth->user();
+            if (!empty($member)){
+                $member = $this->Member->find('first', array('conditions' => array(
+                  'Member.id' => $member['id'],
+                  'Member.withdraw_flg' => 0,
+                  'Member.del_flg' => 0
+                )));
+            }
+            if (!empty($member)){
+                $this->redirect('/member/history');
+            }
+        }
+        $histories = $this->findSessionHistory();
+        $this->set('employment_type', Configure::read("employment_type"));
+        $this->set(compact('histories'));
+        $this->render("history");
     }
 }

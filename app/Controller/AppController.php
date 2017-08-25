@@ -41,6 +41,8 @@ class AppController extends Controller {
       'SeoHeaderText', 
       'SeoFooterText', 
       'RecruitSheetAttention',
+      'MembersRecruitsheetAccessHistory',
+      'MembersFavoriteRecruitsheets',
     );
     public $components = array(
         'Flash',
@@ -58,6 +60,7 @@ class AppController extends Controller {
             )
         ),
         'Security',
+        'Session',
     );
     public $commonSearchConditios = array(
       'recruitSheet' => array(
@@ -128,7 +131,113 @@ class AppController extends Controller {
         $rc['hw'] = $this->RecruitSheet->find('count',array('conditions' => $cond));
         return $rc;
     }
- 
+    public function findFavorite($member){
+        $favorite = $this->MembersFavoriteRecruitsheets->find('all', array(
+          'conditions' => array(
+            'MembersFavoriteRecruitsheets.favorite_flg' => 1,
+            'MembersFavoriteRecruitsheets.member_id' => $member['Member']['id'],
+          ) + $this->commonSearchConditios['recruitSheet'] +
+          $this->commonSearchConditios['office'],
+          'joins' => array(
+             array(
+                 'type' => 'INNER',
+                 'table' => 'office',
+                 'alias' => 'Office',
+                 'conditions' =>  array('`RecruitSheet`.`id` = `Office`.`id`')
+             ),
+          ),
+          'order' => 'MembersFavoriteRecruitsheets.modified DESC',
+          'limit' => 20,
+          'recursive' => 3,
+        ));
+        return $favorite;
+    }
+    public function findSessionFavorite(){
+        $result = array();
+        if ($this->Session->check('favorite')){
+            $favoriteRecruitSheetIds = $this->Session->read('favorite');
+            foreach ($favoriteRecruitSheetIds as $i => $time){
+                if (!$this->isValidRecruitSheet($i)){
+                    unset($favoriteRecruitSheetIds[$i]);
+                }
+            }
+            uasort($favoriteRecruitSheetIds, function ($a, $b){
+                return strtotime($b) - strtotime($a);
+            });
+            $keys = array_keys($favoriteRecruitSheetIds);
+            $result = $this->RecruitSheet->find('all', array(
+              'conditions' => array(
+                'RecruitSheet.recruit_sheet_id' => $keys,
+              ),
+              'recursive' => 2,
+              'order' => 'FIELD(recruit_sheet_id, '.implode(',', $keys).')',
+            ));
+            /* MembersFavoriteRecruitsheetsでfindした場合と配列構造を合わせる */
+            foreach ($result as $i=>$f){
+                $result[$i]['MembersFavoriteRecruitsheets']['modified'] = $favoriteRecruitSheetIds[$result[$i]['RecruitSheet']['recruit_sheet_id']];
+                $result[$i]['RecruitSheet']['Office'] = $f['Office'];
+                unset($result[$i]['Office']);
+            }
+        }
+        return $result;
+    }
+    public function findHistory($member){
+        $histories = $this->MembersRecruitsheetAccessHistory->find('all', array(
+          'conditions' => array('MembersRecruitsheetAccessHistory.member_id' => $member['Member']['id'],) + 
+                                 $this->commonSearchConditios['recruitSheet'] +
+                                 $this->commonSearchConditios['office'],
+          'joins' => array(
+             array(
+                 'type' => 'INNER',
+                 'table' => 'office',
+                 'alias' => 'Office',
+                 'conditions' =>  array('`RecruitSheet`.`id` = `Office`.`id`')
+             ),
+          ),
+          'order' => 'MembersRecruitsheetAccessHistory.modified DESC',
+          'limit' => 20,
+          'recursive' => 3,
+        ));
+        return $histories;
+    }
+    public function findSessionHistory(){
+        $result = array();
+        if ($this->Session->check('history')){
+            $historyRecruitSheetIds = $this->Session->read('history');
+            foreach ($historyRecruitSheetIds as $i => $time){
+                if (!$this->isValidRecruitSheet($i)){
+                    unset($historyRecruitSheetIds[$i]);
+                }
+            }
+            uasort($historyRecruitSheetIds, function ($a, $b){
+                return strtotime($b) - strtotime($a);
+            });
+            $keys = array_keys($historyRecruitSheetIds);
+            $result = $this->RecruitSheet->find('all', array(
+              'conditions' => array(
+                'RecruitSheet.recruit_sheet_id' => $keys,
+              ),
+              'recursive' => 2,
+              'order' => 'FIELD(recruit_sheet_id, '.implode(',', $keys).')',
+            ));
+            /* MembersRecruitsheetAccessHistoryでfindした場合と配列構造を合わせる */
+            foreach ($result as $i=>$f){
+                $result[$i]['MembersRecruitsheetAccessHistory']['modified'] = $historyRecruitSheetIds[$result[$i]['RecruitSheet']['recruit_sheet_id']];
+                $result[$i]['RecruitSheet']['Office'] = $f['Office'];
+                unset($result[$i]['Office']);
+            }
+        }
+        return $result;
+    }
+    public function isValidRecruitSheet($recruitSheetId){
+        $r = $this->RecruitSheet->find('count', array(
+          'recursive' => 0,
+          'conditions' => array('RecruitSheet.recruit_sheet_id' => $recruitSheetId,) + 
+                                 $this->commonSearchConditios['recruitSheet'] + 
+                                 $this->commonSearchConditios['office'],
+        ));
+        return $r;
+    }
     public function beforeFilter() {
         $this->Security->validatePost = false;
         $this->Security->csrfCheck = false;
