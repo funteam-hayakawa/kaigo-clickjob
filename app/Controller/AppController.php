@@ -59,11 +59,47 @@ class AppController extends Controller {
         ),
         'Security',
     );
+    public $commonSearchConditios = array(
+      'recruitSheet' => array(
+        'RecruitSheet.recruit_public' => 2,
+        'RecruitSheet.deleted' => 0,
+        'NOT' => array(
+          'RecruitSheet.occupation' => array(24, 25, 26, 27, 33, 34, 35, 36, 37, 44, 48, 49, 50, 51, 52, 53, 54, 55, 56, 63)
+        ),
+      ),
+      'office' => array(
+        'Office.deleted' => 0,
+        'Office.reply_kg_type >=' => 1,
+        'Office.reply_kg_type <=' => 2,
+        'Office.public' => 1,
+        array('OR' => array(
+            array("FIND_IN_SET('1', Office.institution_type)"),
+            array("FIND_IN_SET('2', Office.institution_type)"),
+            array("FIND_IN_SET('3', Office.institution_type)"),
+            array("FIND_IN_SET('4', Office.institution_type)"),
+            array("FIND_IN_SET('5', Office.institution_type)"),
+            array("FIND_IN_SET('6', Office.institution_type)"),
+            array("FIND_IN_SET('7', Office.institution_type)"),
+            array("FIND_IN_SET('8', Office.institution_type)"),
+            array("FIND_IN_SET('10', Office.institution_type)"),
+            array("FIND_IN_SET('11', Office.institution_type)"),
+            array("FIND_IN_SET('12', Office.institution_type)"),
+            array("FIND_IN_SET('14', Office.institution_type)"),
+            array("FIND_IN_SET('15', Office.institution_type)"),
+            array("FIND_IN_SET('16', Office.institution_type)"),
+            array("FIND_IN_SET('19', Office.institution_type)"),
+            array("FIND_IN_SET('20', Office.institution_type)"),
+            array("FIND_IN_SET('21', Office.institution_type)"),
+            array("FIND_IN_SET('22', Office.institution_type)"),
+            array("FIND_IN_SET('24', Office.institution_type)"),
+            array("FIND_IN_SET('25', Office.institution_type)"),
+            array("FIND_IN_SET('26', Office.institution_type)"),
+          ),
+        ),
+      ),
+    ); 
     
-    /* 人気求人ランキング
-      よく似た条件設定文がSearchControllerにもあるので、
-      ここを編集した場合はSearchControllerと整合性がとれてるか要確認
-     */
+    /* 人気求人ランキング */
     public function searchRecruitRanking(){
         return $this->RecruitSheetAttention->find('all', array(
           'joins' => array(
@@ -75,54 +111,14 @@ class AppController extends Controller {
               ),
             ),
           'recursive' => 3,
-          'conditions' => array(
-            'Office.deleted' => 0,
-            'Office.reply_kg_type >=' => 1,
-            'Office.reply_kg_type <=' => 2,
-            'Office.public' => 1,
-            array('OR' => array(
-                array("FIND_IN_SET('1', Office.institution_type)"),
-                array("FIND_IN_SET('2', Office.institution_type)"),
-                array("FIND_IN_SET('3', Office.institution_type)"),
-                array("FIND_IN_SET('4', Office.institution_type)"),
-                array("FIND_IN_SET('5', Office.institution_type)"),
-                array("FIND_IN_SET('6', Office.institution_type)"),
-                array("FIND_IN_SET('7', Office.institution_type)"),
-                array("FIND_IN_SET('8', Office.institution_type)"),
-                array("FIND_IN_SET('10', Office.institution_type)"),
-                array("FIND_IN_SET('11', Office.institution_type)"),
-                array("FIND_IN_SET('12', Office.institution_type)"),
-                array("FIND_IN_SET('14', Office.institution_type)"),
-                array("FIND_IN_SET('15', Office.institution_type)"),
-                array("FIND_IN_SET('16', Office.institution_type)"),
-                array("FIND_IN_SET('19', Office.institution_type)"),
-                array("FIND_IN_SET('20', Office.institution_type)"),
-                array("FIND_IN_SET('21', Office.institution_type)"),
-                array("FIND_IN_SET('22', Office.institution_type)"),
-                array("FIND_IN_SET('24', Office.institution_type)"),
-                array("FIND_IN_SET('25', Office.institution_type)"),
-                array("FIND_IN_SET('26', Office.institution_type)"),
-              ),
-            ),
-            'RecruitSheet.recruit_public' => 2,
-            'RecruitSheet.deleted' => 0,
-            'NOT' => array(
-              'RecruitSheet.occupation' => array(24, 25, 26, 27, 33, 34, 35, 36, 37, 44, 48, 49, 50, 51, 52, 53, 54, 55, 56, 63)
-            ),
-          ),
+          'conditions' => $this->commonSearchConditios['recruitSheet'] + $this->commonSearchConditios['office'],
           'order' => 'RecruitSheetAttention.number',
         ));
     }
     /* サイドバーの求人数取得 */
     public function getRecruitSheetCount(){
         $rc = array();
-        $cond = array(
-          'RecruitSheet.recruit_public' => 2,
-          'RecruitSheet.deleted' => 0,
-          'NOT' => array(
-            'RecruitSheet.occupation' => array(24, 25, 26, 27, 33, 34, 35, 36, 37, 44, 48, 49, 50, 51, 52, 53, 54, 55, 56, 63),
-          ),
-        );
+        $cond = $this->commonSearchConditios['recruitSheet'];
         $rc['all'] = $this->RecruitSheet->find('count',array('conditions' => $cond));
         $rc['modified'] = $this->RecruitSheet->find('first',array(
           'fields' => "MAX(RecruitSheet.updated) as modified",

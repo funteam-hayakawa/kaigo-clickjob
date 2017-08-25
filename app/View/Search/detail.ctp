@@ -20,7 +20,7 @@ echo $this->element('header');
           $('#favorite_btn').click(function(){
             $.ajax({
                type: "POST",
-               url: "/member/favorite/",
+               url: "/members_log/favorite/",
                data: {'recruit_sheet_id' : $('#favorite_btn').attr('recruit_sheet_id'),
                       'favorite_flg' : 1,
                       },
@@ -37,7 +37,7 @@ echo $this->element('header');
           $('#delete_favorite_btn').click(function(){
             $.ajax({
                type: "POST",
-               url: "/member/favorite/",
+               url: "/members_log/favorite/",
                data: {'recruit_sheet_id' : $('#favorite_btn').attr('recruit_sheet_id'),
                       'favorite_flg' : 0,
                       },
@@ -51,6 +51,15 @@ echo $this->element('header');
                }
              });//ajax
           });
+          /* 閲覧履歴登録post */
+          $.ajax({
+             type: "POST",
+             url: "/members_log/visitlog/",
+             data: {'recruit_sheet_id' : $('#favorite_btn').attr('recruit_sheet_id'),
+                    },
+             success: function(msg){
+             }
+           });//ajax
         });
 </script>
 

@@ -4,15 +4,15 @@ App::uses('AppController', 'Controller');
 class SearchController extends AppController { 
     public $components = array('Paginator', 'Search.Prg',);
     public $uses = array(
-      'Search', 
-      'Area', 
-      'Prefecture', 
-      'State', 
-      'City', 
-      'Office', 
-      'RecruitSheet', 
-      'SeoHeaderText', 
-      'SeoFooterText', 
+      'Search',
+      'Area',
+      'Prefecture',
+      'State',
+      'City',
+      'Office',
+      'RecruitSheet',
+      'SeoHeaderText',
+      'SeoFooterText',
       'RecruitSheetAttention',
       'MembersRecruitsheetAccessHistory',
     );
@@ -89,72 +89,17 @@ class SearchController extends AppController {
         $this->render("area_result");
     }
     public function detail($id){
-        $this->RecruitSheet->Office->hasMany['RecruitSheet']['conditions'] = array(
-          'RecruitSheet.recruit_public' => 2,
-          'RecruitSheet.deleted' => 0,
-          'NOT' => array(
-            'RecruitSheet.occupation' => array(24, 25, 26, 27, 33, 34, 35, 36, 37, 44, 48, 49, 50, 51, 52, 53, 54, 55, 56, 63)
-          ),
-        );
+        $this->RecruitSheet->Office->hasMany['RecruitSheet']['conditions'] = $this->commonSearchConditios['recruitSheet'];
         $r = $this->RecruitSheet->find('first', array(
           'recursive' => 2,
-          'conditions' => array(
-            'Office.deleted' => 0,
-            'Office.reply_kg_type >=' => 1,
-            'Office.reply_kg_type <=' => 2,
-            'Office.public' => 1,
-            array('OR' => array(
-               array("FIND_IN_SET('1', Office.institution_type)"),
-               array("FIND_IN_SET('2', Office.institution_type)"),
-               array("FIND_IN_SET('3', Office.institution_type)"),
-               array("FIND_IN_SET('4', Office.institution_type)"),
-               array("FIND_IN_SET('5', Office.institution_type)"),
-               array("FIND_IN_SET('6', Office.institution_type)"),
-               array("FIND_IN_SET('7', Office.institution_type)"),
-               array("FIND_IN_SET('8', Office.institution_type)"),
-               array("FIND_IN_SET('10', Office.institution_type)"),
-               array("FIND_IN_SET('11', Office.institution_type)"),
-               array("FIND_IN_SET('12', Office.institution_type)"),
-               array("FIND_IN_SET('14', Office.institution_type)"),
-               array("FIND_IN_SET('15', Office.institution_type)"),
-               array("FIND_IN_SET('16', Office.institution_type)"),
-               array("FIND_IN_SET('19', Office.institution_type)"),
-               array("FIND_IN_SET('20', Office.institution_type)"),
-               array("FIND_IN_SET('21', Office.institution_type)"),
-               array("FIND_IN_SET('22', Office.institution_type)"),
-               array("FIND_IN_SET('24', Office.institution_type)"),
-               array("FIND_IN_SET('25', Office.institution_type)"),
-               array("FIND_IN_SET('26', Office.institution_type)"),
-             ),
-            ),
-            'RecruitSheet.recruit_sheet_id' => $id,
-            'RecruitSheet.recruit_public' => 2,
-            'RecruitSheet.deleted' => 0,
-            'NOT' => array(
-              'RecruitSheet.occupation' => array(24, 25, 26, 27, 33, 34, 35, 36, 37, 44, 48, 49, 50, 51, 52, 53, 54, 55, 56, 63)
-            ),
-          ),
+          'conditions' => array('RecruitSheet.recruit_sheet_id' => $id,) + 
+                                 $this->commonSearchConditios['recruitSheet'] + 
+                                 $this->commonSearchConditios['office'],
         ));
         $this->RecruitSheet->Office->hasMany['RecruitSheet']['conditions'] = array();
         if (empty($r)){
             throw new NotFoundException();
-        }
-        $member = $this->Auth->user();
-        if (!empty($member)){
-            $saveData = $this->MembersRecruitsheetAccessHistory->find('first', array('conditions' => array(
-              'MembersRecruitsheetAccessHistory.member_id' => $member['id'],
-              'MembersRecruitsheetAccessHistory.recruit_sheet_id' => $id,
-            )));
-            if (empty($saveData)){
-                $saveData = array('MembersRecruitsheetAccessHistory' => array(
-                    'member_id' => $member['id'],
-                    'recruit_sheet_id' => $id,
-                ));
-            }
-            unset($saveData['MembersRecruitsheetAccessHistory']['modified']);
-            $this->MembersRecruitsheetAccessHistory->save($saveData);
-        }
-        
+        }        
         $this->setCommonConfig();
         //$this->set('ranking',$this->searchRecruitRanking());
         $this->set('recruitSheet', $r);
@@ -223,43 +168,8 @@ class SearchController extends AppController {
     }
 
     private function searchOfficeByCond($officeCond = array(), $recruitSheetCond = array()){
-        $recruitSheetCommonCond = array(
-          'RecruitSheet.recruit_public' => 2,
-          'RecruitSheet.deleted' => 0,
-          'NOT' => array(
-            'RecruitSheet.occupation' => array(24, 25, 26, 27, 33, 34, 35, 36, 37, 44, 48, 49, 50, 51, 52, 53, 54, 55, 56, 63)
-          ),
-        );
-        $officeCommonCond = array(
-          'Office.deleted' => 0,
-          'Office.reply_kg_type >=' => 1,
-          'Office.reply_kg_type <=' => 2,
-          'Office.public' => 1,
-          array('OR' => array(
-            array("FIND_IN_SET('1', Office.institution_type)"),
-            array("FIND_IN_SET('2', Office.institution_type)"),
-            array("FIND_IN_SET('3', Office.institution_type)"),
-            array("FIND_IN_SET('4', Office.institution_type)"),
-            array("FIND_IN_SET('5', Office.institution_type)"),
-            array("FIND_IN_SET('6', Office.institution_type)"),
-            array("FIND_IN_SET('7', Office.institution_type)"),
-            array("FIND_IN_SET('8', Office.institution_type)"),
-            array("FIND_IN_SET('10', Office.institution_type)"),
-            array("FIND_IN_SET('11', Office.institution_type)"),
-            array("FIND_IN_SET('12', Office.institution_type)"),
-            array("FIND_IN_SET('14', Office.institution_type)"),
-            array("FIND_IN_SET('15', Office.institution_type)"),
-            array("FIND_IN_SET('16', Office.institution_type)"),
-            array("FIND_IN_SET('19', Office.institution_type)"),
-            array("FIND_IN_SET('20', Office.institution_type)"),
-            array("FIND_IN_SET('21', Office.institution_type)"),
-            array("FIND_IN_SET('22', Office.institution_type)"),
-            array("FIND_IN_SET('24', Office.institution_type)"),
-            array("FIND_IN_SET('25', Office.institution_type)"),
-            array("FIND_IN_SET('26', Office.institution_type)"),
-          ),
-        ),
-        );
+        $recruitSheetCommonCond = $this->commonSearchConditios['recruitSheet'];
+        $officeCommonCond = $this->commonSearchConditios['office'];
         $conditions = array_merge($officeCommonCond, $officeCond);
         $mergedRecruitSheetCond = array_merge($recruitSheetCommonCond, $recruitSheetCond);
         $this->Office->hasMany['RecruitSheet']['conditions'] = $mergedRecruitSheetCond;
