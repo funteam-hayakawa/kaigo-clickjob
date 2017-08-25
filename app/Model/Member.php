@@ -132,6 +132,7 @@ class Member extends AppModel {
                 }
             } while(1);
             $data['auto_login_token'] = $token;
+            unset($data['modified']); /* トークン発行でタイムスタンプ更新されるようにする */
             if (!$this->save($data)){
                 throw new Exception('更新失敗');
             }

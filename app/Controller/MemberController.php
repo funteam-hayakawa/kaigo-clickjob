@@ -3,18 +3,16 @@ App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
 
 class MemberController extends AppController { 
-    public $components = array('Paginator', 'Search.Prg', 'Cookie', );
+    public $components = array('Cookie', );
     public $uses = array(
       'Member',
       'MembersMailConfirmTable',
       'MembersRecruitsheetAccessHistory',
       'MembersFavoriteRecruitsheets',
-      'Search', 
       'Area', 
       'Prefecture', 
       'State', 
       'City', 
-      'Office', 
       'RecruitSheet', 
     );
     public function beforeFilter() {
@@ -87,80 +85,6 @@ class MemberController extends AppController {
         }
         $this->redirect($this->Auth->logout());
     }
-    public function favorite(){
-        $retval = array(
-            'status' => false,
-            'msg' => '',
-        );
-        if($this->request->is('ajax')) {
-            $member = $this->Auth->user();
-            if (!empty($member)){
-                $member = $this->Member->find('first', array('conditions' => array(
-                  'Member.id' => $member['id'],
-                  'Member.withdraw_flg' => 0,
-                  'Member.del_flg' => 0
-                )));
-            }
-            if (!empty($member) && isset($this->request->data['recruit_sheet_id']) && isset($this->request->data['favorite_flg'])){
-                $saveData = $this->MembersFavoriteRecruitsheets->find('first', array('conditions' => array(
-                  'MembersFavoriteRecruitsheets.member_id' => $member['Member']['id'],
-                  'MembersFavoriteRecruitsheets.recruit_sheet_id' => $this->request->data['recruit_sheet_id'],
-                )));
-                if (empty($saveData)){
-                    $saveData = array('MembersFavoriteRecruitsheets' => array(
-                      'member_id' => $member['Member']['id'],
-                      'recruit_sheet_id' => $this->request->data['recruit_sheet_id'],
-                    ));
-                } else {
-                    if ($saveData['MembersFavoriteRecruitsheets']['favorite_flg'] == $this->request->data['favorite_flg']){
-                        if ($this->request->data['favorite_flg']){
-                            $retval['status'] = true;
-                            $retval['msg'] = '既にお気に入りに登録済です';
-                            echo (json_encode($retval));
-                        } else {
-                            $retval['status'] = true;
-                            $retval['msg'] = 'お気に入り登録されていません';
-                            echo (json_encode($retval));
-                        }
-                        exit();
-                    }
-                }
-                if ($this->request->data['favorite_flg']){
-                    $favoriteCnt = $this->MembersFavoriteRecruitsheets->find('count', array(
-                      'conditions' => array(
-                        'MembersFavoriteRecruitsheets.favorite_flg' => 1,
-                        'MembersFavoriteRecruitsheets.member_id' => $member['Member']['id'],
-                      ),
-                    ));
-                    if ($favoriteCnt >= 20){
-                        $retval['status'] = true;
-                        $retval['msg'] = 'お気に入り登録は最大20件までです。お気に入り求人を削除してください。';
-                        echo (json_encode($retval));
-                        exit();
-                    }
-                }
-                $saveData['MembersFavoriteRecruitsheets']['favorite_flg'] = $this->request->data['favorite_flg'];
-                unset($saveData['MembersFavoriteRecruitsheets']['modified']);
-                if ($this->MembersFavoriteRecruitsheets->save($saveData)){
-                    $retval['status'] = true;
-                    if ($this->request->data['favorite_flg']){
-                      $retval['msg'] = 'お気に入りに追加しました';
-                    } else {
-                      $retval['msg'] = 'お気に入りから削除しました';
-                    }
-                    echo (json_encode($retval));
-                } else {
-                    $retval['status'] = false;
-                    $retval['msg'] = 'DBの更新に失敗しました';
-                    echo (json_encode($retval));
-                }
-                exit();
-            } else {
-                $this->logout();
-            }
-        }
-        $this->logout();
-    }
     public function mypage(){
         $this->response->disableCache();
         $member = $this->Auth->user();
@@ -173,8 +97,16 @@ class MemberController extends AppController {
         }
         if (!empty($member)){
             $histories = $this->MembersRecruitsheetAccessHistory->find('all', array(
-              'conditions' => array(
-                'MembersRecruitsheetAccessHistory.member_id' => $member['Member']['id'],
+              'conditions' => array('MembersRecruitsheetAccessHistory.member_id' => $member['Member']['id'],) + 
+                                     $this->commonSearchConditios['recruitSheet'] +
+                                     $this->commonSearchConditios['office'],
+              'joins' => array(
+                 array(
+                     'type' => 'INNER',
+                     'table' => 'office',
+                     'alias' => 'Office',
+                     'conditions' =>  array('`RecruitSheet`.`id` = `Office`.`id`')
+                 ),
               ),
               'order' => 'MembersRecruitsheetAccessHistory.modified DESC',
               'limit' => 20,
@@ -184,6 +116,15 @@ class MemberController extends AppController {
               'conditions' => array(
                 'MembersFavoriteRecruitsheets.favorite_flg' => 1,
                 'MembersFavoriteRecruitsheets.member_id' => $member['Member']['id'],
+              ) + $this->commonSearchConditios['recruitSheet'] +
+              $this->commonSearchConditios['office'],
+              'joins' => array(
+                 array(
+                     'type' => 'INNER',
+                     'table' => 'office',
+                     'alias' => 'Office',
+                     'conditions' =>  array('`RecruitSheet`.`id` = `Office`.`id`')
+                 ),
               ),
               'order' => 'MembersFavoriteRecruitsheets.modified DESC',
               'limit' => 20,
