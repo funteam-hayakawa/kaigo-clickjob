@@ -137,6 +137,9 @@ class MemberController extends AppController {
     public function registration(){
         /* 登録用フォーム出力 */
         if (isset($this->params['url']['token'])){
+            if (!strlen($this->params['url']['token'])){
+                throw new NotFoundException();
+            }
             $email = $this->MembersMailConfirmTable->find('first', array('conditions' => array(
                 'token' => $this->params['url']['token'],
                 'del_flg' => false,
