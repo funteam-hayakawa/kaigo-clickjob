@@ -9,7 +9,9 @@ echo $this->element('header');
   <?php echo $this->Html->link('登録情報編集', '/member/edit'); ?><br/>
   <?php echo $this->Html->link('ログアウト', '/member/logout'); ?><br/>
 <?php endif; ?>
-
+<?php
+echo $this->Form->create('Application', array('type' => 'post', 'url' => array('controller' => 'register', 'action' => 'index')));
+?>
 <table>
     <?php foreach($favorite as $h): ?>
         <?php $rs = $h['RecruitSheet'] ?>
@@ -20,6 +22,18 @@ echo $this->element('header');
         <tr>
             <td>求人票ID</td>
             <td><?php echo $rs['recruit_sheet_id']; ?></td>
+        </tr>
+        <tr>
+            <td>応募求人チェック</td>
+            <td>
+              <?php 
+                echo $this->Form->input('Application.recruit_sheet_ids.', array(
+                                        'type'=>'checkbox',
+                                        'required' => false,
+                                        'value' => $rs['recruit_sheet_id'],
+                ));
+               ?>
+            </td>
         </tr>
         <tr>
             <td>求人票タイトル</td>
@@ -45,3 +59,6 @@ echo $this->element('header');
         </tr>
     <?php endforeach; ?>
 </table>
+<?php 
+echo $this->Form->end('まとめて応募する');
+ ?>
