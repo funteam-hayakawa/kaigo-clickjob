@@ -47,7 +47,22 @@
 echo $this->Form->create('Registration', array('type' => 'post', 'url' => array('controller' => 'register', 'action' => 'index')));
 //echo $this->Form->input('email', array('type' => '', 'required' => false));
 ?>
-
+<?php 
+    if (!empty($applicationRecruitSheetIds)){
+    foreach ($applicationRecruitSheetIds as $i){
+        $applicationRecruitSheetIdsList[$i] = $i;
+    }
+    echo $this->Form->input('Registration.recruit_sheet_ids', array(
+                            'type'=>'select',
+                            'multiple' => 'true',
+                            'label' => false,
+                            'required' => false,
+                            'selected' => $applicationRecruitSheetIds,
+                            'options' => $applicationRecruitSheetIdsList,
+                            'style' => 'display:none'
+    ));
+}
+?>
 <table>
     <tr>
         <td>名前</td>
@@ -142,10 +157,6 @@ echo $this->Form->create('Registration', array('type' => 'post', 'url' => array(
            ?>
         </td>
     </tr>
-
-
-  
-
 </table>
 <?php
 echo $this->Form->end('Save');
