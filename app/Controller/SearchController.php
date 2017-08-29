@@ -115,6 +115,12 @@ class SearchController extends AppController {
         $officeCond = array(); /* officeの条件をこっちに詰める */
         $recruitSheetCond = array(); /* recruit_sheetの条件をこっちに詰める */
         
+        if (isset($searchCond['prefecture'])){
+            $officeCond = array_merge($officeCond, array('Office.prefecture' => $searchCond['prefecture']));
+        }
+        if (isset($searchCond['cities'])){
+            $officeCond = array_merge($officeCond, $this->getConditionCities($searchCond['cities']));
+        }
         if (!empty($searchCond['occupation'])){
             $recruitSheetCond = array_merge($recruitSheetCond, $this->getConditionOccupation($searchCond['occupation']));
         }
@@ -146,6 +152,15 @@ class SearchController extends AppController {
         $this->setCommonConfig();
         //$this->set('ranking',$this->searchRecruitRanking());
         $this->set('area',$this->Area->find('all'));
+        $this->set('prefectures',$this->Prefecture->find('list', array(
+          'recursive' => -1,
+          'fields' => array('name')
+        )));
+        
+        if (isset($searchCond['prefecture'])){
+            $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
+        }
+        
         $this->set('officeSearchResult',$officeSearchResult);
         $this->render("search_result");
     }
@@ -363,6 +378,8 @@ class SearchController extends AppController {
             'recruit_flex_type' => Configure::read("recruit_flex_type"),
             'particular_ttl_hour' => Configure::read("particular_ttl_hour"),
             'freeword' => 'text',
+            'prefecture' => array('function' => 'isValidPrefecture'),
+            'cities' => array('function' => 'isValidCityCode'),
         );
         foreach ($cond as $key => $condList){
             if (!isset($validateTable[$key])){
@@ -372,6 +389,13 @@ class SearchController extends AppController {
                 if ($validateTable[$key] === 'text'){
                     continue;
                 }
+            } else {
+                if (key($validateTable[$key]) == 'function'){
+                    if (!$this->$validateTable[$key]['function']($cond)){
+                        throw new NotFoundException();
+                    }
+                    continue;
+                }
             }
             foreach($condList as $val){
                 if (!isset($validateTable[$key][$val])){
@@ -379,5 +403,29 @@ class SearchController extends AppController {
                 }
             }
         }
+    }
+    private function isValidPrefecture($cond){
+        return $this->Prefecture->find('count', array('conditions' => array('Prefecture.no' => $cond['prefecture']), 'recursive' => -1));
+    }
+    private function isValidCityCode($cond){
+        if (empty($cond['prefecture'])){
+            return false;
+        }
+        if (!$this->isValidPrefecture($cond)){
+            return false;
+        }
+        return $this->State->find('count', array(
+          'conditions' => array(
+            'State.no' => $cond['cities'], 
+            'State.prefecture_no' => $cond['prefecture']
+          ), 
+          'recursive' => -1)
+          ) + $this->City->find('count', array(
+          'conditions' => array(
+            'City.no' => $cond['cities'], 
+            'City.prefecture_no' => $cond['prefecture']
+          ), 
+          'recursive' => -1)
+        );
     }
 }

@@ -2,6 +2,7 @@
 共通ヘッダー<br/>
 <?php echo $this->Html->link('TOPページ', '/'); ?><br/>
 <?php echo $this->Html->link('求人を探す', '/search'); ?><br/>
+<?php echo $this->Html->link('エリアから探す', '/area'); ?><br/>
 <?php echo $this->Html->link('サービス紹介', '/service/about'); ?><br/>
 <?php echo $this->Html->link('お役立ちコンテンツ', '/content/knowhow'); ?><br/>
 <?php echo $this->Html->link('介護 NEWS・コラム', '/column'); ?><br/>
