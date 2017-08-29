@@ -8,6 +8,17 @@ class Search extends AppModel {
     public $actsAs = array('Search.Searchable');
         
     public $filterArgs = array(
+        'prefecture' => array(
+            'type' => 'query',
+            'empty' => true,
+            'method' => NULL
+        ),
+        /* CityとState両方アリ */
+        'cities' => array(
+            'type' => 'query',
+            'empty' => true,
+            'method' => NULL
+        ),
         'occupation' => array(
             'type' => 'query',
             'empty' => true,

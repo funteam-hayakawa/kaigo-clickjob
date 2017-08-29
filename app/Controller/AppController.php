@@ -308,6 +308,32 @@ class AppController extends Controller {
         }
         return $cityArray;
     }
+    public function getConditionCities($val){
+        if (empty($val)){
+            return array();
+        }
+        $conditions = array();
+        $conditions[] = array('Office.cities' => $val);
+        $cityInState = $this->City->find('all', array(
+          'joins' => array(
+              array(
+                  'type' => 'INNER',
+                  'table' => 'state',
+                  'alias' => 'State',
+                  'conditions' => array('`City`.`state_no` = `State`.`no`')
+              ),
+          ),
+          'conditions' => array(
+            'City.state_no' => $val,
+            'NOT' => array('City.population' => NULL,),
+          ),
+          'recursive' => -1,
+        ));
+        foreach ($cityInState as $c){
+            $conditions[] = array('Office.cities' => $c['City']['no']);
+        }
+        return !empty($conditions) ? array(array('OR' => $conditions)) : array();
+    }
     public function beforeFilter() {
         $this->Security->validatePost = false;
         $this->Security->csrfCheck = false;

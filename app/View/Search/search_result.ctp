@@ -1,3 +1,47 @@
+<script src="/js/jquery-1.12.3.min.js"></script>
+<script type="text/javascript">
+        $(function(){
+          function isJSON(arg) {
+              arg = (typeof arg === "function") ? arg() : arg;
+              if (typeof arg  !== "string") {
+                  return false;
+              }
+              try {
+              arg = (!JSON) ? eval("(" + arg + ")") : JSON.parse(arg);
+                  return true;
+              } catch (e) {
+                  return false;
+              }
+          };
+          $('#SearchPrefecture').change(function(){
+            var p = $('#SearchPrefecture').val();
+            if (!p){
+              $('#SearchCity option').remove();
+              $('#SearchCity').append(new Option('都道府県を選択してください', ''));
+              return;
+            }
+            $.ajax({
+               type: "POST",
+               url: "/area_option/city/",
+               data: {'prefecture_id' : p},
+               success: function(msg){
+                 if (!isJSON(msg)){
+                    alert("予期しないエラーが発生しました");
+                    return;
+                 }
+                 var result = JSON.parse(msg);
+                 $('#SearchCities option').remove();
+                 var opt = [];
+                 opt.push(new Option('選択してください', ''));
+                 $.each(result.value, function(i, e){
+                   opt.push(new Option(e, i));
+                 });
+                 $('#SearchCities').append(opt);
+               }
+             });//ajax
+          });
+        });
+</script>
 <?php 
 //header
 echo $this->element('header'); 
@@ -27,6 +71,37 @@ foreach($area as $a){
   <tr>
     <th>検索項目</th>
     <th>検索条件</th>
+  </tr>
+  <tr>
+      <td>都道府県</td>
+      <td>
+        <?php 
+              echo $this->Form->input('Search.prefecture', array(
+                                      'type' => 'select', 
+                                      'label' => false,
+                                      'required' => false,
+                                      'options' => array('' => '選択してください') + $prefectures,
+              ))
+         ?>
+      </td>
+  </tr>
+  <tr>
+      <td>市区町村</td>
+      <td>
+        <?php
+            if (empty($cityArray)){
+                $opt = array('' => '都道府県を選択してください');
+            } else {
+                $opt = array('' => '選択してください') + $cityArray;
+            }
+            echo $this->Form->input('Search.cities', array(
+                                    'type' => 'select', 
+                                    'label' => false,
+                                    'required' => false,
+                                    'options' => $opt,
+            ))
+         ?>
+      </td>
   </tr>
   <tr>
     <td>職種</td>
