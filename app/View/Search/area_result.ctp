@@ -160,8 +160,10 @@ SEOテキスト
     <tr>
         <td>施設画像</td>
         <td>
-            <?php if (!empty($o['OfficeImage'])): ?>
-            <img src="<?php  echo '/read/hospital/'.$o['OfficeImage']['name']; ?>" width="128">
+            <?php if (!empty($o['OfficeImage']) && !empty($o['OfficeImage']['name'])): ?>
+            <img src="<?php echo '/read/hospital/'.$o['OfficeImage']['name']; ?>" width="128">
+            <?php else: ?>
+            <img src="<?php echo '/img/hospital/nophoto'.($o['Office']['id']%50+1).'.png'; ?>" width="128">
             <?php endif; ?>
         </td>
     </tr>

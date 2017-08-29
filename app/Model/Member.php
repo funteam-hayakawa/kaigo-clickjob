@@ -85,6 +85,7 @@ class Member extends AppModel {
             if (!empty($saved)){
                 foreach ($saved as $s){
                     $s['MembersMailConfirmTable']['del_flg'] = 1;
+                    $s['MembersMailConfirmTable']['token'] = '';
                     unset($s['MembersMailConfirmTable']['modified']);
                     if (!$MembersMailConfirmTable->save($s['MembersMailConfirmTable'])){
                         throw new Exception('更新失敗');

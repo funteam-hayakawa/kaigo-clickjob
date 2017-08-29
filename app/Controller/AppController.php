@@ -238,6 +238,76 @@ class AppController extends Controller {
         ));
         return $r;
     }
+    public function cityOptions($prefId){
+        if (!$this->Prefecture->find('first', array('conditions' => array('Prefecture.no' => $prefId), 'recursive' => -1))){
+            return array();
+        }
+        $state = $this->State->find('all', array(
+          'conditions' => array(
+            'State.prefecture_no' => $prefId
+          ),
+          'order' => 'State.population DESC',
+          'recursive' => -1,
+        ));
+        $stateIds = Hash::extract($state, '{n}.State.no');
+        $cityInState = $this->City->find('all', array(
+          'joins' => array(
+              array(
+                  'type' => 'INNER',
+                  'table' => 'state',
+                  'alias' => 'State',
+                  'conditions' => array('`City`.`state_no` = `State`.`no`')
+              ),
+          ),
+          'conditions' => array(
+            'City.prefecture_no' => $prefId,
+            'City.state_no' => $stateIds,
+            'NOT' => array('City.population' => NULL,),
+          ),
+          'order' => array('State.population DESC', 'City.population DESC'),
+          'recursive' => -1,
+        ));
+        $cityOther = $this->City->find('all', array(
+          'conditions' => array(
+            'City.prefecture_no' => $prefId,
+            'City.state_no' => NULL,
+            'NOT' => array('City.population' => NULL),
+          ),
+          'order' => array('City.population DESC'),
+          'recursive' => -1,
+        ));
+        /* findしてきた市区町村を良い感じにマージ */
+        $cityArray = array();
+        $s = 0; $cs = 0; $c = 0;
+        while (isset($state[$s]) || isset($cityOther[$c])){
+            if (!isset($state[$s]['State']['population'])){
+                $cityArray[$cityOther[$c]['City']['no']] = $cityOther[$c]['City']['name'];
+                $c++;
+                continue;
+            }
+            if (!isset($cityOther[$c]['City']['no'])){
+                $cityArray[$state[$s]['State']['no']] = $state[$s]['State']['name'];
+                while (isset($cityInState[$cs]['City']['state_no']) && $state[$s]['State']['no'] == $cityInState[$cs]['City']['state_no']){
+                    $cityArray[$cityInState[$cs]['City']['no']] = $cityInState[$cs]['City']['name'];
+                    $cs++;
+                }
+                $s++;
+                continue;
+            }
+            if ($state[$s]['State']['population'] > $cityOther[$c]['City']['population']){
+                $cityArray[$state[$s]['State']['no']] = $state[$s]['State']['name'];
+                while (isset($cityInState[$cs]['City']['state_no']) && $state[$s]['State']['no'] == $cityInState[$cs]['City']['state_no']){
+                    $cityArray[$cityInState[$cs]['City']['no']] = $cityInState[$cs]['City']['name'];
+                    $cs++;
+                }
+                $s++;
+            } else {
+                $cityArray[$cityOther[$c]['City']['no']] = $cityOther[$c]['City']['name'];
+                $c++;
+            }
+        }
+        return $cityArray;
+    }
     public function beforeFilter() {
         $this->Security->validatePost = false;
         $this->Security->csrfCheck = false;

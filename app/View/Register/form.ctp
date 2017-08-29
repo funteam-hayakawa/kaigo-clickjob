@@ -67,13 +67,13 @@ echo $this->Form->create('Registration', array('type' => 'post', 'url' => array(
     <tr>
         <td>名前</td>
         <td>
-          <?php echo $this->Form->input('Registration.name'); ?>
+          <?php echo $this->Form->input('Registration.name', array('required' => false)); ?>
         </td>
     </tr>
     <tr>
         <td>ふりがな</td>
         <td>
-          <?php echo $this->Form->input('Registration.name_kana'); ?>
+          <?php echo $this->Form->input('Registration.name_kana', array('required' => false)); ?>
         </td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ echo $this->Form->create('Registration', array('type' => 'post', 'url' => array(
           <?php 
                 $birthYearList = array();
                 $birthYearList[''] = '選択してください';
-                foreach (range(1951, 1996) as $y){
+                foreach (range($birthday_year['from'], $birthday_year['to']) as $y){
                     $birthYearList[$y] = $y;
                 }
                 echo $this->Form->input('Registration.birthday_year', array(
@@ -116,20 +116,25 @@ echo $this->Form->create('Registration', array('type' => 'post', 'url' => array(
     <tr>
         <td>市区町村</td>
         <td>
-          <?php 
-                echo $this->Form->input('Registration.cities', array(
-                                        'type' => 'select', 
-                                        'label' => false,
-                                        'required' => false,
-                                        'options' => array('' => '都道府県を選択してください'),
-                ))
+          <?php
+              if (empty($cityArray)){
+                  $opt = array('' => '都道府県を選択してください');
+              } else {
+                  $opt = array('' => '選択してください') + $cityArray;
+              }
+              echo $this->Form->input('Registration.cities', array(
+                                      'type' => 'select', 
+                                      'label' => false,
+                                      'required' => false,
+                                      'options' => $opt,
+              ))
            ?>
         </td>
     </tr>
     <tr>
         <td>電話番号</td>
         <td>
-          <?php echo $this->Form->input('Registration.tel'); ?>
+          <?php echo $this->Form->input('Registration.tel', array('required' => false)); ?>
         </td>
     </tr>
     <tr>

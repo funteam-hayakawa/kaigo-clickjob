@@ -33,7 +33,8 @@ foreach($area as $a){
     <table>
         <tr>
             <td>求人ID</td>
-            <td><?php echo $r['RecruitSheet']['recruit_sheet_id']; ?></td>
+            <td><?php echo $r['RecruitSheet']['recruit_sheet_id']; ?>
+            </td>
         </tr>
         <tr>
             <td>施設名</td>
@@ -42,14 +43,16 @@ foreach($area as $a){
         <tr>
             <td>施設画像</td>
             <td>
-                <?php if (!empty($r['RecruitSheet']['Office']['OfficeImage'])): ?>
-                <img src="<?php  echo '/read/hospital/'.$r['RecruitSheet']['Office']['OfficeImage']['name']; ?>" width="128">
+                <?php if (!empty($r['RecruitSheet']['Office']['OfficeImage']) && !empty($r['RecruitSheet']['Office']['OfficeImage']['name'])): ?>
+                <img src="<?php echo '/read/hospital/'.$r['RecruitSheet']['Office']['OfficeImage']['name']; ?>" width="128">
+                <?php else: ?>
+                <img src="<?php echo '/img/hospital/nophoto'.($r['RecruitSheet']['Office']['id']%50+1).'.png'; ?>" width="128">
                 <?php endif; ?>
             </td>
         </tr>
         <tr>
             <td>求人票タイトル</td>
-            <td><?php echo $r['RecruitSheet']['sheet_title']; ?></td>
+            <td><?php echo $this->Html->link($r['RecruitSheet']['sheet_title'], '/detail/'.$r['RecruitSheet']['recruit_sheet_id']); ?></td>
         </tr>
         <tr>
             <td>求人紹介タイトル</td>
