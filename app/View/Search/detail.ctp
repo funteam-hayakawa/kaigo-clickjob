@@ -84,8 +84,10 @@ echo $this->element('header');
     <tr>
         <td>施設画像</td>
         <td>
-            <?php if (!empty($recruitSheet['Office']['OfficeImage'])): ?>
-            <img src="<?php  echo '/read/hospital/'.$recruitSheet['Office']['OfficeImage']['name']; ?>" width="128">
+            <?php if (!empty($recruitSheet['Office']['OfficeImage']) && !empty($recruitSheet['Office']['OfficeImage']['name'])): ?>
+            <img src="<?php echo '/read/hospital/'.$recruitSheet['Office']['OfficeImage']['name']; ?>" width="128">
+            <?php else: ?>
+            <img src="<?php echo '/img/hospital/nophoto'.($recruitSheet['Office']['id']%50+1).'.png'; ?>" width="128">
             <?php endif; ?>
         </td>
     </tr>
