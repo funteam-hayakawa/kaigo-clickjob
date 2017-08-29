@@ -21,7 +21,7 @@ class RegisterController extends AppController {
           'fields' => array('name')
         )));
         $this->set('license', Configure::read("application_license"));
-        
+        $this->set('birthday_year', Configure::read("birthday_year_selector"));
         if ($this->request->is('post')){
             /* 応募求人情報post有りでの登録画面リンク時 */
             if (isset($this->request->data['Application'])){
@@ -67,6 +67,7 @@ class RegisterController extends AppController {
                     $email->send();
                     return $this->redirect(array('action' => 'thanks'));
                 } else {
+                    $this->set('cityArray', $this->cityOptions($this->request->data['Registration']['prefecture']));
                     $this->Flash->error(__('has not been saved.'));
                 }
             }

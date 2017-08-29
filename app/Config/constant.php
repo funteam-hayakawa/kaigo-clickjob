@@ -11,6 +11,11 @@ else {
     define('SITE_TYPE', 'p');
 }
 
+$config['birthday_year_selector'] = array(
+    'from' => 1951,
+    'to' => 1996,
+);
+
 //職種 (職種カテゴリ)
 $config['occupation'] = array(
   1  => '介護職',

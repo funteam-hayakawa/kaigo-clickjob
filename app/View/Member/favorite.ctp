@@ -9,6 +9,7 @@ echo $this->element('header');
   <?php echo $this->Html->link('登録情報編集', '/member/edit'); ?><br/>
   <?php echo $this->Html->link('ログアウト', '/member/logout'); ?><br/>
 <?php endif; ?>
+<?php if(count($favorite)): ?>
 <?php
 echo $this->Form->create('Application', array('type' => 'post', 'url' => array('controller' => 'register', 'action' => 'index')));
 ?>
@@ -62,3 +63,4 @@ echo $this->Form->create('Application', array('type' => 'post', 'url' => array('
 <?php 
 echo $this->Form->end('まとめて応募する');
  ?>
+<?php endif; ?>
