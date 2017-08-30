@@ -16,8 +16,9 @@
           $('#SearchPrefecture').change(function(){
             var p = $('#SearchPrefecture').val();
             if (!p){
-              $('#SearchCity option').remove();
-              $('#SearchCity').append(new Option('都道府県を選択してください', ''));
+              $('#SearchCities option').remove();
+              $('#SearchCities').append(new Option('都道府県を選択してください', ''));
+              $('.Search-line').remove();
               return;
             }
             $.ajax({
@@ -39,7 +40,55 @@
                  $('#SearchCities').append(opt);
                }
              });//ajax
+             $.ajax({
+                type: "POST",
+                url: "/area_option/line/",
+                data: {'prefecture_id' : p},
+                success: function(msg){
+                  if (!isJSON(msg)){
+                     alert("予期しないエラーが発生しました");
+                     return;
+                  }
+                  var result = JSON.parse(msg);
+                  $('.Search-line').remove();
+                  var htm = '';
+                  $.each(result.value, function(i, e){
+                      htm += '<div class="Search-line"><input type="checkbox" name="data[Search][line][]" value="' + i + 
+                      '" id="SearchLine' + i + '" /><label for="SearchLine' + i + '">'+ e +'</label></div>' + "\n";
+                  });
+                  $('#Search-line-div').append(htm);
+                }
+              });//ajax
           });
+          $(document).on('change', '.Search-line input',function(){
+            checked = $('[name="data[Search][line][]"]:checked').map(function(){
+              return $(this).val();
+            }).get();
+            if (!checked.length){
+              $('.Search-station').remove();
+              return;
+            }
+            $.ajax({
+               type: "POST",
+               url: "/area_option/station/",
+               data: {'line_ids' : checked},
+               success: function(msg){
+                 if (!isJSON(msg)){
+                    alert("予期しないエラーが発生しました");
+                    return;
+                 }
+                 var result = JSON.parse(msg);
+                 $('.Search-station').remove();
+                 var htm = '';
+                 $.each(result.value, function(i, e){
+                     htm += '<div class="Search-station"><input type="checkbox" name="data[Search][station][]" value="' + i + 
+                     '" id="SearchStation' + i + '" /><label for="SearchStation' + i + '">'+ e +'</label></div>' + "\n";
+                 });
+                 $('#Search-station-div').append(htm);
+               }
+             });//ajax
+          });
+          
         });
 </script>
 <?php 
@@ -101,6 +150,46 @@ foreach($area as $a){
                                     'options' => $opt,
             ))
          ?>
+      </td>
+  </tr>
+  <tr>
+      <td>路線</td>
+      <td>
+          <div id='Search-line-div'>
+          <?php
+              if (!empty($lineArray)){
+                  echo $this->Form->input('Search.line', array(
+                                          'class' => 'Search-line',
+                                          'div' => false,
+                                          'hiddenField' => false,
+                                          'multiple' => 'checkbox',
+                                          'label' => false,
+                                          'required' => false,
+                                          'options' => $lineArray,
+                  ));
+              }
+           ?>
+          </div>
+      </td>
+  </tr>
+  <tr>
+      <td>駅</td>
+      <td>
+          <div id='Search-station-div'>
+          <?php
+              if (!empty($stationArray)){
+                  echo $this->Form->input('Search.station', array(
+                                          'class' => 'Search-station',
+                                          'div' => false,
+                                          'hiddenField' => false,
+                                          'multiple' => 'checkbox',
+                                          'label' => false,
+                                          'required' => false,
+                                          'options' => $stationArray,
+                  ));
+              }
+           ?>
+          </div>
       </td>
   </tr>
   <tr>

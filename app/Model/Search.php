@@ -19,6 +19,16 @@ class Search extends AppModel {
             'empty' => true,
             'method' => NULL
         ),
+        'line' => array(
+            'type' => 'query',
+            'empty' => true,
+            'method' => NULL
+        ),
+        'station' => array(
+            'type' => 'query',
+            'empty' => true,
+            'method' => NULL
+        ),
         'occupation' => array(
             'type' => 'query',
             'empty' => true,

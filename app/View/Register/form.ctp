@@ -16,8 +16,8 @@
           $('#RegistrationPrefecture').change(function(){
             var p = $('#RegistrationPrefecture').val();
             if (!p){
-              $('#RegistrationCity option').remove();
-              $('#RegistrationCity').append(new Option('都道府県を選択してください', ''));
+              $('#RegistrationCities option').remove();
+              $('#RegistrationCities').append(new Option('都道府県を選択してください', ''));
               return;
             }
             $.ajax({
