@@ -45,6 +45,7 @@ class PagesController extends AppController {
         $this->set('area',$this->Area->find('all'));
         $this->set('recruitSheetCount',$this->getRecruitSheetCount());
         $this->set('ranking',$this->searchRecruitRanking());
+        $this->set('highIncome',$this->searchRecruitHighIncome());
         $this->render("display_top");
     }
     public function image() {

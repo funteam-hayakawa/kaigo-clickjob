@@ -30,11 +30,6 @@ class AreaOptionController extends AppController {
         }
         throw new NotFoundException();
     }
-    /*
-    public function test($p){
-        $this->lineOptions($p);
-    }
-    */
     /* 路線情報 */
     public function line(){
         $retVal = array(

@@ -27,7 +27,7 @@ foreach($area as $a){
 ?>
 <hr>
 
-人気の求人特集
+<h2>人気の求人特集</h2>
 
 <?php foreach($ranking as $r): ?>
     <table>
@@ -47,6 +47,54 @@ foreach($area as $a){
                 <img src="<?php echo '/read/hospital/'.$r['RecruitSheet']['Office']['OfficeImage']['name']; ?>" width="128">
                 <?php else: ?>
                 <img src="<?php echo '/img/hospital/nophoto'.($r['RecruitSheet']['Office']['id']%50+1).'.png'; ?>" width="128">
+                <?php endif; ?>
+            </td>
+        </tr>
+        <tr>
+            <td>求人票タイトル</td>
+            <td><?php echo $this->Html->link($r['RecruitSheet']['sheet_title'], '/detail/'.$r['RecruitSheet']['recruit_sheet_id']); ?></td>
+        </tr>
+        <tr>
+            <td>求人紹介タイトル</td>
+            <td><?php echo $r['RecruitSheet']['recruit_introduce_title']; ?></td>
+        </tr>
+        <?php $flexTypeList = explode(',', $r['RecruitSheet']['recruit_flex_type']); ?>
+        <?php foreach ($flexTypeList as $f): ?>
+            <?php if (isset($recruit_flex_type[$f])): ?>
+                <tr>
+                    <td>融通</td>
+                    <td><?php echo $recruit_flex_type[$f]; ?></td>
+                </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </table>
+<?php endforeach; ?>
+<hr>
+
+<h2>高収入求人特集</h2>
+
+<?php foreach($highIncome as $r): ?>
+    <table>
+        <tr>
+            <td>求人ID</td>
+            <td><?php echo $r['RecruitSheet']['recruit_sheet_id']; ?>
+            </td>
+        </tr>
+        <tr>
+            <td>施設名</td>
+            <td><?php echo $r['Office']['name']; ?></td>
+        </tr>
+        <tr>
+            <td>受付年月日</td>
+            <td><?php echo $r['RecruitSheet']['receipted']; ?></td>
+        </tr>
+        <tr>
+            <td>施設画像</td>
+            <td>
+                <?php if (!empty($r['Office']['OfficeImage']) && !empty($r['Office']['OfficeImage']['name'])): ?>
+                <img src="<?php echo '/read/hospital/'.$r['Office']['OfficeImage']['name']; ?>" width="128">
+                <?php else: ?>
+                <img src="<?php echo '/img/hospital/nophoto'.($r['Office']['id']%50+1).'.png'; ?>" width="128">
                 <?php endif; ?>
             </td>
         </tr>

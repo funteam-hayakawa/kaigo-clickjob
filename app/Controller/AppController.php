@@ -102,7 +102,21 @@ class AppController extends Controller {
         ),
       ),
     ); 
-    
+    /* 高収入求人特集 */
+    public function searchRecruitHighIncome(){
+        return $this->RecruitSheet->find('all', array(
+          'recursive' => 2,
+          'conditions' => array_merge($this->commonSearchConditios['recruitSheet'] + $this->commonSearchConditios['office'],
+          array(
+            /* 東京 神奈川 千葉 埼玉 大阪 兵庫 */
+            'Office.prefecture' => array('13','14','12','11','27','28'),
+            /* 給与高め */
+            "FIND_IN_SET('7', RecruitSheet.recruit_flex_type)"
+          )),
+          'order' => array('RecruitSheet.receipted DESC', 'RecruitSheet.updated DESC'),
+          'limit' => 3
+        ));
+    }
     /* 人気求人ランキング */
     public function searchRecruitRanking(){
         return $this->RecruitSheetAttention->find('all', array(
