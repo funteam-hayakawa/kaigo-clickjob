@@ -15,6 +15,7 @@ class SearchController extends AppController {
       'SeoFooterText',
       'RecruitSheetAttention',
       'MembersRecruitsheetAccessHistory',
+      'Station',
     );
     public function beforeFilter() {
         parent::beforeFilter();
@@ -121,6 +122,12 @@ class SearchController extends AppController {
         if (isset($searchCond['cities'])){
             $officeCond = array_merge($officeCond, $this->getConditionCities($searchCond['cities']));
         }
+        if (isset($searchCond['line']) && !isset($searchCond['station'])){
+            $officeCond = array_merge($officeCond, $this->getConditionLine($searchCond['line']));
+        }
+        if (isset($searchCond['station'])){
+            $officeCond = array_merge($officeCond, $this->getConditionStation($searchCond['station']));
+        }
         if (!empty($searchCond['occupation'])){
             $recruitSheetCond = array_merge($recruitSheetCond, $this->getConditionOccupation($searchCond['occupation']));
         }
@@ -159,6 +166,10 @@ class SearchController extends AppController {
         
         if (isset($searchCond['prefecture'])){
             $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
+            $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
+        }
+        if (isset($searchCond['line'])){
+            $this->set('stationArray', $this->stationOptions($searchCond['line']));
         }
         
         $this->set('officeSearchResult',$officeSearchResult);
@@ -380,6 +391,8 @@ class SearchController extends AppController {
             'freeword' => 'text',
             'prefecture' => array('function' => 'isValidPrefecture'),
             'cities' => array('function' => 'isValidCityCode'),
+            'line' => array('function' => 'isValidLineCode'),
+            'station' => array('function' => 'isValidStationCode'),
         );
         foreach ($cond as $key => $condList){
             if (!isset($validateTable[$key])){
@@ -427,5 +440,30 @@ class SearchController extends AppController {
           ), 
           'recursive' => -1)
         );
+    }
+    private function isValidLineCode($cond){
+        $pref = $this->Prefecture->find('first', array('conditions' => array('Prefecture.no' => $cond['prefecture']), 'recursive' => -1));
+        if (empty($pref)){
+            return false;
+        }
+        $c = $this->Station->find('count', array(
+          'conditions' => array(
+            'Station.prefecture_name' => $pref['Prefecture']['name'],
+            'Station.line_code' => $cond['line'],
+            'Station.del_flg' => 0,
+          ),
+          'group' => array('Station.line_code'),
+        ));
+        return $c == count($cond['line']);
+    }
+    private function isValidStationCode($cond){
+        $c = $this->Station->find('count', array(
+          'conditions' => array(
+            'Station.line_code' => $cond['line'],
+            'Station.station_code' => $cond['station'],
+            'Station.del_flg' => 0,
+          ),
+        ));
+        return $c == count($cond['station']);
     }
 }

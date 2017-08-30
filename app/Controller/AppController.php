@@ -32,6 +32,7 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
     public $uses = array(
       'Search', 
+      'Station',
       'Area', 
       'Prefecture', 
       'State', 
@@ -238,6 +239,40 @@ class AppController extends Controller {
         ));
         return $r;
     }
+    
+    public function stationOptions($lineIds){
+        $station = $this->Station->find('all', array(
+          'conditions' => array(
+            'Station.line_code' => $lineIds,
+            'Station.del_flg' => 0,
+          ),
+          'group' => array('Station.station_code'),
+          'order' => array('Station.station_code'),
+        ));
+        $ret = array();
+        foreach ($station as $s){
+            $ret[$s['Station']['station_code']] = $s['Station']['station_name'];
+        }
+        return $ret;
+    }
+    public function lineOptions($prefId){
+        if (!($pref = $this->Prefecture->find('first', array('conditions' => array('Prefecture.no' => $prefId), 'recursive' => -1)))){
+            return array();
+        }
+        $line = $this->Station->find('all', array(
+          'conditions' => array(
+            'Station.prefecture_name' => $pref['Prefecture']['name'],
+            'Station.del_flg' => 0,
+            'NOT' => array('Station.line_name LIKE' => '%バス%'),
+          ),
+          'group' => array('Station.line_code'),
+        ));
+        $ret = array();
+        foreach ($line as $l){
+            $ret[$l['Station']['line_code']] = $l['Station']['line_name'];
+        }
+        return $ret;
+    }
     public function cityOptions($prefId){
         if (!$this->Prefecture->find('first', array('conditions' => array('Prefecture.no' => $prefId), 'recursive' => -1))){
             return array();
@@ -331,6 +366,50 @@ class AppController extends Controller {
         ));
         foreach ($cityInState as $c){
             $conditions[] = array('Office.cities' => $c['City']['no']);
+        }
+        return !empty($conditions) ? array(array('OR' => $conditions)) : array();
+    }
+    public function getConditionLine($array){
+        if (empty($array) || !is_array($array)){
+            return array();
+        }
+        $conditions = array();
+        
+        $line = $this->Station->find('all', array(
+          'conditions' => array(
+            'Station.line_code' => $array,
+            'Station.del_flg' => 0,
+          ),
+          'group' => array('Station.line_code'),
+        ));
+        foreach ($line as $l){
+            $conditions[] = array('OfficeStation.line LIKE' => '%'.$l['Station']['line_name'].'%');
+        }
+        $station = $this->Station->find('all', array(
+          'conditions' => array(
+            'Station.line_code' => $array,
+            'Station.del_flg' => 0,
+          ),
+        ));
+        foreach ($station as $s){
+            $conditions[] = array('OfficeStation.station' => $s['Station']['station_name']);
+        }
+        return !empty($conditions) ? array(array('OR' => $conditions)) : array();
+    }
+    public function getConditionStation($array){
+        if (empty($array) || !is_array($array)){
+            return array();
+        }
+        $conditions = array();
+        $station = $this->Station->find('all', array(
+          'conditions' => array(
+            'Station.station_code' => $array,
+            'Station.del_flg' => 0,
+          ),
+          'group' => array('Station.station_code'),
+        ));
+        foreach ($station as $s){
+            $conditions[] = array('OfficeStation.station' => $s['Station']['station_name']);
         }
         return !empty($conditions) ? array(array('OR' => $conditions)) : array();
     }

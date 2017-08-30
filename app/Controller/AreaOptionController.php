@@ -18,12 +18,59 @@ class AreaOptionController extends AppController {
         );
         if($this->request->is('ajax')) {
             if (isset($this->request->data['prefecture_id'])){
-                $cityArray = $this->cityOptions($this->request->data['prefecture_id']);
-                if (empty($cityArray)){
+                $ret = $this->cityOptions($this->request->data['prefecture_id']);
+                if (empty($ret)){
                     throw new NotFoundException();
                 }
                 $retVal['status'] = true;
-                $retVal['value'] = $cityArray;
+                $retVal['value'] = $ret;
+                echo (json_encode($retVal));
+                exit();
+            }
+        }
+        throw new NotFoundException();
+    }
+    /*
+    public function test($p){
+        $this->lineOptions($p);
+    }
+    */
+    /* 路線情報 */
+    public function line(){
+        $retVal = array(
+            'status' => false,
+            'msg' => '',
+            'value' => array(),
+        );
+        if($this->request->is('ajax')) {
+            if (isset($this->request->data['prefecture_id'])){
+                $ret = $this->lineOptions($this->request->data['prefecture_id']);
+                if (empty($ret)){
+                    throw new NotFoundException();
+                }
+                $retVal['status'] = true;
+                $retVal['value'] = $ret;
+                echo (json_encode($retVal));
+                exit();
+            }
+        }
+        throw new NotFoundException();
+    }
+    /* 駅情報 */
+    public function station(){
+        $retVal = array(
+            'status' => false,
+            'msg' => '',
+            'value' => array(),
+        );
+        if($this->request->is('ajax')) {
+            if (isset($this->request->data['line_ids'])){
+                $ret = $this->stationOptions($this->request->data['line_ids']);
+                if (empty($ret)){
+                    throw new NotFoundException();
+                }
+                $retVal['status'] = true;
+                $retVal['value'] = $ret;
                 echo (json_encode($retVal));
                 exit();
             }
