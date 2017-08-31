@@ -333,7 +333,7 @@ class SearchController extends AppController {
         $mergedRecruitSheetCond = array_merge($mergedRecruitSheetCond, array('NOT' => array('RecruitSheet.recruit_sheet_id' => $notRecruitSheetId)));
         
         $recruitSheet = $this->RecruitSheet->find('all', array(
-          'recursive' => 1,
+          'recursive' => 2,
           'conditions' => array_merge($officeConditions, $mergedRecruitSheetCond),
           'joins' => array(
               array(
