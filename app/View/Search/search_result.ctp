@@ -305,6 +305,10 @@ foreach($area as $a){
         <th>内容</th>
     </tr>
     <tr>
+        <td>last updated</td>
+        <td><?php echo $o['Office']['R_updated']; ?></td>
+    </tr>
+    <tr>
         <td>ID</td>
         <td><?php echo $o['Office']['id']; ?></td>
     </tr>
@@ -378,6 +382,10 @@ foreach($area as $a){
             <td><?php echo $rs['recruit_sheet_id']; ?></td>
         </tr>
         <tr>
+            <td>updated</td>
+            <td><?php echo $rs['updated']; ?></td>
+        </tr>
+        <tr>
             <td>求人票タイトル</td>
             <td><?php echo $this->Html->link($rs['sheet_title'], '/detail/'.$rs['recruit_sheet_id']); ?></td>
         </tr>
@@ -388,3 +396,4 @@ foreach($area as $a){
     <?php endforeach; ?>
 </table>
 <?php endforeach; ?>
+

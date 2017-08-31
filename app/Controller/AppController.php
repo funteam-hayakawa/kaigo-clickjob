@@ -136,7 +136,7 @@ class AppController extends Controller {
     /* サイドバーの求人数取得 */
     public function getRecruitSheetCount(){
         $rc = array();
-        $cond = $this->commonSearchConditios['recruitSheet'];
+        $cond = $this->commonSearchConditios['recruitSheet'] + $this->commonSearchConditios['office'];
         $rc['all'] = $this->RecruitSheet->find('count',array('conditions' => $cond));
         $rc['modified'] = $this->RecruitSheet->find('first',array(
           'fields' => "MAX(RecruitSheet.updated) as modified",
@@ -404,6 +404,7 @@ class AppController extends Controller {
             'Station.line_code' => $array,
             'Station.del_flg' => 0,
           ),
+          'group' => array('Station.station_code'),
         ));
         foreach ($station as $s){
             $conditions[] = array('OfficeStation.station' => $s['Station']['station_name']);
