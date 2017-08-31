@@ -46,19 +46,20 @@ class SearchController extends AppController {
                                                                      'State.no' => $cond1),
                                                                      'fields' => array('State.no')
         ));
-
+        $searchCond = array();
         $cityCode = '0';
         $stateCode = '0';
-        $conditions['Office.prefecture'] = $prefId;
+        $searchCond['prefecture'] = $prefId;
         if (!empty($c)){
             $cityCode = $c['City']['no'];
-            $conditions['Office.cities'] = $cityCode;
+            $searchCond['cities'] = $cityCode;
         } else {
             if (!empty($s)){
                 $stateCode = $s['State']['no'];
-                $conditions['Office.cities'] = $stateCode;
+                $searchCond['cities'] = $stateCode;
             }
         }
+        
         $seoCond = array(
             'prefecture_code' => $prefId, 
             'state_code' => $stateCode, 
@@ -82,11 +83,37 @@ class SearchController extends AppController {
             $seoFooterText = $this->SeoFooterText->find('all', array('conditions' => $seoCond, 'order' => 'sort_order', 'limit' => 4));
         }
         /* ページングもこの関数内でやってる */
-        $officeSearchResult = $this->searchOfficeByCond($conditions);
+        $officeSearchResult = $this->searchOfficeByCond($searchCond);
         $this->setCommonConfig();
         $this->set('officeSearchResult',$officeSearchResult);
         $this->set('seoHeaderText',$seoHeaderText);
         $this->set('seoFooterText',$seoFooterText);
+        if (isset($searchCond['prefecture']) && empty($searchCond['cities'])){
+            $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
+        }
+        if (isset($searchCond['prefecture'])){
+            $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
+        }
+        $this->set('prefName', $pref);
+        
+        if (empty($officeSearchResult)){
+            $resemblesOffice = $this->searchResemblesOfficeByCond($searchCond);
+            $this->request->data['Search']['prefecture'] = $prefId;
+            $this->set('prefectures',$this->Prefecture->find('list', array(
+              'recursive' => -1,
+              'fields' => array('name')
+            )));
+            if (!empty($searchCond['cities'])){
+                $this->request->data['Search']['cities'] = $searchCond['cities'];
+            }
+            if (isset($searchCond['prefecture'])){
+                $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
+                $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
+            }
+            $this->set('resemblesOffice',$resemblesOffice);
+            $this->render("no_result");
+            return;
+        }
         $this->render("area_result");
     }
     public function detail($id){
@@ -102,6 +129,9 @@ class SearchController extends AppController {
             throw new NotFoundException();
         }        
         $this->setCommonConfig();
+        
+        $cond = $this->getConditionsFromRecruitSheet($r);
+        $this->set('resemblesRecruit', $this->searchResemblesRecruitSheetByCond($cond, $id));
         //$this->set('ranking',$this->searchRecruitRanking());
         $this->set('recruitSheet', $r);
         $this->render("detail");
@@ -112,10 +142,113 @@ class SearchController extends AppController {
         
         /* URLの検索条件にゴミを入れられたら全て404に飛ばす */
         $this->searchCondValidate($searchCond);
+        /* ページングもこの関数内でやってる */
+        $officeSearchResult = $this->searchOfficeByCond($searchCond);
         
+        $this->setCommonConfig();
+        //$this->set('ranking',$this->searchRecruitRanking());
+        $this->set('area',$this->Area->find('all'));
+        $this->set('prefectures',$this->Prefecture->find('list', array(
+          'recursive' => -1,
+          'fields' => array('name')
+        )));
+        
+        if (isset($searchCond['prefecture'])){
+            $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
+            $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
+        }
+        if (isset($searchCond['line'])){
+            $this->set('stationArray', $this->stationOptions($searchCond['line']));
+        }
+        
+        $this->set('officeSearchResult',$officeSearchResult);
+        
+        if (empty($officeSearchResult)){
+            $resemblesOffice = $this->searchResemblesOfficeByCond($searchCond);
+            $this->set('resemblesOffice', $resemblesOffice);
+            $this->render("no_result");
+            return;
+        }
+        $this->render("search_result");
+    }
+    private function getConditionsFromRecruitSheet($recruitSheet){
+        $cond = array();
+        $cond['prefecture'] = $recruitSheet['Office']['prefecture'];
+        $cond['cities'] = $recruitSheet['Office']['cities'];
+        $lineName = array();
+        $stationName = array();
+        foreach ($recruitSheet['Office']['OfficeStation'] as $s){
+            $l = explode(',', $s['line']);
+            $lineName = array_merge($lineName, $l);
+            $stationName[] = $s['station'];
+        }
+        $lineCode = $this->Station->find('list', array(
+          'conditions' => array(
+            'OR' => array(
+              'Station.line_name' => $lineName,
+              'Station.station_name' => $stationName,
+            ),
+          ),
+          'group' => 'Station.line_code',
+          'fields' => 'Station.line_code',
+        ));
+        $cond['line'] = array();
+        foreach ($lineCode as $c){
+            $cond['line'][] = $c;
+        }
+        $stationCode = $this->Station->find('list', array(
+          'conditions' => array(
+            'OR' => array(
+              'Station.station_name' => $stationName,
+            ),
+          ),
+          'group' => 'Station.station_code',
+          'fields' => 'Station.station_code',
+        ));
+        $cond['station'] = array();
+        foreach ($stationCode as $c){
+            $cond['station'][] = $c;
+        }
+        $cond['occupation'] = explode(',', $recruitSheet['RecruitSheet']['occupation']);
+        $cond['institution_type'] = explode(',', $recruitSheet['Office']['institution_type']);
+        $cond['application_license'] = explode(',', $recruitSheet['RecruitSheet']['application_license']);
+        $cond['employment_type'] = explode(',', $recruitSheet['RecruitSheet']['employment_type']);
+        $cond['recruit_flex_type'] = explode(',', $recruitSheet['RecruitSheet']['recruit_flex_type']);
+        $cond['particular_ttl_hour'] = array();
+        /* 残業月10時間以下 */
+        if (empty($r['RecruitSheet']['overtime_work']) || $recruitSheet['RecruitSheet']['overtime_work'] <= 10){
+            $cond['particular_ttl_hour'][] = '1';
+        }
+        /* 日勤のみ */
+        if (array_search($cond['employment_type'], array('4','6','7')) !== FALSE){
+            $cond['particular_ttl_hour'][] = '2';
+        }
+        /* 夜勤のみ */
+        if (array_search($cond['employment_type'], array('5')) !== FALSE){
+            $cond['particular_ttl_hour'][] = '3';
+        }
+        return $cond;
+    }
+    private function setCommonConfig(){
+        $this->set('occupation', Configure::read("occupation"));
+        $this->set('institution_type', Configure::read("institution_type"));
+        $this->set('application_license', Configure::read("application_license"));
+        $this->set('access_type', Configure::read("access_type"));
+        $this->set('employment_type', Configure::read("employment_type"));
+        $this->set('recruit_flex_type', Configure::read("recruit_flex_type"));
+        $this->set('particular_ttl_hour', Configure::read("particular_ttl_hour"));
+        $this->set('house_for_single', Configure::read("house_for_single"));
+        $this->set('house_for_family', Configure::read("house_for_family"));
+        $this->set('mycar', Configure::read("mycar"));
+        $this->set('commutation', Configure::read("commutation"));
+        $this->set('social_insurance', Configure::read("social_insurance"));
+        $this->set('retirement', Configure::read("retirement"));
+        $this->set('reemployment', Configure::read("reemployment"));
+        $this->set('retirement_pay', Configure::read("retirement_pay"));
+    }
+    private function createFindCond($searchCond){
         $officeCond = array(); /* officeの条件をこっちに詰める */
         $recruitSheetCond = array(); /* recruit_sheetの条件をこっちに詰める */
-        
         if (isset($searchCond['prefecture'])){
             $officeCond = array_merge($officeCond, array('Office.prefecture' => $searchCond['prefecture']));
         }
@@ -149,61 +282,23 @@ class SearchController extends AppController {
         if (isset($searchCond['freeword'])){
             $officeCond = array_merge($officeCond, $this->getConditionFreeword($searchCond['freeword']));
         }
-        
-        /* ページングもこの関数内でやってる */
-        $officeSearchResult = $this->searchOfficeByCond($officeCond, $recruitSheetCond);
-        
-        //pr($searchCond);
-        //pr($officeCond);
-        
-        $this->setCommonConfig();
-        //$this->set('ranking',$this->searchRecruitRanking());
-        $this->set('area',$this->Area->find('all'));
-        $this->set('prefectures',$this->Prefecture->find('list', array(
-          'recursive' => -1,
-          'fields' => array('name')
-        )));
-        
-        if (isset($searchCond['prefecture'])){
-            $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
-            $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
-        }
-        if (isset($searchCond['line'])){
-            $this->set('stationArray', $this->stationOptions($searchCond['line']));
-        }
-        
-        $this->set('officeSearchResult',$officeSearchResult);
-        $this->render("search_result");
-    }
-    private function setCommonConfig(){
-        $this->set('occupation', Configure::read("occupation"));
-        $this->set('institution_type', Configure::read("institution_type"));
-        $this->set('application_license', Configure::read("application_license"));
-        $this->set('access_type', Configure::read("access_type"));
-        $this->set('employment_type', Configure::read("employment_type"));
-        $this->set('recruit_flex_type', Configure::read("recruit_flex_type"));
-        $this->set('particular_ttl_hour', Configure::read("particular_ttl_hour"));
-        $this->set('house_for_single', Configure::read("house_for_single"));
-        $this->set('house_for_family', Configure::read("house_for_family"));
-        $this->set('mycar', Configure::read("mycar"));
-        $this->set('commutation', Configure::read("commutation"));
-        $this->set('social_insurance', Configure::read("social_insurance"));
-        $this->set('retirement', Configure::read("retirement"));
-        $this->set('reemployment', Configure::read("reemployment"));
-        $this->set('retirement_pay', Configure::read("retirement_pay"));
+        return array('office' => $officeCond, 'recruitSheet' => $recruitSheetCond);
     }
 
-    private function searchOfficeByCond($officeCond = array(), $recruitSheetCond = array()){
-        $recruitSheetCommonCond = $this->commonSearchConditios['recruitSheet'];
-        $officeCommonCond = $this->commonSearchConditios['office'];
-        $conditions = array_merge($officeCommonCond, $officeCond);
-        $mergedRecruitSheetCond = array_merge($recruitSheetCommonCond, $recruitSheetCond);
+    private function searchOfficeByCond($searchCond, $limit = 10){
+        $cond = $this->createFindCond($searchCond);
+        
+        $officeConditions = array_merge($this->commonSearchConditios['office'], $cond['office']);
+        $mergedRecruitSheetCond = array_merge($this->commonSearchConditios['recruitSheet'], $cond['recruitSheet']);
         $this->Office->hasMany['RecruitSheet']['conditions'] = $mergedRecruitSheetCond;
+        $this->Office->hasMany['RecruitSheet']['order'] = 'RecruitSheet.receipted DESC';
+        $this->Office->virtualFields += array('R_updated' => 'MAX(RecruitSheet.updated)');
         $paginate = array(
             'Office' => array(
-                'limit' => 10,
-                'conditions' => $conditions,
-                'order' => 'Office.updated DESC',
+                'limit' => $limit,
+                'conditions' => $officeConditions,
+                //'order' => 'Office.updated DESC',
+                'order' => 'R_updated DESC',
                 'group' => 'Office.id',
                 'recursive' => 1,
                 'joins' => array(
@@ -228,7 +323,107 @@ class SearchController extends AppController {
         $office = $this->Paginator->paginate('Office');
         $this->Paginator->settings = array();
         $this->Office->hasMany['RecruitSheet']['conditions'] = array();
+        $this->Office->hasMany['RecruitSheet']['order'] = array();
         return $office;
+    }
+    private function searchRecruitSheetByCond($searchCond, $notRecruitSheetId, $limit){
+        $cond = $this->createFindCond($searchCond);
+        $officeConditions = array_merge($this->commonSearchConditios['office'], $cond['office']);
+        $mergedRecruitSheetCond = array_merge($this->commonSearchConditios['recruitSheet'], $cond['recruitSheet']);
+        $mergedRecruitSheetCond = array_merge($mergedRecruitSheetCond, array('NOT' => array('RecruitSheet.recruit_sheet_id' => $notRecruitSheetId)));
+        
+        $recruitSheet = $this->RecruitSheet->find('all', array(
+          'recursive' => 1,
+          'conditions' => array_merge($officeConditions, $mergedRecruitSheetCond),
+          'joins' => array(
+              array(
+                  'type' => 'LEFT',
+                  'table' => 'station_office',
+                  'alias' => 'OfficeStation',
+                  'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`')
+              ),
+          ),
+          'group' => 'RecruitSheet.recruit_sheet_id',
+          'order' => 'RecruitSheet.receipted DESC',
+          'limit' => $limit
+        ));
+        return $recruitSheet;
+    }
+    private function searchResemblesOfficeByCond($searchCond){
+        $limit = 10;
+        $priority = array(
+          'prefecture', /* エリア */
+          'cities', /* エリア */
+          'occupation', /* 職種 */
+          'employment_type', /* 雇用形態 */
+          'institution_type', /* 施設タイプ */
+          'recruit_flex_type',
+          'particular_ttl_hour',
+          'line',
+          'station',
+          'application_license',
+          'freeword',
+        );
+        $ids = array();
+        $return = array();
+        foreach (array_reverse($priority) as $cond){
+            if (isset($searchCond[$cond])){
+                unset($searchCond[$cond]);
+                $tmp = $this->searchOfficeByCond($searchCond, $limit);
+                if (!empty($tmp)){
+                    foreach ($tmp as $t){
+                        if (!isset($ids[$t['Office']['id']])){
+                            $return[] = $t;
+                            $limit --;
+                            if ($limit == 0){
+                                goto LoopExit;
+                            } 
+                            $ids[$t['Office']['id']] = 1;
+                        }
+                    }
+                }
+            }
+        }
+        LoopExit:;
+        return $return;
+    }
+    private function searchResemblesRecruitSheetByCond($searchCond, $recruitSheetId){
+        $limit = 8;
+        $priority = array(
+          'prefecture', /* エリア */
+          'cities', /* エリア */
+          'occupation', /* 職種 */
+          'employment_type', /* 雇用形態 */
+          'institution_type', /* 施設タイプ */
+          'recruit_flex_type',
+          'particular_ttl_hour',
+          'line',
+          'station',
+          'application_license',
+          'freeword',
+        );
+        $ids = array();
+        $return = array();
+        foreach (array_reverse($priority) as $cond){
+            if (isset($searchCond[$cond])){
+                unset($searchCond[$cond]);
+                $tmp = $this->searchRecruitSheetByCond($searchCond, $recruitSheetId, $limit);
+                if (!empty($tmp)){
+                    foreach ($tmp as $t){
+                        if (!isset($ids[$t['RecruitSheet']['recruit_sheet_id']])){
+                            $return[] = $t;
+                            $limit --;
+                            if ($limit == 0){
+                                goto LoopExit;
+                            } 
+                            $ids[$t['RecruitSheet']['recruit_sheet_id']] = 1;
+                        }
+                    }
+                }
+            }
+        }
+        LoopExit:;
+        return $return;
     }
     private function getConditionOccupation($array) {
         $conditions = array();
@@ -463,6 +658,7 @@ class SearchController extends AppController {
             'Station.station_code' => $cond['station'],
             'Station.del_flg' => 0,
           ),
+          'group' => array('Station.station_code'),
         ));
         return $c == count($cond['station']);
     }
