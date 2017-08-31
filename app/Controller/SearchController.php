@@ -285,10 +285,13 @@ class SearchController extends AppController {
         return array('office' => $officeCond, 'recruitSheet' => $recruitSheetCond);
     }
 
-    private function searchOfficeByCond($searchCond, $limit = 10){
+    private function searchOfficeByCond($searchCond, $notIds = array() , $limit = 10){
         $cond = $this->createFindCond($searchCond);
         
         $officeConditions = array_merge($this->commonSearchConditios['office'], $cond['office']);
+        if (!empty($notIds)){
+            $officeConditions = array_merge($officeConditions, array('NOT' => array('Office.id' => $notIds)));
+        }
         $mergedRecruitSheetCond = array_merge($this->commonSearchConditios['recruitSheet'], $cond['recruitSheet']);
         $this->Office->hasMany['RecruitSheet']['conditions'] = $mergedRecruitSheetCond;
         $this->Office->hasMany['RecruitSheet']['order'] = 'RecruitSheet.receipted DESC';
@@ -326,11 +329,13 @@ class SearchController extends AppController {
         $this->Office->hasMany['RecruitSheet']['order'] = array();
         return $office;
     }
-    private function searchRecruitSheetByCond($searchCond, $notRecruitSheetId, $limit){
+    private function searchRecruitSheetByCond($searchCond, $notRecruitSheetIds, $limit){
         $cond = $this->createFindCond($searchCond);
         $officeConditions = array_merge($this->commonSearchConditios['office'], $cond['office']);
         $mergedRecruitSheetCond = array_merge($this->commonSearchConditios['recruitSheet'], $cond['recruitSheet']);
-        $mergedRecruitSheetCond = array_merge($mergedRecruitSheetCond, array('NOT' => array('RecruitSheet.recruit_sheet_id' => $notRecruitSheetId)));
+        if (!empty($notRecruitSheetIds)){
+            $mergedRecruitSheetCond = array_merge($mergedRecruitSheetCond, array('NOT' => array('RecruitSheet.recruit_sheet_id' => $notRecruitSheetIds)));
+        }
         
         $recruitSheet = $this->RecruitSheet->find('all', array(
           'recursive' => 2,
@@ -364,22 +369,20 @@ class SearchController extends AppController {
           'application_license',
           'freeword',
         );
-        $ids = array();
+        $notIds = array();
         $return = array();
         foreach (array_reverse($priority) as $cond){
             if (isset($searchCond[$cond])){
                 unset($searchCond[$cond]);
-                $tmp = $this->searchOfficeByCond($searchCond, $limit);
+                $tmp = $this->searchOfficeByCond($searchCond, $notIds, $limit);
                 if (!empty($tmp)){
                     foreach ($tmp as $t){
-                        if (!isset($ids[$t['Office']['id']])){
-                            $return[] = $t;
-                            $limit --;
-                            if ($limit == 0){
-                                goto LoopExit;
-                            } 
-                            $ids[$t['Office']['id']] = 1;
-                        }
+                        $return[] = $t;
+                        $limit --;
+                        if ($limit == 0){
+                            goto LoopExit;
+                        } 
+                        $notIds[] = $t['Office']['id'];
                     }
                 }
             }
@@ -402,22 +405,20 @@ class SearchController extends AppController {
           'application_license',
           'freeword',
         );
-        $ids = array();
+        $notIds = array($recruitSheetId);
         $return = array();
         foreach (array_reverse($priority) as $cond){
             if (isset($searchCond[$cond])){
                 unset($searchCond[$cond]);
-                $tmp = $this->searchRecruitSheetByCond($searchCond, $recruitSheetId, $limit);
+                $tmp = $this->searchRecruitSheetByCond($searchCond, $notIds, $limit);
                 if (!empty($tmp)){
                     foreach ($tmp as $t){
-                        if (!isset($ids[$t['RecruitSheet']['recruit_sheet_id']])){
-                            $return[] = $t;
-                            $limit --;
-                            if ($limit == 0){
-                                goto LoopExit;
-                            } 
-                            $ids[$t['RecruitSheet']['recruit_sheet_id']] = 1;
-                        }
+                        $return[] = $t;
+                        $limit --;
+                        if ($limit == 0){
+                            goto LoopExit;
+                        } 
+                        $notIds[] = $t['RecruitSheet']['recruit_sheet_id'];
                     }
                 }
             }
