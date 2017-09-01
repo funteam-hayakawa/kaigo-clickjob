@@ -195,7 +195,7 @@ class MemberController extends AppController {
             }
         }
         /* メールアドレス入力フォーム */
-        $this->set('birthday_year', Configure::read("birthday_year_selector"));
+        $this->set('birthdayYearOpt', $this->birthdayYearOptions());
         $this->render("password_reset_request");
     }
     
@@ -225,7 +225,7 @@ class MemberController extends AppController {
                 if (isset($this->request->data['Member']['prefecture'])){
                     $this->set('cityArray', $this->cityOptions($this->request->data['Member']['prefecture']));
                 }
-                $this->set('birthday_year', Configure::read("birthday_year_selector"));
+                $this->set('birthdayYearOpt', $this->birthdayYearOptions());
                 $this->set('license', Configure::read("application_license"));
             }
         } else {
@@ -242,7 +242,7 @@ class MemberController extends AppController {
                 if (isset($this->request->data['Member']['prefecture'])){
                     $this->set('cityArray', $this->cityOptions($this->request->data['Member']['prefecture']));
                 }
-                $this->set('birthday_year', Configure::read("birthday_year_selector"));
+                $this->set('birthdayYearOpt', $this->birthdayYearOptions());
                 $this->set('license', Configure::read("application_license"));
             } else {
                 $this->logout();
@@ -266,7 +266,7 @@ class MemberController extends AppController {
               'recursive' => -1,
               'fields' => array('name')
             )));
-            $this->set('birthday_year', Configure::read("birthday_year_selector"));
+            $this->set('birthdayYearOpt', $this->birthdayYearOptions());
             $this->set('license', Configure::read("application_license"));
             $this->set('token', $email['MembersMailConfirmTable']['token']);
             $this->render("registration_form");
@@ -299,7 +299,7 @@ class MemberController extends AppController {
             if (isset($this->request->data['Member']['prefecture'])){
                 $this->set('cityArray', $this->cityOptions($this->request->data['Member']['prefecture']));
             }
-            $this->set('birthday_year', Configure::read("birthday_year_selector"));
+            $this->set('birthdayYearOpt', $this->birthdayYearOptions());
             $this->set('license', Configure::read("application_license"));
             $this->render("registration_form");
             return;
