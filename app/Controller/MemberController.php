@@ -24,7 +24,7 @@ class MemberController extends AppController {
         $this->Cookie->secure = COOKIE_SSL_FLG;
         $this->Cookie->key = COOLIE_ENCRYPT_SALT;
         $this->Cookie->httpOnly = true;
-        $this->Auth->allow('registration', 'sessionFavorite', 'sessionHistory');
+        $this->Auth->allow('registration', 'sessionFavorite', 'sessionHistory', 'password_reset');
     }
     public function index(){
         $this->response->disableCache();
@@ -40,13 +40,17 @@ class MemberController extends AppController {
         }
         if ($this->request->is('post')) {            
             if ($this->Auth->login()) {
+                $m = $this->Auth->user();
+                if ($m['pw_reset_token']){
+                    $this->Member->clearPWResetToken($m);
+                }
                 if ($this->request->data['Member']['auto_login_flg']){
-                    $autoLoginToken = $this->Member->saveLoginToken($this->Auth->user());
+                    $autoLoginToken = $this->Member->saveLoginToken($m);
                     if (strlen($autoLoginToken)){
                         $this->Cookie->write('autoLoginToken', $autoLoginToken);
                     }
                 } else {
-                    $this->Member->clearLoginToken($this->Auth->user());
+                    $this->Member->clearLoginToken($m);
                     if ($this->Cookie->check('autoLoginToken')){
                         $token = $this->Cookie->destroy('autoLoginToken');
                     }
@@ -104,6 +108,97 @@ class MemberController extends AppController {
             $this->logout();
         }
     }
+    public function password_reset(){
+        $this->response->disableCache();
+        /* ログインチェック、ログイン済ならメンバー用URLにリダイレクト */
+        if ($this->Auth->loggedIn()){
+            $member = $this->Auth->user();
+            if (!empty($member)){
+                $member = $this->Member->find('first', array('conditions' => array(
+                  'Member.id' => $member['id'],
+                  'Member.withdraw_flg' => 0,
+                  'Member.del_flg' => 0
+                )));
+            }
+            if (!empty($member)){
+                $this->redirect('/member/mypage');
+            }
+        }
+        /* パスワードリセットフォーム出力 */
+        if (isset($this->params['url']['token'])){
+            if (!strlen($this->params['url']['token'])){
+                throw new NotFoundException();
+            }
+            $member = $this->Member->find('first', array('conditions' => array(
+                'pw_reset_token' => $this->params['url']['token'],
+                'del_flg' => false,
+            )));
+            if (empty($member)){
+                throw new NotFoundException();
+            }
+            $this->set('token', $member['Member']['pw_reset_token']);
+            $this->render("password_reset");
+            return;
+        }
+        /* パスワードリセット処理 */
+        if ($this->request->is('post') && !empty($this->request->data['Member']['pw_reset_token'])) {
+            $member = $this->Member->find('first', array('conditions' => array(
+                'pw_reset_token' => $this->request->data['Member']['pw_reset_token'],
+                'del_flg' => false,
+            )));
+            if (empty($member)){
+                throw new NotFoundException();
+            }
+            if (empty($member)){
+                $this->Flash->error(__('トークンが無効です。再度トークン発行してください。'));
+                $this->redirect('/member/password_reset');
+            } else {
+                $data = array();
+                $data['Member'] = $member['Member'];
+                $data['Member']['password'] = $this->request->data['Member']['password'];
+                $data['Member']['password_retype'] = $this->request->data['Member']['password_retype'];
+                if ($this->Member->updateMemberInfo($data)){
+                    $this->Flash->success(__('Your account has been saved.'));
+                    $this->redirect('/member/login');
+                } else {
+                    $this->Flash->error(__('Your account has not been saved.'));
+                }
+            }
+            $this->render("password_reset");
+            return;
+        }
+        /* パスワードリセットURLメール送信処理 */
+        if ($this->request->is('post')) {
+            $member = $this->Member->find('first', array('conditions' => array(
+              'Member.email' => $this->request->data['Member']['email'],
+              'Member.birthday_year' => $this->request->data['Member']['birthday_year'],
+              'Member.withdraw_flg' => 0,
+              'Member.del_flg' => 0
+            )));
+            if (empty($member)){
+                $this->Flash->error(__('メールアドレスが登録されていないか、登録された生年が異なります'));
+            } else {
+                if (($token = $this->Member->genPWResetToken($member)) !== false) {
+                    $this->Flash->success(__('パスワードリセット用URLを送信しました。'));
+                    $PWResetURL = Router::url('', true).'?token='.$token;
+                    $email = new CakeEmail('clickjob');
+                    $email->to($member['Member']['email']);
+                    $email->subject('クリックジョブパスワードリセットURL');
+                    $email->emailFormat('text');
+                    $email->template('members_passwdreset_url');
+                    $email->viewVars(compact('PWResetURL'));
+                    $email->send();
+                    $this->redirect('/member/login');
+                } else {
+                    $this->Flash->error(__('サーバ内エラーが発生しました。リトライしてください。'));
+                }
+            }
+        }
+        /* メールアドレス入力フォーム */
+        $this->set('birthday_year', Configure::read("birthday_year_selector"));
+        $this->render("password_reset_request");
+    }
+    
     public function edit(){
         $this->response->disableCache();
         $member = $this->Auth->user();
@@ -123,12 +218,32 @@ class MemberController extends AppController {
                 return $this->redirect(array('action' => 'edit'));
             } else {
                 $this->Flash->error(__('Your account has not been saved.'));
+                $this->set('prefectures',$this->Prefecture->find('list', array(
+                  'recursive' => -1,
+                  'fields' => array('name')
+                )));
+                if (isset($this->request->data['Member']['prefecture'])){
+                    $this->set('cityArray', $this->cityOptions($this->request->data['Member']['prefecture']));
+                }
+                $this->set('birthday_year', Configure::read("birthday_year_selector"));
+                $this->set('license', Configure::read("application_license"));
             }
         } else {
             if (!empty($member)){
-                $this->request->data['Member'] = array(
-                  'email' => $member['Member']['email'],
-                );
+                $this->request->data['Member'] = $member['Member'];
+                $this->request->data['Member']['license'] = Hash::extract($member['MemberLicense'], '{n}.license');
+                unset($this->request->data['Member']['id']);
+                unset($this->request->data['Member']['password']);
+                unset($this->request->data['Member']['auto_login_token']);
+                $this->set('prefectures',$this->Prefecture->find('list', array(
+                  'recursive' => -1,
+                  'fields' => array('name')
+                )));
+                if (isset($this->request->data['Member']['prefecture'])){
+                    $this->set('cityArray', $this->cityOptions($this->request->data['Member']['prefecture']));
+                }
+                $this->set('birthday_year', Configure::read("birthday_year_selector"));
+                $this->set('license', Configure::read("application_license"));
             } else {
                 $this->logout();
             }
@@ -147,6 +262,11 @@ class MemberController extends AppController {
             if (empty($email)){
                 throw new NotFoundException();
             }
+            $this->set('prefectures',$this->Prefecture->find('list', array(
+              'recursive' => -1,
+              'fields' => array('name')
+            )));
+            $this->set('birthday_year', Configure::read("birthday_year_selector"));
             $this->set('license', Configure::read("application_license"));
             $this->set('token', $email['MembersMailConfirmTable']['token']);
             $this->render("registration_form");
@@ -154,36 +274,38 @@ class MemberController extends AppController {
         }
         /* 登録処理 */
         if ($this->request->is('post') && !empty($this->request->data['Member']['token'])) {
-            //pr($this->request->data);
-            
             $email = $this->MembersMailConfirmTable->find('first', array('conditions' => array(
                 'token' => $this->request->data['Member']['token'],
                 'del_flg' => false,
             )));
             if (empty($email)){
-                $this->Flash->error(__('Your account has not been saved.'));
+                $this->Flash->error(__('メンバー登録トークンが無効です。再度メールアドレス登録してください。'));
+                $this->redirect('/member/registration');
             } else {
-                $data = array(
-                    'Member' => array(
-                      'email' => $email['MembersMailConfirmTable']['email'],
-                      'password' => $this->request->data['Member']['password'],
-                    )
-                );
+                $data = array();
+                $data['Member'] = $this->request->data['Member'];
+                $data['Member']['email'] = $email['MembersMailConfirmTable']['email'];
                 if ($this->Member->checkAndSave($data)){
                     $this->Flash->success(__('Your account has been saved.'));
+                    $this->redirect('/member/login');
                 } else {
                     $this->Flash->error(__('Your account has not been saved.'));
                 }
             }
+            $this->set('prefectures',$this->Prefecture->find('list', array(
+              'recursive' => -1,
+              'fields' => array('name')
+            )));
+            if (isset($this->request->data['Member']['prefecture'])){
+                $this->set('cityArray', $this->cityOptions($this->request->data['Member']['prefecture']));
+            }
+            $this->set('birthday_year', Configure::read("birthday_year_selector"));
             $this->set('license', Configure::read("application_license"));
             $this->render("registration_form");
             return;
         }
         /* 登録用URLメール送信処理 */
         if ($this->request->is('post')) {
-            $this->MembersMailConfirmTable->create();
-            $token = '';
-            $this->request->data['MembersMailConfirmTable']['token'] = $token;
             if (($token = $this->MembersMailConfirmTable->checkAndSave($this->request->data)) !== false) {
                 $this->Flash->success(__('Your email has been saved.'));
                 $registrationURL = Router::url('', true).'?token='.$token;

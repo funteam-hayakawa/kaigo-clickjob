@@ -54,7 +54,7 @@ class MembersMailConfirmTable extends AppModel {
             }
             do {
                 /* トークン衝突がなければループを抜ける */
-                $token = $this->genToken();
+                $token = $this->genToken(32);
                 $t = $this->find('first', array('conditions' => array(
                     'token' => $token,
                     'del_flg' => false,
@@ -74,15 +74,5 @@ class MembersMailConfirmTable extends AppModel {
             $datasource->rollback();
             return false;
         }
-    }
-    private function genToken(){
-        // 登録用URLトークン生成
-        $charSetForToken = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $tokenLength = 32;
-        $token = '';
-        for ($i = 0; $i < $tokenLength; $i++) {
-            $token .= $charSetForToken[rand(0, strlen($charSetForToken) - 1)];
-        }
-        return $token;
     }
 }
