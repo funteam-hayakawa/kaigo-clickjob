@@ -30,3 +30,4 @@ echo $this->Form->create('Member', array('type' => 'post', 'url' => array('contr
 <?php
 echo $this->Form->end('login');
 ?>
+<?php echo $this->Html->link('パスワード忘れ', '/member/password_reset'); ?>
