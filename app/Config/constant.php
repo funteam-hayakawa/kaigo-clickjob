@@ -316,3 +316,10 @@ $config['column_category'] = array(
   3 => array('url' => 'knowledge', 'name' => '知識'),
 );
 
+$config['wareki'] = array(
+  '明治' => array('st' => 1868, 'ed' => 1912),
+  '大正' => array('st' => 1912, 'ed' => 1926),
+  '昭和' => array('st' => 1926, 'ed' => 1989),
+  '平成' => array('st' => 1989, 'ed' => 9999),
+);
+

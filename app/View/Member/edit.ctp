@@ -25,11 +25,7 @@ echo $this->Form->create('Member', array('type' => 'post', 'url' => array('contr
         <td>生年</td>
         <td>
           <?php 
-                $birthYearList = array();
-                $birthYearList[''] = '選択してください';
-                foreach (range($birthday_year['from'], $birthday_year['to']) as $y){
-                    $birthYearList[$y] = $y;
-                }
+                $birthYearList = array('' => '選択してください') + $birthdayYearOpt;
                 echo $this->Form->input('Member.birthday_year', array(
                                         'type' => 'select', 
                                         'label' => false,

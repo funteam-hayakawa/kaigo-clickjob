@@ -21,7 +21,7 @@ class RegisterController extends AppController {
           'fields' => array('name')
         )));
         $this->set('license', Configure::read("application_license"));
-        $this->set('birthday_year', Configure::read("birthday_year_selector"));
+        $this->set('birthdayYearOpt', $this->birthdayYearOptions());
         if ($this->request->is('post')){
             /* 応募求人情報post有りでの登録画面リンク時 */
             if (isset($this->request->data['Application'])){

@@ -226,7 +226,21 @@ class AppController extends Controller {
         ));
         return $r;
     }
-    
+    public function birthdayYearOptions(){
+        $b = Configure::read("birthday_year_selector");
+        $wareki = Configure::read("wareki");
+        $ret = array();
+        foreach (range($b['from'], $b['to']) as $y){
+            $wStr = '';
+            foreach ($wareki as $key => $w){
+                if ($w['st'] <= $y && $w['ed'] >= $y){
+                    $wStr .= '/'.$key.($y - $w['st'] + 1).'年';
+                }
+            }
+            $ret[$y] = $y.'年'.$wStr;
+        }
+        return $ret;
+    }
     public function stationOptions($lineIds){
         $station = $this->Station->find('all', array(
           'conditions' => array(
