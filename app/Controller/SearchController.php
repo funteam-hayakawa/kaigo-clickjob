@@ -25,8 +25,9 @@ class SearchController extends AppController {
     public function area_idx(){
         $area = $this->Area->find('all');
         $pref = $this->Prefecture->find('all');
-        $this->set('area',$area);
-        $this->set('prefecture',$pref);
+        
+        $this->set('area', $area);
+        $this->set('prefecture', $pref);
         $this->render("area_index");
     }
 
@@ -46,6 +47,7 @@ class SearchController extends AppController {
                                                                      'State.no' => $cond1),
                                                                      'fields' => array('State.no')
         ));
+        $commitmentCondFlg = false;
         $searchCond = array();
         $cityCode = '0';
         $stateCode = '0';
@@ -59,6 +61,26 @@ class SearchController extends AppController {
                 $searchCond['cities'] = $stateCode;
             }
         }
+        /* こだわり条件関係 */
+        $urlConf = Configure::read("searchURL");
+        if (empty($searchCond['cities']) && ($cond1 !== null)){
+            if (isset($urlConf[$cond1])){
+                $searchCond[$urlConf[$cond1]['type']] = $urlConf[$cond1]['search_key'];
+                $commitmentCondFlg = true;
+            } else {
+                throw new NotFoundException();
+            }
+        } 
+        if (!empty($searchCond['cities']) && ($cond2 !== null)){
+            if (isset($urlConf[$cond2])){
+                $searchCond[$urlConf[$cond2]['type']] = $urlConf[$cond2]['search_key'];
+                $commitmentCondFlg = true;
+            } else {
+                throw new NotFoundException();
+            }
+        }
+        
+        pr($searchCond);
         
         $seoCond = array(
             'prefecture_code' => $prefId, 
@@ -84,17 +106,24 @@ class SearchController extends AppController {
         }
         /* ページングもこの関数内でやってる */
         $officeSearchResult = $this->searchOfficeByCond($searchCond);
+        
         $this->setCommonConfig();
         $this->set('officeSearchResult',$officeSearchResult);
         $this->set('seoHeaderText',$seoHeaderText);
         $this->set('seoFooterText',$seoFooterText);
-        if (isset($searchCond['prefecture']) && empty($searchCond['cities'])){
+        if (isset($searchCond['prefecture']) && empty($searchCond['cities']) && !$commitmentCondFlg){
             $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
+        }
+        if (!$commitmentCondFlg){
+            $this->set('commitmentTextConf', $this->getCommitmentTextConf());
         }
         if (isset($searchCond['prefecture'])){
             $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
         }
         $this->set('prefName', $pref);
+        if (!empty($searchCond['cities'])){
+            $this->set('cityCond', $searchCond['cities']);
+        }
         
         if (empty($officeSearchResult)){
             $resemblesOffice = $this->searchResemblesOfficeByCond($searchCond);
@@ -567,6 +596,21 @@ class SearchController extends AppController {
             $returnCond[] = array('OR' => $conditions);
         }
         return !empty($returnCond) ? $returnCond : array();
+    }
+    
+    /* こだわり条件URL情報コンフィグロード、整形 */
+    private function getCommitmentTextConf(){
+        /* こだわり条件のURLと検索条件のセット */
+        $urlConf = Configure::read("searchURL");
+        $commitmentText = Configure::read("commitment_text");
+        $conf = array();
+        foreach ($urlConf as $url => $cond){
+            if (!isset($conf[$cond['type']])){
+                $conf[$cond['type']] = array('name' => $commitmentText[$cond['type']], 'list' => array());
+            }
+            $conf[$cond['type']]['list'][] = array('url' => $url, 'text' => $cond['text']);
+        }
+        return $conf;
     }
     
     /* URLの検索条件にゴミを入れられたら全て404に飛ばす */
