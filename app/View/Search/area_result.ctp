@@ -31,14 +31,31 @@ SEOテキスト
 if (isset($cityArray)){
     $i = 0;
     foreach($cityArray as $code => $name){
-        echo $this->Html->link($name, array('action' => 'area', $prefName , $code) ); 
+        echo $this->Html->link($name, array('action' => 'area', $prefName , $code)); 
         echo '&nbsp&nbsp&nbsp&nbsp'; 
         if ($i++ % 10 == 9) echo '<br/>';
     }
     echo '<hr>';
 }
 ?>
-
+<?php
+if (isset($commitmentTextConf)){
+    foreach ($commitmentTextConf as $ct){
+        echo $ct['name'];
+        echo '<br/>';
+        foreach ($ct['list'] as $c){
+            if (!empty($cityCond)){
+                echo $this->Html->link($c['text'], array('action' => 'area', $prefName, $cityCond ,$c['url'])); 
+            } else {
+                echo $this->Html->link($c['text'], array('action' => 'area', $prefName ,$c['url'])); 
+            }
+            echo '&nbsp&nbsp&nbsp&nbsp';
+        }
+        echo '<br/>';
+    }
+    echo '<hr>';
+}
+?>
 
 検索エリア
 
@@ -71,7 +88,7 @@ if (isset($cityArray)){
                                     'multiple'=> 'checkbox',
                                     'label' => false,
                                     'required' => false,
-                                    'options' => $institution_type,
+                                    'options' => $institution_type_search_disp,
             ))
        ?>
     </td>
@@ -84,7 +101,7 @@ if (isset($cityArray)){
                                     'multiple'=> 'checkbox',
                                     'label' => false,
                                     'required' => false,
-                                    'options' => $application_license,
+                                    'options' => $application_license_search_disp,
             ))
        ?>
     </td>
@@ -97,7 +114,7 @@ if (isset($cityArray)){
                                     'multiple'=> 'checkbox',
                                     'label' => false,
                                     'required' => false,
-                                    'options' => $employment_type,
+                                    'options' => $employment_type_search_disp,
             ))
        ?>
     </td>
