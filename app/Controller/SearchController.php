@@ -16,6 +16,7 @@ class SearchController extends AppController {
       'RecruitSheetAttention',
       'MembersRecruitsheetAccessHistory',
       'Station',
+      'SeoKaigoPrefectureText',
     );
     public function beforeFilter() {
         parent::beforeFilter();
@@ -80,8 +81,6 @@ class SearchController extends AppController {
             }
         }
         
-        pr($searchCond);
-        
         $seoCond = array(
             'prefecture_code' => $prefId, 
             'state_code' => $stateCode, 
@@ -107,10 +106,13 @@ class SearchController extends AppController {
         /* ページングもこの関数内でやってる */
         $officeSearchResult = $this->searchOfficeByCond($searchCond);
         
+        $prefectureText = $this->SeoKaigoPrefectureText->find('first', array('conditions' => array('prefecture_code' => $prefId, 'del_flg' => 0)));
+        
         $this->setCommonConfig();
         $this->set('officeSearchResult',$officeSearchResult);
         $this->set('seoHeaderText',$seoHeaderText);
         $this->set('seoFooterText',$seoFooterText);
+        $this->set('prefectureText',$prefectureText);
         if (isset($searchCond['prefecture']) && empty($searchCond['cities']) && !$commitmentCondFlg){
             $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
         }
