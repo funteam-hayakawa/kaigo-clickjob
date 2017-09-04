@@ -201,7 +201,7 @@ foreach($area as $a){
                                     'label' => false,
                                     'required' => false,
                                     'options' => $occupation,
-            ))
+            ));
        ?>
     </td>
   </tr>
@@ -213,8 +213,8 @@ foreach($area as $a){
                                     'multiple'=> 'checkbox',
                                     'label' => false,
                                     'required' => false,
-                                    'options' => $institution_type,
-            ))
+                                    'options' => $institution_type_search_disp,
+            ));
        ?>
     </td>
   </tr>
@@ -226,7 +226,7 @@ foreach($area as $a){
                                     'multiple'=> 'checkbox',
                                     'label' => false,
                                     'required' => false,
-                                    'options' => $application_license,
+                                    'options' => $application_license_search_disp,
             ))
        ?>
     </td>
@@ -239,7 +239,7 @@ foreach($area as $a){
                                     'multiple'=> 'checkbox',
                                     'label' => false,
                                     'required' => false,
-                                    'options' => $employment_type,
+                                    'options' => $employment_type_search_disp,
             ))
        ?>
     </td>

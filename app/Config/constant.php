@@ -21,6 +21,7 @@ $config['wareki'] = array(
   '昭和' => array('st' => 1926, 'ed' => 1989),
   '平成' => array('st' => 1989, 'ed' => 9999),
 );
+
 //職種 (職種カテゴリ)
 $config['occupation'] = array(
   1  => '介護職',
@@ -64,6 +65,24 @@ $config['institution_type'] = array(
   23 => '障害者施設',
 );
 
+//働く施設 (施設タイプ 検索用選択枝)
+$config['institution_type_search_disp'] = array(
+  '1'  => array('text' => '特別養護老人ホーム',       'search_key' => array(4)),
+  '2'  => array('text' => '有料老人ホーム',           'search_key' => array(5, 26)),
+  '3'  => array('text' => '介護老人保健施設',         'search_key' => array(3)),
+  '4'  => array('text' => 'サービス付き高齢者向け住宅', 'search_key' => array(22)),
+  '5'  => array('text' => 'グループホーム',           'search_key' => array(19)),
+  '6'  => array('text' => '小規模多機能',             'search_key' => array(24)),
+  '7'  => array('text' => 'デイサービス・デイケア',    'search_key' => array(12)),
+  '8'  => array('text' => '訪問介護',                'search_key' => array(20)),
+  '9'  => array('text' => '定期巡回・夜間対応',        'search_key' => array(25)),
+  '10' => array('text' => '居宅介護支援事業所',        'search_key' => array(21)),
+  '11' => array('text' => '地域包括支援センター',      'search_key' => array(16)),
+  '12' => array('text' => '訪問入浴',                'search_key' => array(7)),
+  '13' => array('text' => '病院・クリニック',         'search_key' => array(1, 2)),
+  '14' => array('text' => 'その他',                 'search_key' => array(6, 8, 9, 10, 11, 14, 15, 18, 23)),
+);
+
 //持っている資格 (必要な免許・資格)
 $config['application_license'] = array(
   9  => '介護福祉士',
@@ -90,6 +109,21 @@ $config['application_license'] = array(
   23 => 'その他',
 );
 
+//持っている資格 (必要な免許・資格 検索用選択枝)
+$config['application_license_search_disp'] = array(
+  '1'  => array('text' => '介護福祉士',             'search_key' => array(9)),
+  '2'  => array('text' => '介護職員実務者研修',      'search_key' => array(16)),
+  '3'  => array('text' => 'ヘルパー1級',            'search_key' => array(6)),
+  '4'  => array('text' => '介護職員基礎研修',        'search_key' => array(8)),
+  '5'  => array('text' => '初任者研修（ヘルパー2級）', 'search_key' => array(7, 14)),
+  '6'  => array('text' => 'ケアマネジャー',          'search_key' => array(5)),
+  '7'  => array('text' => '社会福祉主事',            'search_key' => array(15)),
+  '8'  => array('text' => '社会福祉士',              'search_key' => array(10)),
+  '9'  => array('text' => 'PT・OT',                'search_key' => array(12, 13)),
+  '10' => array('text' => '正・准看護師',            'search_key' => array(1, 2, 3, 4)),
+  '11' => array('text' => 'その他',                 'search_key' => array(17, 18, 19, 20, 21, 22, 23)),
+);
+
 //雇用形態から探す (雇用形態)
 $config['employment_type'] = array(
   1 => '正社員',
@@ -99,6 +133,14 @@ $config['employment_type'] = array(
   3 => 'パート(日勤夜勤あり)',
   4 => 'パート(日勤のみ)',
   5 => 'パート(夜勤のみ)',
+);
+
+//雇用形態から探す (雇用形態 検索用選択枝)
+$config['employment_type_search_disp'] = array(
+  '1' => array('text' => '正社員・契約社員',          'search_key' => array(1, 2, 6, 7)),
+  '2' => array('text' => '正社員・契約社員(日勤のみ)', 'search_key' => array(6, 7)),
+  '3' => array('text' => 'パート',                  'search_key' => array(3, 4, 5)),
+  '4' => array('text' => 'パート(日勤のみ)',          'search_key' => array(4)),
 );
 
 //働きやすさから探す" (融通)

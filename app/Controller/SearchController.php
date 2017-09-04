@@ -262,8 +262,11 @@ class SearchController extends AppController {
         $this->set('occupation', Configure::read("occupation"));
         $this->set('institution_type', Configure::read("institution_type"));
         $this->set('application_license', Configure::read("application_license"));
-        $this->set('access_type', Configure::read("access_type"));
+        $this->set('employment_type_search_disp', $this->dispArrayExtract(Configure::read("employment_type_search_disp")));
+        $this->set('institution_type_search_disp', $this->dispArrayExtract(Configure::read("institution_type_search_disp")));
+        $this->set('application_license_search_disp', $this->dispArrayExtract(Configure::read("application_license_search_disp")));
         $this->set('employment_type', Configure::read("employment_type"));
+        $this->set('access_type', Configure::read("access_type"));
         $this->set('recruit_flex_type', Configure::read("recruit_flex_type"));
         $this->set('particular_ttl_hour', Configure::read("particular_ttl_hour"));
         $this->set('house_for_single', Configure::read("house_for_single"));
@@ -274,6 +277,13 @@ class SearchController extends AppController {
         $this->set('retirement', Configure::read("retirement"));
         $this->set('reemployment', Configure::read("reemployment"));
         $this->set('retirement_pay', Configure::read("retirement_pay"));
+    }
+    private function dispArrayExtract($array){
+        $r = array();
+        foreach ($array as $k => $d){
+            $r[$k] = $d['text'];
+        }
+        return $r;
     }
     private function createFindCond($searchCond){
         $officeCond = array(); /* officeの条件をこっちに詰める */
@@ -494,27 +504,36 @@ class SearchController extends AppController {
     }
     private function getConditionInstitutionType($array) {
         $conditions = array();
+        $conf = Configure::read("institution_type_search_disp");
         foreach ($array as $val) {
-            if (!empty($val)) {
-                $conditions[] = "FIND_IN_SET('$val', Office.institution_type)";
+            if (isset($conf[$val])) {
+                foreach ($conf[$val]['search_key'] as $v){
+                    $conditions[] = "FIND_IN_SET('$v', Office.institution_type)";
+                }
             }
         }
         return !empty($conditions) ? array(array('OR' => $conditions)) : array();
     }
     private function getConditionLicense($array) {
         $conditions = array();
+        $conf = Configure::read("application_license_search_disp");
         foreach ($array as $val) {
-            if (!empty($val)) {
-                $conditions[] = "FIND_IN_SET('$val', RecruitSheet.application_license)";
+            if (isset($conf[$val])) {
+                foreach ($conf[$val]['search_key'] as $v){
+                    $conditions[] = "FIND_IN_SET('$v', RecruitSheet.application_license)";
+                }
             }
         }
         return !empty($conditions) ? array(array('OR' => $conditions)) : array();
     }
     private function getConditionEmploymentType($array) {
         $conditions = array();
+        $conf = Configure::read("employment_type_search_disp");
         foreach ($array as $val) {
-            if (!empty($val)) {
-                $conditions[] = "FIND_IN_SET('$val', RecruitSheet.employment_type)";
+            if (isset($conf[$val])) {
+                foreach ($conf[$val]['search_key'] as $v){
+                    $conditions[] = "FIND_IN_SET('$v', RecruitSheet.employment_type)";
+                }
             }
         }
         return !empty($conditions) ? array(array('OR' => $conditions)) : array();
@@ -623,9 +642,9 @@ class SearchController extends AppController {
         }
         $validateTable = array(
             'occupation' => Configure::read("occupation"),
-            'institution_type' => Configure::read("institution_type"),
-            'application_license' => Configure::read("application_license"),
-            'employment_type' => Configure::read("employment_type"),
+            'institution_type' => Configure::read("institution_type_search_disp"),
+            'application_license' => Configure::read("application_license_search_disp"),
+            'employment_type' => Configure::read("employment_type_search_disp"),
             'recruit_flex_type' => Configure::read("recruit_flex_type"),
             'particular_ttl_hour' => Configure::read("particular_ttl_hour"),
             'freeword' => 'text',
