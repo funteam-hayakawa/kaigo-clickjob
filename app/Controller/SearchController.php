@@ -158,7 +158,8 @@ class SearchController extends AppController {
         $this->RecruitSheet->Office->hasMany['RecruitSheet']['conditions'] = array();
         if (empty($r)){
             throw new NotFoundException();
-        }        
+        }
+        $r['RecruitSheet']['recruit_flex_type_label'] = $this->formatRecruitFlexTypeLabel(explode(',', $r['RecruitSheet']['recruit_flex_type']));
         $this->setCommonConfig();
         
         $cond = $this->getConditionsFromRecruitSheet($r);
@@ -623,7 +624,23 @@ class SearchController extends AppController {
         }
         return !empty($returnCond) ? $returnCond : array();
     }
-    
+    private function formatRecruitFlexTypeLabel($flexTypeArray){
+        $conf = Configure::read("recruit_flex_type_label");
+        $idxArray = array();
+        $ret = array();
+        foreach ($flexTypeArray as $f){
+            $idxArray[$f] = 1;
+        }
+        foreach ($conf as $i=>$c){
+            if (!isset($ret[$c['type']])){
+                $ret[$c['type']] = array();
+            }
+            if (isset($idxArray[$i])){
+                $ret[$c['type']][] = $c['text'];
+            }
+        }
+        return $ret;
+    }
     /* こだわり条件URL情報コンフィグロード、整形 */
     private function getCommitmentConf(){
         /* こだわり条件のURLと検索条件のセット */

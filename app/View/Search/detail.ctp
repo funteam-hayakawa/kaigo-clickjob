@@ -298,6 +298,18 @@ echo $this->element('header');
         <td>備考</td>
         <td><?php echo $recruitSheet['RecruitSheet']['notes']?></td>
     </tr>
+    <tr>
+        <td>ラベル</td>
+        <td><?php 
+          foreach ($recruitSheet['RecruitSheet']['recruit_flex_type_label'] as $k => $label){
+              echo $k.'<br>';
+              foreach ($label as $l){
+                  echo '&nbsp&nbsp&nbsp&nbsp'.$l.'<br>';
+              }
+          }
+        ?>
+      </td>
+    </tr>
 </table>
 <hr>
 <table>
