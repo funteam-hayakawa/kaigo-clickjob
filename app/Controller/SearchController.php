@@ -117,7 +117,7 @@ class SearchController extends AppController {
             $this->set('cityArray', $this->cityOptions($searchCond['prefecture']));
         }
         if (!$commitmentCondFlg){
-            $this->set('commitmentTextConf', $this->getCommitmentTextConf());
+            $this->set('commitmentTextConf', $this->getCommitmentConf());
         }
         if (isset($searchCond['prefecture'])){
             $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
@@ -158,7 +158,8 @@ class SearchController extends AppController {
         $this->RecruitSheet->Office->hasMany['RecruitSheet']['conditions'] = array();
         if (empty($r)){
             throw new NotFoundException();
-        }        
+        }
+        $r['RecruitSheet']['recruit_flex_type_label'] = $this->formatRecruitFlexTypeLabel(explode(',', $r['RecruitSheet']['recruit_flex_type']));
         $this->setCommonConfig();
         
         $cond = $this->getConditionsFromRecruitSheet($r);
@@ -264,9 +265,9 @@ class SearchController extends AppController {
         $this->set('occupation', Configure::read("occupation"));
         $this->set('institution_type', Configure::read("institution_type"));
         $this->set('application_license', Configure::read("application_license"));
-        $this->set('employment_type_search_disp', $this->dispArrayExtract(Configure::read("employment_type_search_disp")));
-        $this->set('institution_type_search_disp', $this->dispArrayExtract(Configure::read("institution_type_search_disp")));
-        $this->set('application_license_search_disp', $this->dispArrayExtract(Configure::read("application_license_search_disp")));
+        $this->set('employment_type_search_disp', $this->extractDispArray(Configure::read("employment_type_search_disp")));
+        $this->set('institution_type_search_disp', $this->extractDispArray(Configure::read("institution_type_search_disp")));
+        $this->set('application_license_search_disp', $this->extractDispArray(Configure::read("application_license_search_disp")));
         $this->set('employment_type', Configure::read("employment_type"));
         $this->set('access_type', Configure::read("access_type"));
         $this->set('recruit_flex_type', Configure::read("recruit_flex_type"));
@@ -280,7 +281,7 @@ class SearchController extends AppController {
         $this->set('reemployment', Configure::read("reemployment"));
         $this->set('retirement_pay', Configure::read("retirement_pay"));
     }
-    private function dispArrayExtract($array){
+    private function extractDispArray($array){
         $r = array();
         foreach ($array as $k => $d){
             $r[$k] = $d['text'];
@@ -594,12 +595,12 @@ class SearchController extends AppController {
             'RecruitSheet.salary',
         );
         $freewordSearchOptionTable = array(
-            'RecruitSheet.occupation' => Configure::read("occupation"),
-            'Office.institution_type' => Configure::read("institution_type"),
-            'RecruitSheet.application_license' => Configure::read("application_license"),
-            'RecruitSheet.employment_type' => Configure::read("employment_type"),
-            'RecruitSheet.recruit_flex_type' => Configure::read("recruit_flex_type"),
-            'OfficeStation.access_type' => Configure::read("access_type"),
+            'RecruitSheet.occupation' => array('type' => 'val' , 'conf' => Configure::read("occupation")),
+            'Office.institution_type' => array('type' => 'set' , 'conf' => Configure::read("institution_type")),
+            'RecruitSheet.application_license' => array('type' => 'set' , 'conf' => Configure::read("application_license")),
+            'RecruitSheet.employment_type' => array('type' => 'val' , 'conf' => Configure::read("employment_type")),
+            'RecruitSheet.recruit_flex_type' => array('type' => 'set' , 'conf' => Configure::read("recruit_flex_type_for_freeword")),
+            'OfficeStation.access_type' => array('type' => 'val' , 'conf' => Configure::read("access_type")),
         );
         $returnCond = array();
         foreach ($words as $w){
@@ -608,9 +609,14 @@ class SearchController extends AppController {
                 $conditions[] = array("$f LIKE" => '%'.$w.'%');
             }
             foreach ($freewordSearchOptionTable as $key => $opt){
-                foreach ($opt as $val => $str){
+                foreach ($opt['conf'] as $val => $str){
                     if (mb_strpos($str, $w) !== FALSE){
-                        $conditions[] = array("$key" => $val);
+                        if ($opt['type'] == 'val'){
+                            $conditions[] = array("$key" => $val);
+                        }
+                        if ($opt['type'] == 'set'){
+                            $conditions[] = "FIND_IN_SET('$val', $key)";
+                        }
                     }
                 }
             }
@@ -618,9 +624,25 @@ class SearchController extends AppController {
         }
         return !empty($returnCond) ? $returnCond : array();
     }
-    
+    private function formatRecruitFlexTypeLabel($flexTypeArray){
+        $conf = Configure::read("recruit_flex_type_label");
+        $idxArray = array();
+        $ret = array();
+        foreach ($flexTypeArray as $f){
+            $idxArray[$f] = 1;
+        }
+        foreach ($conf as $i=>$c){
+            if (!isset($ret[$c['type']])){
+                $ret[$c['type']] = array();
+            }
+            if (isset($idxArray[$i])){
+                $ret[$c['type']][] = $c['text'];
+            }
+        }
+        return $ret;
+    }
     /* こだわり条件URL情報コンフィグロード、整形 */
-    private function getCommitmentTextConf(){
+    private function getCommitmentConf(){
         /* こだわり条件のURLと検索条件のセット */
         $urlConf = Configure::read("searchURL");
         $commitmentText = Configure::read("commitment_text");

@@ -157,6 +157,50 @@ $config['recruit_flex_type'] = array(
   10 => '土日休み',
 );
 
+//flex_type freeword検索用
+$config['recruit_flex_type_for_freeword'] = array(
+  1  => '産休・育休',
+  2  => 'ブランクOK',
+  3  => '短時間勤務OK',
+  4  => '休み多め',
+  5  => '車通勤OK',
+  6  => '未経験OK',
+  7  => '給料多め',
+  8  => '無資格可',
+  9  => '寮あり',
+  10 => '土日休み',
+  11 => '外国籍可',
+  12 => '4月入社OK',
+  13 => '新卒OK',
+  14 => '正社員登用制度あり',
+  15 => '住宅手当あり',
+  16 => '賞与4か月以上',
+);
+/* DBのrecruit_flex_typeを表示する際のカテゴリ分けmap */
+$config['recruit_flex_type_label'] = array(
+  /* 給与 */
+  7  => array('type' => 'salary', 'text' => '給料多め'),
+  16 => array('type' => 'salary', 'text' => '賞与4か月以上'),  
+  15 => array('type' => 'salary', 'text' => '住宅手当あり'),
+  /* 応募条件 */
+  2  => array('type' => 'application_condition', 'text' => 'ブランクOK'),
+  3  => array('type' => 'application_condition', 'text' => '短時間勤務OK'),
+  6  => array('type' => 'application_condition', 'text' => '未経験OK'),
+  8  => array('type' => 'application_condition', 'text' => '無資格可'),
+  11 => array('type' => 'application_condition', 'text' => '外国籍可'),
+  13 => array('type' => 'application_condition', 'text' => '新卒OK'),
+  /* 入居可能住宅 */
+  9  => array('type' => 'available_house', 'text' => '寮あり'),
+  /* 休み */
+  1  => array('type' => 'vacation', 'text' => '産休・育休'),
+  4  => array('type' => 'vacation', 'text' => '休み多め'),
+  10 => array('type' => 'vacation', 'text' => '土日休み'),
+  /* 通勤 */
+  5  => array('type' => 'commuting', 'text' => '車通勤OK'),
+  /* 備考 */
+  14 => array('type' => 'remarks', 'text' => '正社員登用制度あり'),
+  12 => array('type' => 'remarks', 'text' => '4月入社OK'),
+);
 //働く時間から探す
 $config['particular_ttl_hour'] = array(
   1 => '残業月10時間以下',
@@ -288,23 +332,16 @@ $config['commutation'] = array(
   3 => '全額支給',
 );
 
-//LP 保有資格
-/*
-$config['kaigo_sikaku'] = array(
-  7  => '初任者研修/ヘルパー2級',
-  6  => '実務者研修/ヘルパー1級',
-  8  => '介護職員基礎研修',
-  9  => '介護福祉士',
-  10 => '社会福祉士',
-  5  => 'ケアマネジャー',
-  12 => 'PT',
-  13 => 'OT',
-  99 => 'その他・なし',
-);
-*/
-
 $config['column_category'] = array(
   1 => array('url' => 'news', 'name' => 'ニュース'),
   2 => array('url' => 'column', 'name' => 'コラム'),
   3 => array('url' => 'knowledge', 'name' => '知識'),
+);
+
+$config['inquiry_type'] = array(
+  1 => '求人に応募したい',
+  2 => '求人の募集情報について確認したい',
+  3 => '求人の詳細について詳しく聞きたい',
+  4 => '職場の内部情報について事前に知りたい',
+  5 => '条件の調整・交渉について相談したい',
 );

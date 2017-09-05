@@ -16,6 +16,10 @@ Router::connect('/detail/:id',
   array('controller' => 'search', 'action' => 'detail'),
   array('pass' => array('id'), 'id' => '[0-9]+')
 );
+Router::connect('/inquiry/:id', 
+  array('controller' => 'inquiry', 'action' => 'index'),
+  array('pass' => array('id'), 'id' => '[0-9]+')
+);
 
 Router::connect('/member/favorite', array('controller' => 'member', 'action' => 'memberFavorite'));
 Router::connect('/member/history', array('controller' => 'member', 'action' => 'memberHistory'));

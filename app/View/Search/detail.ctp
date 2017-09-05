@@ -68,6 +68,7 @@ echo $this->element('header');
 
 
 <h1>施設情報</h1>
+<?php echo $this->Html->link('この求人に問い合わせる', '/inquiry/'.$recruitSheet['RecruitSheet']['recruit_sheet_id']); ?>
 <table>
     <tr>
         <th>要素</th>
@@ -297,6 +298,18 @@ echo $this->element('header');
     <tr>
         <td>備考</td>
         <td><?php echo $recruitSheet['RecruitSheet']['notes']?></td>
+    </tr>
+    <tr>
+        <td>ラベル</td>
+        <td><?php 
+          foreach ($recruitSheet['RecruitSheet']['recruit_flex_type_label'] as $k => $label){
+              echo $k.'<br>';
+              foreach ($label as $l){
+                  echo '&nbsp&nbsp&nbsp&nbsp'.$l.'<br>';
+              }
+          }
+        ?>
+      </td>
     </tr>
 </table>
 <hr>
