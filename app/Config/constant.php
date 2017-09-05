@@ -157,6 +157,26 @@ $config['recruit_flex_type'] = array(
   10 => '土日休み',
 );
 
+//flex_type freeword検索用
+$config['recruit_flex_type_for_freeword'] = array(
+  1  => '産休・育休',
+  2  => 'ブランクOK',
+  3  => '短時間勤務OK',
+  4  => '休み多め',
+  5  => '車通勤OK',
+  6  => '未経験OK',
+  7  => '給料多め',
+  8  => '無資格可',
+  9  => '寮あり',
+  10 => '土日休み',
+  11 => '外国籍可',
+  12 => '4月入社OK',
+  13 => '新卒OK',
+  14 => '正社員登用制度あり',
+  15 => '住宅手当あり',
+  16 => '賞与4か月以上',
+);
+
 //働く時間から探す
 $config['particular_ttl_hour'] = array(
   1 => '残業月10時間以下',
@@ -228,6 +248,27 @@ $config['searchURL'] = array(
   'zangyotenhrsless'      => array('type' => 'particular_ttl_hour', 'text' => '残業月10時間以下',          'search_key' => array(1)),
   'onlynikkin'            => array('type' => 'particular_ttl_hour', 'text' => '日勤のみ',                 'search_key' => array(2)),
   'onlyyakin'             => array('type' => 'particular_ttl_hour', 'text' => '夜勤のみ',                 'search_key' => array(3)),
+);
+
+
+
+$config['recruit_flex_type_label'] = array(
+  '1'  => array('type' => '', 'index' => 1, 'text' => '産休・育休'),
+  '2'  => array('type' => '', 'index' => 2, 'text' => 'ブランクOK'),
+  '3'  => array('type' => '', 'index' => 3, 'text' => '短時間勤務OK'),
+  '4'  => array('type' => '', 'index' => 1, 'text' => '休み多め'),
+  '5'  => array('type' => '', 'index' => 1, 'text' => '車通勤OK'),
+  '6'  => array('type' => '', 'index' => 1, 'text' => '未経験OK'),
+  '7'  => array('type' => '', 'index' => 1, 'text' => '給料多め'),
+  '8'  => array('type' => '', 'index' => 1, 'text' => '無資格可'),
+  '9'  => array('type' => '', 'index' => 1, 'text' => '寮あり'),
+  '10' => array('type' => '', 'index' => 1, 'text' => '土日休み'),
+  '11' => array('type' => '', 'index' => 1, 'text' => '外国籍可'),
+  '12' => array('type' => '', 'index' => 1, 'text' => '4月入社OK'),
+  '13' => array('type' => '', 'index' => 1, 'text' => '新卒OK'),
+  '14' => array('type' => '', 'index' => 1, 'text' => '正社員登用制度あり'),
+  '15' => array('type' => '', 'index' => 1, 'text' => '住宅手当あり'),
+  '16' => array('type' => '', 'index' => 1, 'text' => '賞与4か月以上'),  
 );
 
 //アクセス方法
