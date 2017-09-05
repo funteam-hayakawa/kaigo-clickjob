@@ -337,3 +337,11 @@ $config['column_category'] = array(
   2 => array('url' => 'column', 'name' => 'コラム'),
   3 => array('url' => 'knowledge', 'name' => '知識'),
 );
+
+$config['inquiry_type'] = array(
+  1 => '求人に応募したい',
+  2 => '求人の募集情報について確認したい',
+  3 => '求人の詳細について詳しく聞きたい',
+  4 => '職場の内部情報について事前に知りたい',
+  5 => '条件の調整・交渉について相談したい',
+);

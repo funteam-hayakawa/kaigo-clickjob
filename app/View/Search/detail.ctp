@@ -68,6 +68,7 @@ echo $this->element('header');
 
 
 <h1>施設情報</h1>
+<?php echo $this->Html->link('この求人に問い合わせる', '/inquiry/'.$recruitSheet['RecruitSheet']['recruit_sheet_id']); ?>
 <table>
     <tr>
         <th>要素</th>
