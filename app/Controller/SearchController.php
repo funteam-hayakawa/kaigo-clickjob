@@ -147,6 +147,66 @@ class SearchController extends AppController {
         }
         $this->render("area_result");
     }
+    public function feature_idx(){
+        $this->set('commitmentTextConf', $this->getCommitmentConf());
+        $this->render("feature_index");
+    }
+    public function feature($fearure){
+        $searchCond = array();
+
+        /* こだわり条件関係 */
+        $urlConf = Configure::read("searchURL");
+        if (isset($urlConf[$fearure])){
+            $searchCond[$urlConf[$fearure]['type']] = $urlConf[$fearure]['search_key'];
+            $this->request->data['Search'][$urlConf[$fearure]['type']] = $urlConf[$fearure]['code'];
+        } else {
+            throw new NotFoundException();
+        }
+        /*
+        $seoCond = array(
+            'prefecture_code' => $prefId, 
+            'state_code' => $stateCode, 
+            'city_code' => $cityCode, 
+            'occupation_id' => '0',
+            'institution_id' => '0',
+            'license_id' => '0',
+            'employment_id' => '0',
+            'del_flg' => 0, 
+        );
+        $seoHeaderText = $this->SeoHeaderText->find('first', array('conditions' => $seoCond));
+        $seoFooterText = $this->SeoFooterText->find('all', array('conditions' => $seoCond, 'order' => 'sort_order', 'limit' => 4));
+        if (empty($seoHeaderText)){
+            $seoCond['SeoHeaderText.city_code'] = '0';
+            $seoHeaderText = $this->SeoHeaderText->find('first', array('conditions' => $seoCond));
+            $seoFooterText = $this->SeoFooterText->find('all', array('conditions' => $seoCond, 'order' => 'sort_order', 'limit' => 4));
+        }
+        if (empty($seoHeaderText)){
+            $seoCond['SeoHeaderText.state_code'] = '0';
+            $seoHeaderText = $this->SeoHeaderText->find('first', array('conditions' => $seoCond));
+            $seoFooterText = $this->SeoFooterText->find('all', array('conditions' => $seoCond, 'order' => 'sort_order', 'limit' => 4));
+        }
+        */
+        /* ページングもこの関数内でやってる */
+        $officeSearchResult = $this->searchOfficeByCond($searchCond);
+        
+        $this->setCommonConfig();
+        $this->set('officeSearchResult',$officeSearchResult);
+        //$this->set('seoHeaderText',$seoHeaderText);
+        //$this->set('seoFooterText',$seoFooterText);
+        
+        if (empty($officeSearchResult)){
+            $resemblesOffice = $this->searchResemblesOfficeByCond($searchCond);
+            $this->set('prefectures',$this->Prefecture->find('list', array(
+              'recursive' => -1,
+              'fields' => array('name')
+            )));
+            $this->set('resemblesOffice',$resemblesOffice);
+            $this->render("no_result");
+            return;
+        }
+        $this->render("feature_result");
+    }
+    
     public function detail($id){
         $this->RecruitSheet->Office->hasMany['RecruitSheet']['conditions'] = $this->commonSearchConditios['recruitSheet'];
         $r = $this->RecruitSheet->find('first', array(
@@ -696,7 +756,7 @@ class SearchController extends AppController {
             if (!isset($conf[$cond['type']])){
                 $conf[$cond['type']] = array('name' => $commitmentText[$cond['type']], 'list' => array());
             }
-            $conf[$cond['type']]['list'][] = array('url' => $url, 'text' => $cond['text']);
+            $conf[$cond['type']]['list'][] = array('code' => $cond['code'], 'url' => $url, 'text' => $cond['text']);
         }
         return $conf;
     }
