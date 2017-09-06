@@ -94,12 +94,12 @@ class SearchController extends AppController {
         $seoHeaderText = $this->SeoHeaderText->find('first', array('conditions' => $seoCond));
         $seoFooterText = $this->SeoFooterText->find('all', array('conditions' => $seoCond, 'order' => 'sort_order', 'limit' => 4));
         if (empty($seoHeaderText)){
-            $seoCond['SeoHeaderText.city_code'] = '0';
+            $seoCond['city_code'] = '0';
             $seoHeaderText = $this->SeoHeaderText->find('first', array('conditions' => $seoCond));
             $seoFooterText = $this->SeoFooterText->find('all', array('conditions' => $seoCond, 'order' => 'sort_order', 'limit' => 4));
         }
         if (empty($seoHeaderText)){
-            $seoCond['SeoHeaderText.state_code'] = '0';
+            $seoCond['state_code'] = '0';
             $seoHeaderText = $this->SeoHeaderText->find('first', array('conditions' => $seoCond));
             $seoFooterText = $this->SeoFooterText->find('all', array('conditions' => $seoCond, 'order' => 'sort_order', 'limit' => 4));
         }
