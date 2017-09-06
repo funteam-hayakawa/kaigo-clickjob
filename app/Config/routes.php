@@ -11,6 +11,10 @@ Router::connect('/', array('controller' => 'pages', 'action' => 'display'));
 Router::connect('/area', array('controller' => 'search', 'action' => 'area_idx'));
 Router::connect('/area/*', array('controller' => 'search', 'action' => 'area'));
 
+Router::connect('/feature', array('controller' => 'search', 'action' => 'feature_idx'));
+Router::connect('/feature/*', array('controller' => 'search', 'action' => 'feature'));
+
+
 Router::connect('/search/*', array('controller' => 'search', 'action' => 'result'));
 Router::connect('/detail/:id', 
   array('controller' => 'search', 'action' => 'detail'),
