@@ -1,0 +1,3585 @@
+@charset "UTF-8";
+/* ========== import ========== */
+/* =============================================================================
+  @mixin  
+   ========================================================================== */
+/*common*/
+/**/
+/*btn_color*/
+/* ========== 共通 ========== */
+@font-face {
+  font-family: "NotoSansCJKS";
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/NotoSansCJKjp-DemiLight_subset.eot?#iefix") format("embedded-opentype"), url("../fonts/NotoSansCJKjp-DemiLight_subset.otf") format("opentype"), url("../fonts/NotoSansCJKjp-DemiLight_subset.woff") format("woff"), url("../fonts/NotoSansCJKjp-DemiLight_subset.eot") format("embedded-opentype"); }
+@font-face {
+  font-family: "NotoSansCJKS";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/NotoSansCJKjp-Regular_subset.eot?#iefix") format("embedded-opentype"), url("../fonts/NotoSansCJKjp-Regular_subset.otf") format("opentype"), url("../fonts/NotoSansCJKjp-Regular_subset.woff") format("woff"), url("../fonts/NotoSansCJKjp-Regular_subset.eot") format("embedded-opentype"); }
+@font-face {
+  font-family: "NotoSansCJKS";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/NotoSansCJKjp-Bold_subset.eot?#iefix") format("embedded-opentype"), url("../fonts/NotoSansCJKjp-Bold_subset.otf") format("opentype"), url("../fonts/NotoSansCJKjp-Bold_subset.woff") format("woff"), url("../fonts/NotoSansCJKjp-Bold_subset.eot") format("embedded-opentype"); }
+body {
+  font-family: "Roboto", "NotoSansCJKS", "Noto Sans JP","ＭＳ Ｐゴシック";
+  font-weight: 300;
+  font-size: 14px; }
+
+a {
+  color: #53bfe2; }
+  a:hover {
+    text-decoration: none;
+    opacity: 0.6; }
+  a:focus {
+    text-decoration: none; }
+
+input:hover {
+  opacity: 0.8; }
+
+h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold; }
+  h2 .power-reverse {
+    color: white;
+    background-color: #ff636b;
+    border-radius: 8px;
+    display: inline-block;
+    padding: 4px;
+    height: 28px;
+    font-size: 18px; }
+
+.power {
+  color: #ff636b; }
+
+.power-reverse {
+  color: white;
+  background-color: #ff636b;
+  border-radius: 4px;
+  display: inline-block; }
+
+.padding-10 {
+  width: 100%;
+  padding-top: 10px; }
+
+.padding-20 {
+  width: 100%;
+  padding-top: 20px; }
+
+.padding-30 {
+  width: 100%;
+  padding-top: 30px; }
+
+.caret-right {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+  border-left: 5px solid;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent; }
+
+.clearfix {
+  clear: both; }
+
+.border {
+  width: 100%;
+  border-top: 1px solid #e0e0e0; }
+
+/* ========== ヘッダー ========== */
+.header {
+  margin-top: 20px; }
+  .header .header-1 {
+    width: 980px;
+    height: 54px;
+    text-align: center;
+    margin: 0 auto;
+    position: relative; }
+    .header .header-1 .item-logo {
+      display: inline-block;
+      height: 40px;
+      position: absolute;
+      top: 0px;
+      left: 0px; }
+    .header .header-1 .item-logo2 {
+      height: 70px;
+      position: relative;
+      margin-bottom: 10px;
+      top: -10px; }
+    .header .header-1 .item-1 {
+      display: inline-block;
+      height: 40px;
+      position: absolute;
+      top: 10px;
+      left: 265px; }
+      .header .header-1 .item-1 a {
+        color: #333333; }
+        .header .header-1 .item-1 a img {
+          /*vertical-align: baseline;*/
+          margin-bottom: 5px; }
+        .header .header-1 .item-1 a span {
+          margin-left: 2px; }
+    .header .header-1 .item-2 {
+      display: inline-block;
+      height: 40px;
+      position: absolute;
+      top: 10px;
+      left: 399px; }
+      .header .header-1 .item-2 a {
+        color: #333333; }
+        .header .header-1 .item-2 a img {
+          /*vertical-align: baseline;*/
+          margin-bottom: 5px; }
+        .header .header-1 .item-2 a span {
+          margin-left: 2px; }
+    .header .header-1 .item-3 {
+      display: inline-block;
+      height: 40px;
+      position: absolute;
+      top: 12px;
+      left: 491px; }
+      .header .header-1 .item-3 a span {
+        margin-left: 0px;
+        font-size: 14px; }
+    .header .header-1 .item-4 {
+      display: inline-block;
+      height: 40px;
+      position: absolute;
+      top: 12px;
+      left: 600px; }
+      .header .header-1 .item-4 a span {
+        margin-left: 0px;
+        font-size: 14px; }
+    .header .header-1 .item-tel {
+      display: inline-block;
+      height: 40px;
+      position: absolute;
+      top: -2px;
+      left: 767px; }
+  .header .header-2 {
+    width: 100%;
+    border-top: 1px #ecece5 solid; }
+    .header .header-2 .items {
+      width: 980px;
+      height: 40px;
+      margin: 0 auto; }
+      .header .header-2 .items .item-1 {
+        display: block;
+        float: left;
+        color: #333333;
+        font-size: 14px;
+        font-weight: nomal;
+        height: 42px;
+        border-right: 1px #ecece5 solid;
+        padding-top: 9px;
+        padding-left: 50px;
+        padding-right: 38px;
+        border-left: 1px #ecece5 solid; }
+        .header .header-2 .items .item-1:hover {
+          background-color: #96c6eb; }
+      .header .header-2 .items .item-2 {
+        display: block;
+        float: left;
+        color: #333333;
+        font-size: 14px;
+        font-weight: nomal;
+        height: 42px;
+        border-right: 1px #ecece5 solid;
+        padding-top: 9px;
+        padding-left: 47px;
+        padding-right: 42px; }
+        .header .header-2 .items .item-2:hover {
+          background-color: #96c6eb; }
+      .header .header-2 .items .item-3 {
+        display: block;
+        float: left;
+        color: #333333;
+        font-size: 14px;
+        font-weight: nomal;
+        height: 42px;
+        border-right: 1px #ecece5 solid;
+        padding-top: 9px;
+        padding-left: 44px;
+        padding-right: 46px; }
+        .header .header-2 .items .item-3:hover {
+          background-color: #96c6eb; }
+      .header .header-2 .items .item-4 {
+        display: block;
+        float: left;
+        color: #333333;
+        font-size: 14px;
+        font-weight: nomal;
+        height: 42px;
+        border-right: 1px #ecece5 solid;
+        padding-top: 9px;
+        padding-left: 50px;
+        padding-right: 36px; }
+        .header .header-2 .items .item-4:hover {
+          background-color: #96c6eb; }
+      .header .header-2 .items .item-5 {
+        display: block;
+        float: left;
+        color: #333333;
+        font-size: 14px;
+        font-weight: nomal;
+        height: 42px;
+        border-right: 1px #ecece5 solid;
+        padding-top: 9px;
+        padding-left: 34px;
+        padding-right: 34px;
+        padding-top: 6px; }
+        .header .header-2 .items .item-5:hover {
+          background-color: #96c6eb; }
+        .header .header-2 .items .item-5 .power {
+          display: inline-block;
+          color: white;
+          background-color: #ff636b;
+          padding: 3px 4px;
+          margin-left: 5px;
+          width: 50px;
+          text-align: center; }
+  .header .h-regist {
+    height: 60px; }
+
+/* ========== コンテンツ ========== */
+.wrap {
+  width: 980px;
+  overflow: hidden;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto; }
+  .wrap .main {
+    float: left;
+    width: 680px; }
+  .wrap .side {
+    float: left;
+    width: 270px;
+    padding-left: 30px; }
+
+/* ========== サイドバー ========== */
+.side .border-left {
+  border-left: 3px black solid;
+  height: 19px;
+  padding-left: 6px;
+  white-space: nowrap;
+  margin-left: 3px; }
+  .side .border-left .power-reverse {
+    border-radius: 0;
+    margin-left: 3px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: bold; }
+.side .description {
+  font-size: 12px;
+  margin-top: 4px; }
+  .side .description span {
+    margin-left: 4px; }
+.side .side-tel {
+  margin-top: 14px; }
+  .side .side-tel img {
+    width: 205px; }
+.side .bt-01 {
+  margin-top: 4px; }
+  .side .bt-01 img {
+    width: 270px; }
+.side .update {
+  border: 2px #ff636b solid;
+  width: 270px;
+  height: 136px;
+  margin-top: 2px; }
+  .side .update .update-head {
+    background-color: #ff636b;
+    color: white;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    padding: 10px; }
+  .side .update .update-body {
+    margin: auto;
+    padding-top: 14px; }
+    .side .update .update-body .key {
+      display: inline-block;
+      width: 130px;
+      text-align: right;
+      font-weight: bold;
+      font-size: 10px;
+      margin-left: -6px; }
+    .side .update .update-body .value {
+      display: inline-block;
+      width: 110px;
+      margin-left: 5px;
+      text-align: left; }
+      .side .update .update-body .value .power {
+        font-weight: bold;
+        font-size: 20px;
+        margin-right: 5px; }
+.side .attention {
+  width: 270px;
+  overflow: hidden;
+  margin-top: 2px; }
+  .side .attention .items {
+    margin-top: -6px; }
+    .side .attention .items .item {
+      float: left;
+      width: 130px;
+      margin-bottom: 8px; }
+      .side .attention .items .item:nth-child(odd) {
+        margin-right: 5px; }
+      .side .attention .items .item:nth-child(even) {
+        margin-left: 5px; }
+      .side .attention .items .item img {
+        width: 130px; }
+.side .contents-3 {
+  margin-top: 24px; }
+  .side .contents-3 .side-congratration {
+    margin-top: 8px; }
+.side .contents-4 {
+  margin-top: 4px; }
+  .side .contents-4 .side-offer {
+    width: 270px; }
+    .side .contents-4 .side-offer:nth-child(2) {
+      margin-top: -4px; }
+    .side .contents-4 .side-offer .item {
+      width: 270px;
+      margin-bottom: 10px;
+      display: inline-block; }
+      .side .contents-4 .side-offer .item:hover {
+        opacity: .6; }
+      .side .contents-4 .side-offer .item .image {
+        margin-left: 4px;
+        margin-top: -4px;
+        float: left;
+        width: 92px;
+        height: 72px;
+        position: relative;
+        border: 1px solid #ecece5; }
+        .side .contents-4 .side-offer .item .image img {
+          width: 90px;
+          height: 70px; }
+        .side .contents-4 .side-offer .item .image .rank {
+          position: absolute;
+          top: -10px;
+          left: -12px;
+          padding-top: 4px;
+          display: inline-block;
+          width: 25px;
+          height: 25px;
+          background-color: #ff636b;
+          color: white;
+          border-radius: 14px;
+          font-size: 12px;
+          text-align: center; }
+      .side .contents-4 .side-offer .item .description-1 {
+        float: left;
+        width: 170px;
+        margin-top: -6px;
+        padding-left: 8px; }
+        .side .contents-4 .side-offer .item .description-1 .name {
+          font-size: 12px;
+          font-weight: bold;
+          color: #333; }
+        .side .contents-4 .side-offer .item .description-1 .tag {
+          color: #ff636b;
+          border: 1px #ff636b solid;
+          display: inline-block;
+          padding: 2px;
+          font-size: 10px;
+          font-weight: bold;
+          text-align: center;
+          margin-top: 6px; }
+          .side .contents-4 .side-offer .item .description-1 .tag:nth-child(2) {
+            padding: 1px 10px; }
+          .side .contents-4 .side-offer .item .description-1 .tag:nth-child(3) {
+            padding: 1px 9px; }
+          .side .contents-4 .side-offer .item .description-1 .tag:nth-child(4) {
+            padding: 1px 7px;
+            margin-top: 2px; }
+      .side .contents-4 .side-offer .item .description-2 {
+        margin-top: 10px; }
+        .side .contents-4 .side-offer .item .description-2 .key {
+          display: inline-block;
+          font-size: 10px;
+          font-weight: bold;
+          text-align: center;
+          width: 70px;
+          margin-left: 3px;
+          margin-right: 4px;
+          background-color: #ecece5;
+          padding: 2px 0;
+          color: #333; }
+        .side .contents-4 .side-offer .item .description-2 .value {
+          display: inline-block;
+          width: 180px;
+          font-size: 10px;
+          color: #333; }
+.side .contents-5 .bn_kearabi {
+  margin-top: 2px; }
+.side .contents-5 .bn_faq {
+  margin-top: -4px; }
+.side .contents-6 {
+  margin-top: 4px; }
+  .side .contents-6 .contact .caption {
+    margin-top: -6px;
+    margin-left: 4px;
+    width: 270px;
+    font-size: 8px; }
+  .side .contents-6 form {
+    width: 270px; }
+    .side .contents-6 form textarea {
+      width: 100%; }
+      .side .contents-6 form textarea::-webkit-input-placeholder {
+        font-size: 12px;
+        padding: 8px; }
+
+/* ========== フッター ========== */
+.footer {
+  width: 100%;
+  background-color: #ecece5;
+  margin-top: -6px; }
+  .footer .menu {
+    width: 980px;
+    overflow: hidden;
+    margin: 0 auto;
+    font-size: 10px; }
+    .footer .menu .caret-right {
+      color: #53bfe2;
+      margin-left: 6px;
+      margin-right: 2px; }
+    .footer .menu a {
+      color: #333333; }
+      .footer .menu a .caret-right {
+        color: #53bfe2; }
+    .footer .menu ul {
+      -webkit-padding-start: 20px; }
+      .footer .menu ul li {
+        list-style: none;
+        margin-bottom: 8px; }
+        .footer .menu ul li ul {
+          padding-top: 8px; }
+          .footer .menu ul li ul li {
+            margin-left: -10px; }
+    .footer .menu .menu-1 {
+      float: left; }
+    .footer .menu .menu-2 {
+      float: left;
+      margin-left: -8px; }
+    .footer .menu .menu-3 {
+      float: left;
+      margin-left: -2px; }
+    .footer .menu .menu-4 {
+      float: left;
+      margin-left: 12px; }
+    .footer .menu .menu-5 {
+      float: left;
+      margin-left: 98px; }
+      .footer .menu .menu-5 ul {
+        margin-left: -24px;
+        margin-top: -4px; }
+    .footer .menu .small {
+      padding-left: 10px;
+      font-size: 8px; }
+  .footer .copyright {
+    background-color: white;
+    height: 30px;
+    font-size: 8px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center; }
+
+/*08/22CSS*/
+.header .header-1 .item-logo {
+  width: 242px; }
+  .header .header-1 .item-logo img {
+    width: 100%; }
+.header .header-1 .item-tel {
+  left: 760px;
+  width: 205px; }
+  .header .header-1 .item-tel img {
+    width: 100%; }
+.header .header-2 {
+  border-top: 1px #ecece5 solid;
+  border-bottom: 1px #ecece5 solid;
+  box-sizing: border-box;
+  overflow: hidden; }
+.header .bread_clumb {
+  width: 980px;
+  margin: 15px auto 0;
+  font-size: 10px; }
+
+/*footer new 08/22*/
+.footer .menu {
+  width: 980px;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  font-size: 10px;
+  text-align: center; }
+  .footer .menu div {
+    text-align: left;
+    margin: 2px;
+    min-width: 200px;
+    display: inline-block;
+    vertical-align: top; }
+.footer .menu_b {
+  width: 980px;
+  overflow: hidden;
+  margin: 0 auto;
+  font-size: 10px; }
+  .footer .menu_b .menu-5 img {
+    width: 200px;
+    margin-bottom: 7px;
+    display: inline-block;
+    margin-right: 20px;
+    position: relative;
+    top: -4px; }
+  .footer .menu_b .menu-5 div.small {
+    padding: 0px 0 2px 0;
+    margin-top: 0px;
+    font-size: 7px;
+    display: inline-block;
+    width: 300px;
+    vertical-align: top; }
+  .footer .menu_b .menu-5 ul {
+    display: inline-block;
+    width: 440px;
+    padding: 0; }
+    .footer .menu_b .menu-5 ul li {
+      display: inline-block;
+      width: 120px;
+      margin-left: 20px; }
+      .footer .menu_b .menu-5 ul li a {
+        color: #333; }
+        .footer .menu_b .menu-5 ul li a .caret-right {
+          color: #53bfe2;
+          margin-right: 5px; }
+
+/**/
+.pt0 {
+  padding-top: 0px !important; }
+
+.pt10 {
+  padding-top: 10px !important; }
+
+.pt20 {
+  padding-top: 20px !important; }
+
+.pt30 {
+  padding-top: 30px !important; }
+
+.pb10 {
+  padding-bottom: 10px !important; }
+
+.pb20 {
+  padding-bottom: 20px !important; }
+
+.pb30 {
+  padding-bottom: 30px !important; }
+
+.mt10 {
+  margin-top: 10px !important; }
+
+.mt20 {
+  margin-top: 20px !important; }
+
+.mt30 {
+  margin-top: 30px !important; }
+
+.mt40 {
+  margin-top: 40px !important; }
+
+.mt50 {
+  margin-top: 50px !important; }
+
+.mb10 {
+  margin-bottom: 10px !important; }
+
+.mb20 {
+  margin-bottom: 20px !important; }
+
+.mb30 {
+  margin-bottom: 30px !important; }
+
+.mb40 {
+  margin-bottom: 40px !important; }
+
+.mb50 {
+  margin-bottom: 50px !important; }
+
+.side_title_icon {
+  width: 20px;
+  vertical-align: top;
+  margin: 1px 5px 0 2px; }
+
+/* ========== コンテンツ ========== */
+.main {
+  /* ========== 「エリア」から介護求人を探す ========== */
+  /* ========== 「人気のエリア」から介護求人を探す ========== */
+  /* ========== エリアから探す ========== */
+  /* ========== 「こだわり条件」から介護求人を探す ========== */
+  /* ========== 「フリーワード」から介護求人を探す ========== */
+  /* ==========  クリックジョブ介護で自分にぴったりの職場探し ========== */
+  /* ========== 介護の転職支援サービスお申込み ========== */
+  /* ========== 介護の転職おすすめ情報 ========== */
+  /* ========== 人気の介護求人 ========== */
+  /* ========== クリックジョブ介護が選ばれる理由 ========== */
+  /**/ }
+  .main button:hover, .main input[type=submit]:hover {
+    text-decoration: none;
+    opacity: 0.6; }
+  .main .contents-1 h2 img {
+    margin-top: -8px;
+    margin-left: 2px; }
+  .main .contents-1 h2 .power {
+    display: inline-block;
+    margin-top: 11px;
+    margin-left: -2px; }
+  .main .contents-1 h2 .text {
+    display: inline-block;
+    margin-left: -11px; }
+  .main .contents-1 .search-map {
+    width: 680px;
+    border: 6px #ecece5 solid;
+    padding: 30px 20px;
+    margin-top: 10px;
+    position: relative;
+    font-size: 12px;
+    font-weight: bold;
+    height: 366px; }
+    .main .contents-1 .search-map img {
+      position: absolute;
+      top: 15px; }
+    .main .contents-1 .search-map a {
+      color: #333333; }
+      .main .contents-1 .search-map a .caret-right {
+        color: #53bfe2; }
+    .main .contents-1 .search-map .okayama {
+      position: absolute;
+      top: 50px;
+      left: 40px; }
+      .main .contents-1 .search-map .okayama .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .shimane {
+      position: absolute;
+      top: 70px;
+      left: 40px; }
+      .main .contents-1 .search-map .shimane .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .tokushima {
+      position: absolute;
+      top: 90px;
+      left: 40px; }
+      .main .contents-1 .search-map .tokushima .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .hiroshima {
+      position: absolute;
+      top: 110px;
+      left: 40px; }
+      .main .contents-1 .search-map .hiroshima .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .yamaguchi {
+      position: absolute;
+      top: 130px;
+      left: 40px; }
+      .main .contents-1 .search-map .yamaguchi .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .ehime {
+      position: absolute;
+      top: 50px;
+      left: 86px; }
+      .main .contents-1 .search-map .ehime .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .tottori {
+      position: absolute;
+      top: 70px;
+      left: 86px; }
+      .main .contents-1 .search-map .tottori .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .kagawa {
+      position: absolute;
+      top: 90px;
+      left: 86px; }
+      .main .contents-1 .search-map .kagawa .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .kouchi {
+      position: absolute;
+      top: 110px;
+      left: 86px; }
+      .main .contents-1 .search-map .kouchi .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .osaka {
+      position: absolute;
+      top: 50px;
+      left: 200px; }
+      .main .contents-1 .search-map .osaka .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .kyoto {
+      position: absolute;
+      top: 70px;
+      left: 200px; }
+      .main .contents-1 .search-map .kyoto .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .nara {
+      position: absolute;
+      top: 90px;
+      left: 200px; }
+      .main .contents-1 .search-map .nara .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .hyogo {
+      position: absolute;
+      top: 50px;
+      left: 247px; }
+      .main .contents-1 .search-map .hyogo .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .shiga {
+      position: absolute;
+      top: 70px;
+      left: 247px; }
+      .main .contents-1 .search-map .shiga .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .wakayama {
+      position: absolute;
+      top: 90px;
+      left: 247px; }
+      .main .contents-1 .search-map .wakayama .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .hokkaido {
+      position: absolute;
+      top: 50px;
+      left: 488px; }
+      .main .contents-1 .search-map .hokkaido .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .akita {
+      position: absolute;
+      top: 70px;
+      left: 488px; }
+      .main .contents-1 .search-map .akita .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .iwate {
+      position: absolute;
+      top: 90px;
+      left: 488px; }
+      .main .contents-1 .search-map .iwate .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .fukushima {
+      position: absolute;
+      top: 50px;
+      left: 545px; }
+      .main .contents-1 .search-map .fukushima .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .aomori {
+      position: absolute;
+      top: 70px;
+      left: 545px; }
+      .main .contents-1 .search-map .aomori .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .yamagata {
+      position: absolute;
+      top: 90px;
+      left: 545px; }
+      .main .contents-1 .search-map .yamagata .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .miyagi {
+      position: absolute;
+      top: 50px;
+      left: 602px;
+      left: 598px; }
+      .main .contents-1 .search-map .miyagi .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .nigata {
+      position: absolute;
+      top: 181px;
+      left: 489px; }
+      .main .contents-1 .search-map .nigata .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .ishikawa {
+      position: absolute;
+      top: 201px;
+      left: 489px; }
+      .main .contents-1 .search-map .ishikawa .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .yamanashi {
+      position: absolute;
+      top: 181px;
+      left: 542px; }
+      .main .contents-1 .search-map .yamanashi .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .yamanashi .text {
+        margin-left: 10px; }
+    .main .contents-1 .search-map .toyama {
+      position: absolute;
+      top: 201px;
+      left: 542px; }
+      .main .contents-1 .search-map .toyama .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .toyama .text {
+        margin-left: 10px; }
+    .main .contents-1 .search-map .nagano {
+      position: absolute;
+      top: 181px;
+      left: 595px;
+      left: 598px; }
+      .main .contents-1 .search-map .nagano .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .fukui {
+      position: absolute;
+      top: 201px;
+      left: 595px;
+      left: 598px; }
+      .main .contents-1 .search-map .fukui .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .tokyo {
+      position: absolute;
+      top: 286px;
+      left: 460px; }
+      .main .contents-1 .search-map .tokyo .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .tochigi {
+      position: absolute;
+      top: 306px;
+      left: 460px; }
+      .main .contents-1 .search-map .tochigi .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .kanagawa {
+      position: absolute;
+      top: 286px;
+      left: 508px; }
+      .main .contents-1 .search-map .kanagawa .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .kanagawa .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .ibaraki {
+      position: absolute;
+      top: 306px;
+      left: 508px; }
+      .main .contents-1 .search-map .ibaraki .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .ibaraki .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .saitama {
+      position: absolute;
+      top: 286px;
+      left: 556px;
+      left: 560px; }
+      .main .contents-1 .search-map .saitama .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .saitama .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .gunma {
+      position: absolute;
+      top: 306px;
+      left: 556px;
+      left: 560px; }
+      .main .contents-1 .search-map .gunma .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .gunma .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .chiba {
+      position: absolute;
+      top: 286px;
+      left: 604px;
+      left: 603px; }
+      .main .contents-1 .search-map .chiba .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .chiba .text {
+        margin-left: 3px; }
+    .main .contents-1 .search-map .aichi {
+      position: absolute;
+      top: 288px;
+      left: 294px; }
+      .main .contents-1 .search-map .aichi .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .gifu {
+      position: absolute;
+      top: 308px;
+      left: 294px; }
+      .main .contents-1 .search-map .gifu .text {
+        margin-left: 7px; }
+    .main .contents-1 .search-map .shizuoka {
+      position: absolute;
+      top: 288px;
+      left: 342px; }
+      .main .contents-1 .search-map .shizuoka .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .shizuoka .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .mie {
+      position: absolute;
+      top: 308px;
+      left: 342px; }
+      .main .contents-1 .search-map .mie .text {
+        margin-left: 7px; }
+      .main .contents-1 .search-map .mie .text {
+        margin-left: 5px; }
+    .main .contents-1 .search-map .fukuoka {
+      position: absolute;
+      top: 246px;
+      left: 38px; }
+      .main .contents-1 .search-map .fukuoka .text {
+        margin-left: 6px; }
+    .main .contents-1 .search-map .nagasaki {
+      position: absolute;
+      top: 266px;
+      left: 38px; }
+      .main .contents-1 .search-map .nagasaki .text {
+        margin-left: 6px; }
+    .main .contents-1 .search-map .oita {
+      position: absolute;
+      top: 286px;
+      left: 38px; }
+      .main .contents-1 .search-map .oita .text {
+        margin-left: 6px; }
+    .main .contents-1 .search-map .kagoshima {
+      position: absolute;
+      top: 306px;
+      left: 38px; }
+      .main .contents-1 .search-map .kagoshima .text {
+        margin-left: 6px; }
+    .main .contents-1 .search-map .saga {
+      position: absolute;
+      top: 246px;
+      left: 93px; }
+      .main .contents-1 .search-map .saga .text {
+        margin-left: 6px; }
+    .main .contents-1 .search-map .kumamoto {
+      position: absolute;
+      top: 266px;
+      left: 93px; }
+      .main .contents-1 .search-map .kumamoto .text {
+        margin-left: 6px; }
+    .main .contents-1 .search-map .miyazaki {
+      position: absolute;
+      top: 286px;
+      left: 93px; }
+      .main .contents-1 .search-map .miyazaki .text {
+        margin-left: 6px; }
+    .main .contents-1 .search-map .okinawa {
+      position: absolute;
+      top: 306px;
+      left: 93px; }
+      .main .contents-1 .search-map .okinawa .text {
+        margin-left: 6px; }
+  .main .contents-2 {
+    margin-top: 30px; }
+    .main .contents-2 h2 img {
+      margin-top: -5px;
+      margin-left: 2px; }
+    .main .contents-2 h2 .power {
+      display: inline-block;
+      margin-top: 12px;
+      margin-left: -2px; }
+    .main .contents-2 h2 .text {
+      display: inline-block;
+      margin-left: -11px; }
+    .main .contents-2 .search-area {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 30px 20px;
+      height: 180px;
+      font-size: 12px;
+      font-weight: bold; }
+      .main .contents-2 .search-area .area {
+        position: relative;
+        height: 32px; }
+        .main .contents-2 .search-area .area a .caret-right {
+          color: #ecece5; }
+        .main .contents-2 .search-area .area a:nth-child(1) {
+          position: absolute;
+          left: 5px; }
+        .main .contents-2 .search-area .area a:nth-child(2) {
+          position: absolute;
+          left: 91px; }
+        .main .contents-2 .search-area .area a:nth-child(3) {
+          position: absolute;
+          left: 164px; }
+        .main .contents-2 .search-area .area a:nth-child(4) {
+          position: absolute;
+          left: 235px; }
+        .main .contents-2 .search-area .area a:nth-child(5) {
+          position: absolute;
+          left: 306px; }
+        .main .contents-2 .search-area .area a:nth-child(6) {
+          position: absolute;
+          left: 379px; }
+        .main .contents-2 .search-area .area a:nth-child(7) {
+          position: absolute;
+          left: 450px; }
+        .main .contents-2 .search-area .area a:nth-child(8) {
+          position: absolute;
+          left: 522px; }
+  .main .search-area-wrap {
+    margin-top: 30px; }
+    .main .search-area-wrap .search-area {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 30px 20px;
+      padding-right: 0;
+      height: auto;
+      font-size: 12px;
+      font-weight: bold; }
+      .main .search-area-wrap .search-area .area {
+        position: relative;
+        margin-bottom: 2.0rem; }
+        .main .search-area-wrap .search-area .area p {
+          font-size: 14px;
+          font-weight: bold;
+          line-height: 1rem; }
+        .main .search-area-wrap .search-area .area a {
+          line-height: 2rem;
+          min-width: 40px;
+          margin: 0 20px 0 0;
+          text-indent: 6px;
+          display: inline-block; }
+          .main .search-area-wrap .search-area .area a .caret-right {
+            color: #ccc;
+            position: relative;
+            top: -2px;
+            left: -4px; }
+  .main .kodawari {
+    margin-top: 0px; }
+    .main .kodawari .border {
+      border-top: 1px dotted #e0e0e0; }
+    .main .kodawari h2 {
+      margin-bottom: 10px; }
+      .main .kodawari h2 img {
+        margin-top: -9px;
+        margin-left: 4px; }
+      .main .kodawari h2 .power {
+        display: inline-block;
+        margin-top: 11px;
+        margin-left: -2px; }
+      .main .kodawari h2 .text {
+        display: inline-block;
+        margin-left: -13px; }
+    .main .kodawari .search-conditions {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 30px 20px;
+      padding: 30px 20px 0; }
+      .main .kodawari .search-conditions .border {
+        margin-top: 8px;
+        margin-bottom: 18px; }
+      .main .kodawari .search-conditions .question-1 .key {
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+        width: 100px;
+        position: relative;
+        height: 90px; }
+        .main .kodawari .search-conditions .question-1 .key span {
+          line-height: 90px; }
+      .main .kodawari .search-conditions .question-1 .value {
+        float: left;
+        width: 500px; }
+        .main .kodawari .search-conditions .question-1 .value .items {
+          margin-top: 0px;
+          margin-left: -8px;
+          margin-bottom: 4px;
+          font-size: 12px;
+          position: relative;
+          height: 20px; }
+          .main .kodawari .search-conditions .question-1 .value .items label {
+            font-weight: normal !important; }
+          .main .kodawari .search-conditions .question-1 .value .items label:nth-child(1) {
+            position: absolute; }
+          .main .kodawari .search-conditions .question-1 .value .items label:nth-child(2) {
+            position: absolute;
+            left: 162px; }
+          .main .kodawari .search-conditions .question-1 .value .items label:nth-child(3) {
+            position: absolute;
+            left: 344px; }
+          .main .kodawari .search-conditions .question-1 .value .items label:nth-child(4) {
+            position: absolute;
+            left: 475px; }
+      .main .kodawari .search-conditions .question-2 .key {
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+        width: 100px;
+        position: relative;
+        height: 112px; }
+        .main .kodawari .search-conditions .question-2 .key span {
+          line-height: 112px; }
+      .main .kodawari .search-conditions .question-2 .value {
+        float: left;
+        width: 500px; }
+        .main .kodawari .search-conditions .question-2 .value .items {
+          margin-top: 0px;
+          margin-left: -8px;
+          margin-bottom: 4px;
+          font-size: 12px;
+          position: relative;
+          height: 20px; }
+          .main .kodawari .search-conditions .question-2 .value .items label {
+            font-weight: normal !important; }
+          .main .kodawari .search-conditions .question-2 .value .items label:nth-child(1) {
+            position: absolute; }
+          .main .kodawari .search-conditions .question-2 .value .items label:nth-child(2) {
+            position: absolute;
+            left: 162px; }
+          .main .kodawari .search-conditions .question-2 .value .items label:nth-child(3) {
+            position: absolute;
+            left: 344px; }
+          .main .kodawari .search-conditions .question-2 .value .items label:nth-child(4) {
+            position: absolute;
+            left: 475px; }
+      .main .kodawari .search-conditions .question-3 .key {
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+        width: 100px;
+        position: relative;
+        height: 90px; }
+        .main .kodawari .search-conditions .question-3 .key span {
+          line-height: 90px; }
+      .main .kodawari .search-conditions .question-3 .value {
+        float: left;
+        width: 500px; }
+        .main .kodawari .search-conditions .question-3 .value .items {
+          margin-top: 0px;
+          margin-left: -8px;
+          margin-bottom: 4px;
+          font-size: 12px;
+          position: relative;
+          height: 20px; }
+          .main .kodawari .search-conditions .question-3 .value .items label {
+            font-weight: normal !important; }
+          .main .kodawari .search-conditions .question-3 .value .items label:nth-child(1) {
+            position: absolute; }
+          .main .kodawari .search-conditions .question-3 .value .items label:nth-child(2) {
+            position: absolute;
+            left: 162px; }
+          .main .kodawari .search-conditions .question-3 .value .items label:nth-child(3) {
+            position: absolute;
+            left: 344px; }
+          .main .kodawari .search-conditions .question-3 .value .items label:nth-child(4) {
+            position: absolute;
+            left: 475px; }
+      .main .kodawari .search-conditions .question-4 .key {
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+        width: 100px;
+        position: relative;
+        height: 44px; }
+        .main .kodawari .search-conditions .question-4 .key span {
+          line-height: 44px; }
+      .main .kodawari .search-conditions .question-4 .value {
+        float: left;
+        width: 500px; }
+        .main .kodawari .search-conditions .question-4 .value .items {
+          margin-top: 0px;
+          margin-left: -8px;
+          margin-bottom: 4px;
+          font-size: 12px;
+          position: relative;
+          height: 20px; }
+          .main .kodawari .search-conditions .question-4 .value .items label {
+            font-weight: normal !important; }
+          .main .kodawari .search-conditions .question-4 .value .items label:nth-child(1) {
+            position: absolute; }
+          .main .kodawari .search-conditions .question-4 .value .items label:nth-child(2) {
+            position: absolute;
+            left: 162px; }
+          .main .kodawari .search-conditions .question-4 .value .items label:nth-child(3) {
+            position: absolute;
+            left: 344px; }
+          .main .kodawari .search-conditions .question-4 .value .items label:nth-child(4) {
+            position: absolute;
+            left: 475px; }
+        .main .kodawari .search-conditions .question-4 .value .items {
+          margin-top: -7px;
+          margin-bottom: 8px; }
+      .main .kodawari .search-conditions .question-5 .key {
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+        width: 100px;
+        position: relative;
+        height: 88px; }
+        .main .kodawari .search-conditions .question-5 .key span {
+          line-height: 88px; }
+      .main .kodawari .search-conditions .question-5 .value {
+        float: left;
+        width: 500px; }
+        .main .kodawari .search-conditions .question-5 .value .items {
+          margin-top: 0px;
+          margin-left: -8px;
+          margin-bottom: 4px;
+          font-size: 12px;
+          position: relative;
+          height: 20px; }
+          .main .kodawari .search-conditions .question-5 .value .items label {
+            font-weight: normal !important; }
+          .main .kodawari .search-conditions .question-5 .value .items label:nth-child(1) {
+            position: absolute; }
+          .main .kodawari .search-conditions .question-5 .value .items label:nth-child(2) {
+            position: absolute;
+            left: 162px; }
+          .main .kodawari .search-conditions .question-5 .value .items label:nth-child(3) {
+            position: absolute;
+            left: 344px; }
+          .main .kodawari .search-conditions .question-5 .value .items label:nth-child(4) {
+            position: absolute;
+            left: 475px; }
+        .main .kodawari .search-conditions .question-5 .value .items {
+          margin-top: -7px;
+          margin-bottom: 9px; }
+      .main .kodawari .search-conditions .question-6 .key {
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+        width: 100px;
+        position: relative;
+        height: 24px; }
+        .main .kodawari .search-conditions .question-6 .key span {
+          line-height: 24px; }
+      .main .kodawari .search-conditions .question-6 .value {
+        float: left;
+        width: 500px; }
+        .main .kodawari .search-conditions .question-6 .value .items {
+          margin-top: 0px;
+          margin-left: -8px;
+          margin-bottom: 4px;
+          font-size: 12px;
+          position: relative;
+          height: 20px; }
+          .main .kodawari .search-conditions .question-6 .value .items label {
+            font-weight: normal !important; }
+          .main .kodawari .search-conditions .question-6 .value .items label:nth-child(1) {
+            position: absolute; }
+          .main .kodawari .search-conditions .question-6 .value .items label:nth-child(2) {
+            position: absolute;
+            left: 162px; }
+          .main .kodawari .search-conditions .question-6 .value .items label:nth-child(3) {
+            position: absolute;
+            left: 344px; }
+          .main .kodawari .search-conditions .question-6 .value .items label:nth-child(4) {
+            position: absolute;
+            left: 475px; }
+        .main .kodawari .search-conditions .question-6 .value .items {
+          margin-top: 0px;
+          margin-bottom: 0px; }
+      .main .kodawari .search-conditions .form-group {
+        margin-top: 10px;
+        margin-bottom: 10px; }
+        .main .kodawari .search-conditions .form-group :nth-child(1) {
+          padding-right: 12px; }
+  .main .free_search {
+    margin-top: 30px; }
+    .main .free_search h2 img {
+      margin-top: -3px;
+      margin-left: 2px; }
+    .main .free_search h2 .power {
+      display: inline-block;
+      margin-top: 16px;
+      margin-left: -2px; }
+    .main .free_search h2 .text {
+      display: inline-block;
+      margin-left: -11px; }
+    .main .free_search .search-freeword {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 30px 20px;
+      height: 90px;
+      overflow: hidden;
+      margin-top: 5px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 20px;
+      padding-left: 20px; }
+      .main .free_search .search-freeword .text {
+        float: left;
+        width: 508px; }
+        .main .free_search .search-freeword .text input {
+          height: 40px; }
+          .main .free_search .search-freeword .text input::-webkit-input-placeholder {
+            font-size: 12px;
+            padding-left: 16px; }
+      .main .free_search .search-freeword .submit {
+        float: left;
+        padding-left: 10px; }
+  .main .contents-5 {
+    margin-top: 30px; }
+    .main .contents-5 h2 img {
+      margin-top: -8px;
+      margin-left: 2px; }
+    .main .contents-5 h2 .text {
+      display: inline-block;
+      margin-top: 11px;
+      margin-left: 10px; }
+    .main .contents-5 .point-description {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 30px 20px;
+      overflow: hidden; }
+      .main .contents-5 .point-description .text {
+        float: left;
+        width: 404px;
+        padding-right: 20px;
+        margin-top: -10px;
+        margin-left: 4px; }
+        .main .contents-5 .point-description .text .title {
+          font-size: 14px;
+          font-weight: bold; }
+          .main .contents-5 .point-description .text .title .power {
+            font-size: 22px;
+            font-weight: bold;
+            margin-right: 10px; }
+        .main .contents-5 .point-description .text .body {
+          font-size: 12px;
+          margin-top: 12px;
+          line-height: 22px; }
+      .main .contents-5 .point-description .image {
+        float: left;
+        width: 220px; }
+        .main .contents-5 .point-description .image img {
+          width: 100%;
+          height: 130px;
+          margin-left: 8px;
+          margin-top: -4px; }
+    .main .contents-5 .button-01 {
+      text-align: center; }
+      .main .contents-5 .button-01 img {
+        margin-top: -20px;
+        margin-left: 12px; }
+  .main .contents-6 {
+    margin-top: 35px; }
+    .main .contents-6 h2 {
+      display: flex;
+      margin-bottom: 10px; }
+      .main .contents-6 h2 img {
+        margin-top: 4px;
+        margin-left: 2px;
+        width: 41px;
+        height: 38px; }
+      .main .contents-6 h2 .text {
+        display: inline-block;
+        margin-left: 11px;
+        margin-top: 13px; }
+      .main .contents-6 h2 .power-reverse {
+        display: inline-block;
+        margin-top: 9px;
+        margin-left: 8px;
+        padding: 3px 16px;
+        font-size: 14px; }
+        .main .contents-6 h2 .power-reverse .seconds {
+          font-weight: 700;
+          font-size: 18px;
+          margin: 0 1px; }
+        .main .contents-6 h2 .power-reverse .byou {
+          font-size: 6px; }
+    .main .contents-6 .service-form {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 30px 20px; }
+      .main .contents-6 .service-form .carousel-inner {
+        margin-bottom: 0px; }
+      .main .contents-6 .service-form .carousel-control {
+        position: relative;
+        opacity: 1;
+        margin-left: 40px; }
+        .main .contents-6 .service-form .carousel-control:hover {
+          opacity: 0.4; }
+      .main .contents-6 .service-form .form-head {
+        font-size: 14px;
+        font-weight: bold; }
+        .main .contents-6 .service-form .form-head span {
+          margin-left: 4px; }
+        .main .contents-6 .service-form .form-head .pull-right {
+          margin-top: 4px; }
+      .main .contents-6 .service-form .question-1 {
+        margin-top: 16px; }
+        .main .contents-6 .service-form .question-1 .key {
+          float: left;
+          font-size: 12px;
+          font-weight: bold;
+          width: 120px;
+          position: relative; }
+          .main .contents-6 .service-form .question-1 .key .text {
+            margin-left: 18px; }
+          .main .contents-6 .service-form .question-1 .key .power-reverse {
+            border-radius: 0;
+            width: 30px;
+            font-size: 10px;
+            margin-left: 3px;
+            text-align: center; }
+        .main .contents-6 .service-form .question-1 .value {
+          float: left;
+          width: 500px; }
+          .main .contents-6 .service-form .question-1 .value .items {
+            margin-top: -4px;
+            margin-left: -8px;
+            margin-bottom: 13px;
+            font-size: 12px;
+            position: relative;
+            height: 20px; }
+          .main .contents-6 .service-form .question-1 .value .items label {
+            font-weight: normal; }
+          .main .contents-6 .service-form .question-1 .value .items label:nth-child(1) {
+            position: absolute; }
+          .main .contents-6 .service-form .question-1 .value .items label:nth-child(2) {
+            position: absolute;
+            left: 208px; }
+          .main .contents-6 .service-form .question-1 .value .items input[type="checkbox"] {
+            display: none; }
+          .main .contents-6 .service-form .question-1 .value .items label {
+            margin-left: 20px;
+            margin-top: 2px; }
+            .main .contents-6 .service-form .question-1 .value .items label .checkbox-icon:before {
+              content: '';
+              width: 22px;
+              height: 22px;
+              font-size: 15px;
+              display: inline-block;
+              background-color: white;
+              border: 1px solid #ecece5;
+              vertical-align: middle; }
+            .main .contents-6 .service-form .question-1 .value .items label input[type="checkbox"]:checked + .checkbox-icon:before {
+              content: '\2713';
+              background-color: #ff636b;
+              color: white;
+              text-align: center; }
+            .main .contents-6 .service-form .question-1 .value .items label .text {
+              display: inline-block;
+              margin-left: 4px;
+              margin-top: 2px; }
+      .main .contents-6 .service-form .button-02 {
+        text-align: center;
+        padding-top: 8px; }
+      .main .contents-6 .service-form .question-2 {
+        margin-top: 16px; }
+        .main .contents-6 .service-form .question-2 .key {
+          float: left;
+          font-size: 12px;
+          font-weight: bold;
+          width: 120px;
+          position: relative; }
+          .main .contents-6 .service-form .question-2 .key .text {
+            margin-left: 18px; }
+          .main .contents-6 .service-form .question-2 .key .power-reverse {
+            border-radius: 0;
+            width: 30px;
+            font-size: 10px;
+            margin-left: 3px;
+            text-align: center; }
+        .main .contents-6 .service-form .question-2 .value {
+          float: left;
+          width: 500px; }
+          .main .contents-6 .service-form .question-2 .value .items {
+            margin-top: -4px;
+            margin-left: -8px;
+            margin-bottom: 13px;
+            font-size: 12px;
+            position: relative;
+            height: 20px; }
+          .main .contents-6 .service-form .question-2 .value .items .form-control {
+            display: inline-block;
+            width: 80px; }
+          .main .contents-6 .service-form .question-2 .value .items div:nth-child(1) {
+            position: absolute;
+            width: 120px; }
+          .main .contents-6 .service-form .question-2 .value .items div:nth-child(2) {
+            position: absolute;
+            left: 120px;
+            width: 120px; }
+          .main .contents-6 .service-form .question-2 .value .items div:nth-child(3) {
+            position: absolute;
+            left: 240px;
+            width: 120px; }
+      .main .contents-6 .service-form .question-3 {
+        margin-top: 16px; }
+        .main .contents-6 .service-form .question-3 .key {
+          float: left;
+          font-size: 12px;
+          font-weight: bold;
+          width: 120px;
+          position: relative; }
+          .main .contents-6 .service-form .question-3 .key .text {
+            margin-left: 18px; }
+          .main .contents-6 .service-form .question-3 .key .power-reverse {
+            border-radius: 0;
+            width: 30px;
+            font-size: 10px;
+            margin-left: 3px;
+            text-align: center; }
+        .main .contents-6 .service-form .question-3 .value {
+          float: left;
+          width: 500px; }
+          .main .contents-6 .service-form .question-3 .value .items {
+            margin-top: -4px;
+            margin-left: -8px;
+            margin-bottom: 13px;
+            font-size: 12px;
+            position: relative;
+            height: 20px; }
+      .main .contents-6 .service-form .question-4 {
+        margin-top: 16px; }
+        .main .contents-6 .service-form .question-4 .key {
+          float: left;
+          font-size: 12px;
+          font-weight: bold;
+          width: 120px;
+          position: relative; }
+          .main .contents-6 .service-form .question-4 .key .text {
+            margin-left: 18px; }
+          .main .contents-6 .service-form .question-4 .key .power-reverse {
+            border-radius: 0;
+            width: 30px;
+            font-size: 10px;
+            margin-left: 3px;
+            text-align: center; }
+        .main .contents-6 .service-form .question-4 .value {
+          float: left;
+          width: 500px; }
+          .main .contents-6 .service-form .question-4 .value .items {
+            margin-top: -4px;
+            margin-left: -8px;
+            margin-bottom: 13px;
+            font-size: 12px;
+            position: relative;
+            height: 20px; }
+  .main .contents-7 h2 img {
+    margin-top: -8px;
+    margin-left: 2px; }
+  .main .contents-7 h2 .text {
+    display: inline-block;
+    margin-left: 9px;
+    margin-top: 6px; }
+  .main .contents-7 .recommend-info {
+    width: 680px;
+    border: 6px #ecece5 solid;
+    padding: 30px 20px;
+    margin-top: 10px; }
+    .main .contents-7 .recommend-info .key {
+      float: left;
+      font-size: 12px;
+      font-weight: bold;
+      width: 120px;
+      position: relative;
+      height: 60px; }
+      .main .contents-7 .recommend-info .key .text {
+        display: inline-block;
+        margin-top: 10px; }
+    .main .contents-7 .recommend-info .value {
+      float: left;
+      width: 500px;
+      margin-top: 5px; }
+      .main .contents-7 .recommend-info .value .items {
+        margin-top: -4px;
+        margin-left: -8px;
+        margin-bottom: 13px;
+        font-size: 12px;
+        position: relative;
+        height: 20px; }
+        .main .contents-7 .recommend-info .value .items a {
+          color: #333333;
+          white-space: nowrap; }
+          .main .contents-7 .recommend-info .value .items a .caret-right {
+            color: #53bfe2;
+            position: relative;
+            top: -2px; }
+          .main .contents-7 .recommend-info .value .items a .text {
+            margin-left: 6px; }
+          .main .contents-7 .recommend-info .value .items a:nth-child(1) {
+            position: absolute;
+            left: 23px; }
+          .main .contents-7 .recommend-info .value .items a:nth-child(2) {
+            position: absolute;
+            left: 217px; }
+          .main .contents-7 .recommend-info .value .items a:nth-child(3) {
+            position: absolute;
+            left: 350px; }
+      .main .contents-7 .recommend-info .value .items2 {
+        margin-top: 5px;
+        margin-left: -8px;
+        margin-bottom: 13px;
+        font-size: 12px;
+        position: relative;
+        height: 20px; }
+        .main .contents-7 .recommend-info .value .items2 a {
+          color: #333333;
+          white-space: nowrap; }
+          .main .contents-7 .recommend-info .value .items2 a .caret-right {
+            color: #53bfe2;
+            position: relative;
+            top: -2px; }
+          .main .contents-7 .recommend-info .value .items2 a .text {
+            margin-left: 6px; }
+          .main .contents-7 .recommend-info .value .items2 a:nth-child(1) {
+            position: absolute;
+            left: 23px; }
+          .main .contents-7 .recommend-info .value .items2 a:nth-child(2) {
+            position: absolute;
+            left: 217px; }
+          .main .contents-7 .recommend-info .value .items2 a:nth-child(3) {
+            position: absolute;
+            left: 350px; }
+    .main .contents-7 .recommend-info .border {
+      margin-bottom: 21px; }
+  .main .contents-8 h2 {
+    display: flex; }
+    .main .contents-8 h2 img {
+      margin-top: -2px;
+      margin-left: 2px;
+      width: 41px;
+      height: 38px; }
+    .main .contents-8 h2 .text {
+      display: inline-block;
+      margin-left: 14px;
+      margin-top: 8px; }
+    .main .contents-8 h2 .power-reverse {
+      display: inline-block;
+      margin-top: 4px;
+      margin-left: 6px;
+      padding-top: 6px;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-size: 14px; }
+  .main .contents-8 .fleft {
+    float: left;
+    width: 420px;
+    display: block;
+    padding-right: 0 !important; }
+  .main .contents-8 .fright {
+    border: solid 1px #eee; }
+  .main .contents-8 .border {
+    margin-top: 8px;
+    margin-bottom: 18px; }
+  .main .contents-8 .read {
+    text-align: left;
+    font-size: 1.2rem;
+    padding-right: 20px; }
+  .main .contents-8 .title2 {
+    border-left: 5px #ff636b solid;
+    padding-left: 10px;
+    font-weight: bold; }
+  .main .contents-8 .popular-offer {
+    width: 680px;
+    border: 6px #ecece5 solid;
+    padding: 30px 20px;
+    padding: 20px;
+    padding-right: 0;
+    overflow: hidden; }
+    .main .contents-8 .popular-offer .offer {
+      float: left;
+      width: 194px;
+      font-size: 12px; }
+      .main .contents-8 .popular-offer .offer:nth-of-type(2) {
+        margin-left: 24px; }
+      .main .contents-8 .popular-offer .offer:nth-of-type(3) {
+        margin-left: 24px; }
+      .main .contents-8 .popular-offer .offer:nth-of-type(n + 5) {
+        margin-top: 2px; }
+      .main .contents-8 .popular-offer .offer:nth-of-type(5) {
+        margin-left: 24px; }
+      .main .contents-8 .popular-offer .offer:nth-of-type(6) {
+        margin-left: 24px; }
+      .main .contents-8 .popular-offer .offer .offer-top {
+        font-weight: bold;
+        height: 72px; }
+        .main .contents-8 .popular-offer .offer .offer-top img {
+          float: left;
+          width: 92px;
+          height: 72px;
+          border: 1px solid #ecece5;
+          margin-top: 8px; }
+        .main .contents-8 .popular-offer .offer .offer-top div {
+          float: left;
+          width: 92px;
+          padding-left: 7px;
+          padding-top: 3px; }
+          .main .contents-8 .popular-offer .offer .offer-top div span, .main .contents-8 .popular-offer .offer .offer-top div a {
+            line-height: 22px;
+            color: #333; }
+      .main .contents-8 .popular-offer .offer .offer-middle {
+        margin-top: 11px;
+        margin-left: 2px; }
+        .main .contents-8 .popular-offer .offer .offer-middle span {
+          color: #ff636b;
+          border: 1px #ff636b solid;
+          display: inline-block;
+          font-size: 10px;
+          font-weight: bold;
+          text-align: center; }
+          .main .contents-8 .popular-offer .offer .offer-middle span:nth-child(1) {
+            padding: 2px 10px; }
+          .main .contents-8 .popular-offer .offer .offer-middle span:nth-child(2) {
+            padding: 2px 8px; }
+          .main .contents-8 .popular-offer .offer .offer-middle span:nth-child(3) {
+            padding: 2px 8px; }
+      .main .contents-8 .popular-offer .offer .offer-bottom {
+        margin-top: 10px; }
+        .main .contents-8 .popular-offer .offer .offer-bottom .key {
+          display: inline-block;
+          font-size: 10px;
+          font-weight: bold;
+          text-align: center;
+          width: 70px;
+          margin-left: 3px;
+          margin-right: 4px;
+          background-color: #ecece5;
+          padding: 2px 0;
+          color: #333; }
+        .main .contents-8 .popular-offer .offer .offer-bottom .value {
+          display: inline-block;
+          width: 100px;
+          font-size: 10px;
+          color: #333; }
+        .main .contents-8 .popular-offer .offer .offer-bottom .read {
+          font-size: 10px;
+          height: 40px;
+          overflow: hidden;
+          margin-bottom: 10px; }
+        .main .contents-8 .popular-offer .offer .offer-bottom .item-2 {
+          position: relative;
+          margin-top: 2px;
+          height: 30px; }
+          .main .contents-8 .popular-offer .offer .offer-bottom .item-2 .key {
+            position: absolute;
+            top: 0; }
+          .main .contents-8 .popular-offer .offer .offer-bottom .item-2 .value {
+            position: absolute;
+            top: 2px;
+            left: 80px; }
+    .main .contents-8 .popular-offer .offer2 {
+      float: left;
+      width: 294px;
+      font-size: 12px; }
+      .main .contents-8 .popular-offer .offer2 .offer-top {
+        font-weight: bold;
+        height: 72px; }
+        .main .contents-8 .popular-offer .offer2 .offer-top .title {
+          display: block; }
+        .main .contents-8 .popular-offer .offer2 .offer-top .read {
+          display: block;
+          font-size: 1rem;
+          font-weight: normal;
+          line-height: 1.4rem;
+          padding-right: 0px; }
+        .main .contents-8 .popular-offer .offer2 .offer-top img {
+          float: left;
+          width: 92px;
+          height: 72px;
+          border: 1px solid #ecece5;
+          margin-top: 8px; }
+        .main .contents-8 .popular-offer .offer2 .offer-top div {
+          float: left;
+          width: 202px;
+          padding-left: 7px;
+          padding-top: 3px; }
+          .main .contents-8 .popular-offer .offer2 .offer-top div span, .main .contents-8 .popular-offer .offer2 .offer-top div a {
+            line-height: 22px;
+            color: #333; }
+      .main .contents-8 .popular-offer .offer2 .offer-middle {
+        margin-top: 11px;
+        margin-left: 2px; }
+        .main .contents-8 .popular-offer .offer2 .offer-middle span {
+          color: #ff636b;
+          border: 1px #ff636b solid;
+          display: inline-block;
+          font-size: 10px;
+          font-weight: bold;
+          text-align: center; }
+          .main .contents-8 .popular-offer .offer2 .offer-middle span:nth-child(1) {
+            padding: 2px 0px; }
+          .main .contents-8 .popular-offer .offer2 .offer-middle span:nth-child(2) {
+            padding: 2px 8px; }
+      .main .contents-8 .popular-offer .offer2 .offer-bottom {
+        margin-top: 10px; }
+        .main .contents-8 .popular-offer .offer2 .offer-bottom .key {
+          display: inline-block;
+          font-size: 10px;
+          font-weight: bold;
+          text-align: center;
+          width: 70px;
+          margin-left: 3px;
+          margin-right: 4px;
+          background-color: #ecece5;
+          padding: 2px 0;
+          color: #333; }
+        .main .contents-8 .popular-offer .offer2 .offer-bottom .value {
+          display: inline-block;
+          width: 100px;
+          font-size: 10px;
+          color: #333; }
+  .main .contents-9 {
+    margin-top: 10px; }
+    .main .contents-9 h2 {
+      display: flex; }
+      .main .contents-9 h2 img {
+        margin-top: -10px;
+        margin-left: 2px;
+        width: 41px;
+        height: 38px; }
+      .main .contents-9 h2 .text {
+        display: inline-block;
+        margin-left: 12px;
+        margin-top: 0px; }
+      .main .contents-9 h2 .power-reverse {
+        display: inline-block;
+        font-size: 14px;
+        margin-left: 10px;
+        padding-top: 0px;
+        padding-left: 16px;
+        padding-right: 8px; }
+    .main .contents-9 .reason {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 30px 20px;
+      margin-top: 10px; }
+      .main .contents-9 .reason .title {
+        font-size: 16px;
+        display: flex; }
+        .main .contents-9 .reason .title .power {
+          display: inline-block;
+          font-size: 30px;
+          font-weight: bold;
+          margin-right: 11px;
+          margin-top: -9px; }
+        .main .contents-9 .reason .title .text {
+          font-weight: bold;
+          margin-top: 2px; }
+      .main .contents-9 .reason .body {
+        font-size: 12px;
+        padding-top: 4px;
+        line-height: 21px; }
+  .main .notfound {
+    text-align: center; }
+    .main .notfound .cap {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #333;
+      line-height: 1.4rem;
+      margin-bottom: 30px; }
+    .main .notfound .read {
+      font-size: 1.6rem;
+      font-weight: normal;
+      color: #333;
+      line-height: 3rem; }
+  .main .two-button {
+    text-align: center;
+    vertical-align: top; }
+    .main .two-button .btn_blue, .main .two-button .btn_blue2 {
+      margin: 0 10px;
+      display: inline-block;
+      position: relative;
+      width: 290px;
+      height: 70px;
+      line-height: 70px;
+      border-radius: 6px;
+      text-align: center;
+      color: #fff;
+      font-size: 1.8rem;
+      font-weight: bold;
+      vertical-align: top; }
+      .main .two-button .btn_blue::before, .main .two-button .btn_blue2::before {
+        content: "";
+        width: 290px;
+        height: 70px;
+        background: url(../../img/pc/sd-right.png) no-repeat right 14px center;
+        background-size: 4%;
+        color: #fff;
+        font-size: 2rem;
+        position: absolute;
+        left: 0px;
+        top: 0px; }
+    .main .two-button .two_line {
+      line-height: 25px;
+      padding-top: 10px; }
+    .main .two-button .btn_blue {
+      background: #53a3e2; }
+    .main .two-button .btn_blue2 {
+      background: #53bfe2; }
+    .main .two-button .btn_blue_under {
+      border-bottom: solid 5px #4a8bc6; }
+
+/*キービジュアル セカンドページ*/
+.sepage-key-visual {
+  border-top: solid 1px #ecece5;
+  height: 250px;
+  background: #daf0fc;
+  position: relative; }
+  .sepage-key-visual .skv_wrap {
+    position: relative;
+    width: 980px;
+    margin: 0 auto; }
+    .sepage-key-visual .skv_wrap .banner_text {
+      z-index: 10000;
+      display: block;
+      word-wrap: break-word;
+      text-align: left;
+      position: absolute;
+      top: 14px;
+      left: 20px; }
+      .sepage-key-visual .skv_wrap .banner_text span:nth-of-type(1) {
+        color: #ff636b;
+        font-size: 28px;
+        font-weight: bold; }
+      .sepage-key-visual .skv_wrap .banner_text span:nth-of-type(2) {
+        color: #333;
+        font-size: 22px;
+        font-weight: bold; }
+    .sepage-key-visual .skv_wrap .banner_read {
+      z-index: 10000;
+      position: absolute;
+      top: 60px;
+      left: 20px;
+      width: 690px;
+      text-align: left;
+      font-size: 12px;
+      line-height: 2.0rem; }
+    .sepage-key-visual .skv_wrap .free-word-btn {
+      z-index: 10000;
+      position: absolute;
+      width: 400px;
+      height: 73px;
+      top: 160px;
+      left: 20px; }
+    .sepage-key-visual .skv_wrap .free_box {
+      position: relative;
+      color: #53a3e2;
+      padding: 3px 8px;
+      margin-right: 14px;
+      top: -2px;
+      font-size: 14px;
+      font-weight: bold;
+      background: #fff; }
+  .sepage-key-visual .btn_blue_top {
+    z-index: 10000;
+    margin: 0 10px;
+    display: inline-block;
+    position: absolute;
+    width: 400px;
+    height: 70px;
+    border-radius: 6px;
+    text-align: center;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    background: #53a3e2;
+    top: 160px;
+    line-height: 70px;
+    left: 10px;
+    border-bottom: solid 5px #4a8bc6; }
+    .sepage-key-visual .btn_blue_top::before {
+      content: "";
+      width: 100%;
+      height: 70px;
+      background: url(../../img/pc/sd-right.png) no-repeat right 14px center;
+      background-size: 3%;
+      color: #fff;
+      font-size: 2rem;
+      position: absolute;
+      left: 0px;
+      top: 0px; }
+  .sepage-key-visual .two_line {
+    top: 154px;
+    line-height: 25px;
+    padding: 8px 30px 0 0; }
+  .sepage-key-visual img {
+    position: absolute;
+    top: 2px;
+    width: 980px;
+    height: 245px;
+    margin-top: 2px;
+    padding: 0;
+    border: 0; }
+
+/*サーチで使ったCSS*/
+.main {
+  float: left;
+  width: 680px; }
+  .main .pankuzu-list {
+    font-size: 10px; }
+    .main .pankuzu-list ol {
+      margin: 0;
+      padding: 0; }
+      .main .pankuzu-list ol li {
+        display: inline;
+        list-style-type: none;
+        padding-right: 10px; }
+        .main .pankuzu-list ol li :after {
+          content: " > "; }
+  .main .free-word {
+    width: 680px;
+    border: 6px #ecece5 solid;
+    padding: 20px;
+    margin-bottom: 16px; }
+    .main .free-word .free-word-search-btn {
+      float: left; }
+      .main .free-word .free-word-search-btn span {
+        margin-left: 10px; }
+    .main .free-word .free-word-search-change-btn {
+      float: right; }
+  .main .search-pager {
+    width: 680px;
+    vertical-align: middle; }
+    .main .search-pager .left {
+      float: left;
+      letter-spacing: 1px;
+      margin-top: 3px;
+      font-size: 10px; }
+    .main .search-pager .right {
+      float: right; }
+      .main .search-pager .right ul {
+        list-style: none; }
+      .main .search-pager .right li {
+        display: inline; }
+        .main .search-pager .right li a {
+          color: black;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          font-size: 10px;
+          text-align: center;
+          padding-top: 2px;
+          background-color: #ecece5; }
+          .main .search-pager .right li a.active {
+            color: #fff;
+            background-color: #ff636b; }
+        .main .search-pager .right li:last-child {
+          margin-left: 20px; }
+  .main .search-list {
+    position: relative; }
+    .main .search-list .search-list-detail {
+      padding: 20px;
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 20px; }
+      .main .search-list .search-list-detail .title {
+        font-size: 14px;
+        font-weight: bold; }
+        .main .search-list .search-list-detail .title span {
+          display: block;
+          margin-top: 10px;
+          color: #ff636b;
+          word-wrap: break-word; }
+      .main .search-list .search-list-detail .all-infomation {
+        color: #53bfe2;
+        font-size: 10px;
+        text-align: center;
+        letter-spacing: 3px;
+        margin-top: 10px;
+        cursor: pointer; }
+      .main .search-list .search-list-detail .list-thumbnail {
+        width: 280px;
+        height: 200px; }
+      .main .search-list .search-list-detail .list-description {
+        float: right;
+        width: 340px;
+        height: 200px; }
+        .main .search-list .search-list-detail .list-description ul {
+          padding: 10px; }
+          .main .search-list .search-list-detail .list-description ul li {
+            list-style: none;
+            width: 320px;
+            height: 50px; }
+            .main .search-list .search-list-detail .list-description ul li .detail-title {
+              width: 100px;
+              height: 50px;
+              font-size: 14px;
+              background-color: #ecece5;
+              text-align: center;
+              padding-top: 15px;
+              font-weight: bold;
+              float: left;
+              clear: both; }
+            .main .search-list .search-list-detail .list-description ul li span {
+              color: #000;
+              margin: 15px 0 0 10px;
+              display: inline-block; }
+      .main .search-list .search-list-detail .description {
+        font-size: 12px;
+        word-wrap: break-word; }
+      .main .search-list .search-list-detail .detail-btn {
+        text-align: center; }
+      .main .search-list .search-list-detail .article-area {
+        border-top: 1px solid #ecece5; }
+        .main .search-list .search-list-detail .article-area p {
+          font-size: 10px; }
+        .main .search-list .search-list-detail .article-area .artice {
+          width: 100%;
+          height: 100px;
+          border-bottom: 1px solid #ecece5; }
+          .main .search-list .search-list-detail .article-area .artice:first-child {
+            border-top: 1px solid  #ecece5; }
+          .main .search-list .search-list-detail .article-area .artice .left {
+            float: left;
+            margin-top: 5px; }
+            .main .search-list .search-list-detail .article-area .artice .left p.title {
+              font-size: 14px;
+              font-weight: bold;
+              padding: 5px;
+              margin-left: 10px;
+              display: block; }
+            .main .search-list .search-list-detail .article-area .artice .left .description p.key {
+              display: block;
+              font-size: 10px;
+              font-weight: bold;
+              text-align: center;
+              width: 70px;
+              margin: 5px 0 0 20px;
+              background-color: #ecece5;
+              padding: 2px 0;
+              float: left; }
+            .main .search-list .search-list-detail .article-area .artice .left .description span.value {
+              font-size: 10px;
+              display: inline-block;
+              margin-left: 20px;
+              margin-top: 6px; }
+          .main .search-list .search-list-detail .article-area .artice .favorite-icon {
+            margin-left: 127px; }
+          .main .search-list .search-list-detail .article-area .artice .right {
+            float: right;
+            margin-top: 15px; }
+            .main .search-list .search-list-detail .article-area .artice .right img {
+              margin-top: 5px; }
+            .main .search-list .search-list-detail .article-area .artice .right .sent-btn {
+              margin-left: 10px; }
+      .main .search-list .search-list-detail .top_none {
+        border-top: 0px solid #ecece5; }
+
+/**/
+.search-key-visual {
+  border-top: solid 1px #ecece5;
+  height: 250px;
+  background: #daf0fc; }
+  .search-key-visual .skv_wrap {
+    position: relative;
+    width: 980px;
+    margin: 0 auto; }
+    .search-key-visual .skv_wrap .banner_text {
+      display: block;
+      word-wrap: break-word;
+      text-align: left;
+      position: absolute;
+      top: 14px;
+      left: 20px; }
+      .search-key-visual .skv_wrap .banner_text span:nth-of-type(1) {
+        color: #ff636b;
+        font-size: 28px;
+        font-weight: bold; }
+      .search-key-visual .skv_wrap .banner_text span:nth-of-type(2) {
+        color: #333;
+        font-size: 22px;
+        font-weight: bold; }
+    .search-key-visual .skv_wrap .banner_read {
+      position: absolute;
+      top: 60px;
+      left: 20px;
+      width: 690px;
+      text-align: left;
+      font-size: 12px;
+      line-height: 2.0rem; }
+    .search-key-visual .skv_wrap .free-word-btn {
+      position: absolute;
+      width: 400px;
+      height: 73px;
+      top: 160px;
+      left: 20px; }
+  .search-key-visual img {
+    width: 980px;
+    height: 245px;
+    margin-top: 2px;
+    padding: 0;
+    border: 0; }
+
+.wrap {
+  margin: 20px auto 0;
+  /**/ }
+  .wrap .main h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 38px;
+    height: 38px; }
+    .wrap .main h3 img {
+      margin-right: 5px;
+      margin-bottom: 5px; }
+  .wrap .main .free-word .free-word-search-btn span {
+    margin-left: 20px; }
+  .wrap .main .search-list h2 {
+    border-left: solid 5px #333;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-left: 10px; }
+    .wrap .main .search-list h2 .text {
+      display: inline-block;
+      margin-left: 10px; }
+  .wrap .main .search-list .search-list-detail .list-thumbnail {
+    width: 220px;
+    height: 140px; }
+  .wrap .main .search-list .search-list-detail .list-description {
+    width: 390px;
+    height: 130px;
+    float: right; }
+    .wrap .main .search-list .search-list-detail .list-description ul {
+      padding: 0; }
+      .wrap .main .search-list .search-list-detail .list-description ul li .detail-title {
+        width: 80px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 12px;
+        background-color: #ecece5;
+        text-align: center;
+        padding-top: 0px;
+        font-weight: bold;
+        float: left;
+        clear: both; }
+      .wrap .main .search-list .search-list-detail .list-description ul li span {
+        margin-top: 0 !important;
+        line-height: 40px;
+        font-size: 12px; }
+  .wrap .main .search-list .search-list-detail .description {
+    height: 50px;
+    overflow: hidden; }
+  .wrap .main .search-pager {
+    width: 680px;
+    vertical-align: middle; }
+    .wrap .main .search-pager .left {
+      float: left;
+      letter-spacing: 1px;
+      margin-top: 3px;
+      font-size: 10px; }
+    .wrap .main .search-pager .right {
+      float: right; }
+      .wrap .main .search-pager .right ul {
+        list-style: none; }
+      .wrap .main .search-pager .right li {
+        display: inline; }
+        .wrap .main .search-pager .right li a {
+          color: black;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          font-size: 10px;
+          text-align: center;
+          padding-top: 0px; }
+          .wrap .main .search-pager .right li a.active {
+            color: #fff; }
+        .wrap .main .search-pager .right li:last-child {
+          margin-left: 20px; }
+  .wrap .search_count {
+    margin-top: 0px; }
+  .wrap .left .title {
+    border-left: solid 0px #ff636b;
+    padding: 0 0 0 0px !important; }
+  .wrap .left span.value {
+    margin-left: 10px !important; }
+  .wrap .ad_hikoukai img {
+    width: 270px; }
+
+/* search add*/
+.search-list-detail .list-thumbnail {
+  width: 280px;
+  height: 200px; }
+.search-list-detail .description {
+  font-size: 12px;
+  word-wrap: break-word; }
+.search-list-detail .detail-btn {
+  text-align: center; }
+.search-list-detail .article-area {
+  border-top: 1px solid #ecece5; }
+  .search-list-detail .article-area p {
+    font-size: 10px; }
+  .search-list-detail .article-area .artice {
+    width: 100%;
+    height: 100px;
+    border-bottom: 1px solid #ecece5; }
+    .search-list-detail .article-area .artice:first-child {
+      border-top: 1px solid  #ecece5; }
+    .search-list-detail .article-area .artice .left {
+      float: left;
+      margin-top: 10px !important; }
+      .search-list-detail .article-area .artice .left p.title {
+        font-size: 14px;
+        font-weight: bold;
+        padding: 5px;
+        margin-left: 10px;
+        display: block; }
+      .search-list-detail .article-area .artice .left .description p.key {
+        display: block;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        width: 70px;
+        margin: 5px 0 0 20px;
+        background-color: #ecece5;
+        padding: 2px 0;
+        float: left;
+        color: #333; }
+      .search-list-detail .article-area .artice .left .description span.value {
+        font-size: 10px;
+        display: inline-block;
+        margin-left: 20px;
+        margin-top: 6px;
+        color: #333; }
+    .search-list-detail .article-area .artice .favorite-icon {
+      margin-left: 127px; }
+    .search-list-detail .article-area .artice .right {
+      float: right;
+      margin-top: 10px !important; }
+      .search-list-detail .article-area .artice .right img {
+        margin-top: 0 !important;
+        margin-bottom: 5px !important; }
+      .search-list-detail .article-area .artice .right .sent-btn {
+        margin-left: 10px; }
+
+.search_area_list {
+  width: 100%;
+  margin-top: 12px;
+  margin-bottom: 12px; }
+  .search_area_list h2 {
+    display: flex; }
+    .search_area_list h2 img {
+      margin-top: -2px;
+      margin-left: 2px;
+      width: 41px;
+      height: 38px; }
+    .search_area_list h2 .text2 {
+      margin-top: 8px; }
+    .search_area_list h2 .text {
+      display: inline-block;
+      margin-left: 14px;
+      margin-top: 8px; }
+    .search_area_list h2 .power-reverse {
+      display: inline-block;
+      margin-top: 4px;
+      margin-left: 6px;
+      padding-top: 6px;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-size: 14px; }
+  .search_area_list form {
+    overflow: hidden;
+    margin-left: 0px;
+    border: 6px #ecece5 solid;
+    padding: 20px; }
+    .search_area_list form .text {
+      float: left;
+      width: 78%; }
+      .search_area_list form .text input {
+        height: 44px; }
+        .search_area_list form .text input::-webkit-input-placeholder {
+          font-size: 8px; }
+    .search_area_list form .submit {
+      float: left;
+      margin-left: -2px; }
+      .search_area_list form .submit input[type="image"] {
+        width: 58px; }
+  .search_area_list .value {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between; }
+    .search_area_list .value div.items {
+      font-size: 12px;
+      display: block;
+      width: 20%; }
+      .search_area_list .value div.items label {
+        display: block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: normal;
+        color: #333; }
+        .search_area_list .value div.items label input {
+          margin-right: 5px; }
+
+/**/
+.side {
+  float: left;
+  width: 270px;
+  padding-left: 30px; }
+
+.article-hide {
+  display: none; }
+
+.side_list {
+  padding-left: 5px;
+  font-size: 12px;
+  font-weight: bold; }
+  .side_list a {
+    line-height: 2rem;
+    min-width: 40px;
+    margin: 5px 20px 0 0;
+    text-indent: 6px;
+    display: block; }
+    .side_list a span {
+      color: #ccc;
+      position: relative;
+      top: -2px;
+      left: -4px; }
+
+.one-button {
+  text-align: center; }
+  .one-button .btn_blue, .one-button .btn_blue2 {
+    margin: 0 10px;
+    display: inline-block;
+    position: relative;
+    width: 290px;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 6px;
+    text-align: center;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border: 0; }
+    .one-button .btn_blue::before, .one-button .btn_blue2::before {
+      content: "";
+      width: 290px;
+      height: 70px;
+      background: url(../../img/pc/sd-right.png) no-repeat right 14px center;
+      background-size: 4%;
+      color: #fff;
+      font-size: 2rem;
+      position: absolute;
+      left: 0px;
+      top: 0px; }
+  .one-button .btn_blue {
+    background: #53a3e2; }
+  .one-button .btn_blue2 {
+    background: #53bfe2; }
+  .one-button .btn_blue_shadow {
+    border-bottom: solid 5px #4a8bc6; }
+  .one-button .noarrow::before {
+    display: none; }
+
+.free-word-search .btn_pink {
+  margin: 0 10px;
+  display: inline-block;
+  position: relative;
+  width: 122px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: 0;
+  background: #ff636b; }
+.free-word-search .btn_pink_border {
+  background: #fff;
+  border: solid 1px #ff636b;
+  color: #ff636b; }
+.free-word-search .freeword {
+  width: 350px;
+  height: 40px;
+  border-radius: 6px;
+  border: solid 1px #ccc;
+  padding: 0 10px; }
+.free-word-search .free-word {
+  width: 680px;
+  border: 6px #ecece5 solid;
+  padding: 20px;
+  margin-bottom: 16px; }
+  .free-word-search .free-word .free-word-search-btn {
+    float: left; }
+    .free-word-search .free-word .free-word-search-btn span {
+      margin-left: 10px; }
+  .free-word-search .free-word .free-word-search-change-btn {
+    float: right; }
+.free-word-search dl {
+  font-size: 12px; }
+  .free-word-search dl dt {
+    display: inline-block;
+    width: 20%;
+    color: #ff636b;
+    vertical-align: top;
+    padding: 10px 5px; }
+  .free-word-search dl dd {
+    display: inline-block;
+    position: relative;
+    width: 78%;
+    padding: 10px 0;
+    font-weight: bold; }
+    .free-word-search dl dd::before {
+      position: absolute;
+      width: calc((100/78)*20% + 100%);
+      content: "";
+      border-bottom: solid 1px #ccc;
+      left: calc((100/78)*-20%);
+      bottom: 0; }
+
+.questions {
+  margin-top: 30px; }
+  .questions h2 {
+    margin: 20px 0 10px; }
+    .questions h2 img {
+      margin-top: -3px;
+      margin-left: 2px; }
+    .questions h2 .power {
+      display: inline-block;
+      margin-top: 16px;
+      margin-left: -2px; }
+    .questions h2 .text {
+      display: inline-block;
+      margin-left: -11px; }
+  .questions dl dt {
+    position: relative;
+    margin: 10px 0px 0 0;
+    padding: 0 30px 10px 10px;
+    border-bottom: solid 1px #ccc;
+    font-size: 1.4rem; }
+    .questions dl dt::before {
+      content: "Q";
+      color: #ff636b;
+      font-size: 1.6rem;
+      margin-right: 10px; }
+    .questions dl dt::after {
+      content: "";
+      font-weight: normal;
+      width: 10px;
+      height: 10px;
+      display: block;
+      transform: scale(1.2, 1) rotate(-45deg);
+      color: #ff636b;
+      font-size: 1.6rem;
+      margin-right: 0px;
+      padding: 0;
+      position: absolute;
+      right: 15px;
+      top: 5px;
+      border-left: solid 1px #ff636b;
+      border-bottom: solid 1px #ff636b; }
+  .questions dl dt.on::after {
+    content: "";
+    font-weight: normal;
+    width: 10px;
+    height: 10px;
+    display: block;
+    transform: scale(1.2, 1) rotate(135deg);
+    color: #ff636b;
+    font-size: 1.6rem;
+    margin-right: 0px;
+    padding: 0;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    border-left: solid 1px #ff636b;
+    border-bottom: solid 1px #ff636b; }
+  .questions dl dd {
+    position: relative;
+    margin: 0;
+    padding: 10px 10px 10px 30px;
+    font-size: 1.2rem;
+    background: #ebece7;
+    display: none; }
+    .questions dl dd::before {
+      position: absolute;
+      left: 11px;
+      top: 7px;
+      display: block;
+      content: "A";
+      color: #ff636b;
+      font-size: 1.6rem;
+      margin-right: 10px; }
+  .questions .search-freeword {
+    width: 680px;
+    border: 6px #ecece5 solid;
+    padding: 20px;
+    height: 90px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-left: 20px; }
+    .questions .search-freeword .text {
+      float: left;
+      width: 508px; }
+      .questions .search-freeword .text input {
+        height: 40px; }
+        .questions .search-freeword .text input::-webkit-input-placeholder {
+          font-size: 12px;
+          padding-left: 16px; }
+    .questions .search-freeword .submit {
+      float: left;
+      padding-left: 10px; }
+
+/*service*/
+.main {
+  /**/ }
+  .main .button_wrap {
+    text-align: center; }
+  .main .img_top_banner {
+    text-align: center; }
+  .main .img_step_buttons {
+    text-align: center;
+    width: 100%; }
+    .main .img_step_buttons a, .main .img_step_buttons span {
+      display: inline-block;
+      font-size: 1rem; }
+    .main .img_step_buttons span {
+      margin: 0 2px; }
+  .main .service_step {
+    margin-top: 30px; }
+    .main .service_step h2 img {
+      margin-top: -8px;
+      margin-left: 2px; }
+    .main .service_step h2 .text {
+      display: inline-block;
+      margin-top: 11px;
+      margin-left: 10px; }
+    .main .service_step h2.twoline img {
+      margin-top: -30px;
+      margin-left: 2px; }
+    .main .service_step .two-button_service {
+      text-align: center; }
+      .main .service_step .two-button_service img {
+        width: 290px;
+        height: 74px;
+        margin: 0 10px; }
+    .main .service_step .point-description {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 20px;
+      overflow: hidden; }
+      .main .service_step .point-description h2 {
+        text-align: center; }
+        .main .service_step .point-description h2 .signe {
+          text-align: center;
+          font-size: 1rem;
+          margin: 10px 0 20px;
+          padding: 0;
+          display: block; }
+      .main .service_step .point-description .text {
+        float: left;
+        width: 470px;
+        padding-right: 20px;
+        margin-top: -10px;
+        margin-left: 4px; }
+        .main .service_step .point-description .text .title {
+          font-size: 16px;
+          font-weight: bold; }
+          .main .service_step .point-description .text .title .power {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 10px; }
+        .main .service_step .point-description .text .body {
+          font-size: 12px;
+          margin-top: 12px;
+          line-height: 22px; }
+          .main .service_step .point-description .text .body span {
+            color: #00F; }
+      .main .service_step .point-description .text2 {
+        float: left;
+        width: 100%;
+        font-size: 1.0rem;
+        line-height: 1.4rem; }
+        .main .service_step .point-description .text2 .body {
+          font-size: 1.2rem;
+          line-height: 2rem; }
+      .main .service_step .point-description .text3 {
+        float: left;
+        width: 100%;
+        font-size: 1.0rem;
+        line-height: 1.4rem; }
+        .main .service_step .point-description .text3 .title {
+          font-size: 16px;
+          font-weight: bold; }
+          .main .service_step .point-description .text3 .title .power {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 10px; }
+        .main .service_step .point-description .text3 .body {
+          font-size: 12px;
+          margin-top: 12px;
+          line-height: 22px; }
+          .main .service_step .point-description .text3 .body span {
+            color: #00F; }
+      .main .service_step .point-description .text4 {
+        float: left;
+        width: 100%;
+        font-size: 1.0rem;
+        line-height: 1.4rem; }
+        .main .service_step .point-description .text4 .title {
+          font-size: 12px;
+          font-weight: bold; }
+          .main .service_step .point-description .text4 .title .power {
+            font-weight: bold;
+            margin: 0 0 10px;
+            display: block; }
+        .main .service_step .point-description .text4 dl {
+          vertical-align: top;
+          font-size: 12px;
+          line-height: 22px;
+          margin: 0; }
+          .main .service_step .point-description .text4 dl dt {
+            display: inline-block;
+            width: 20%;
+            vertical-align: top; }
+          .main .service_step .point-description .text4 dl dd {
+            display: inline-block;
+            width: 75%;
+            vertical-align: top; }
+      .main .service_step .point-description .image {
+        float: left;
+        width: auto; }
+        .main .service_step .point-description .image img {
+          width: auto;
+          height: auto;
+          margin-left: 8px;
+          margin-top: -4px; }
+        .main .service_step .point-description .image img.step1 {
+          position: relative;
+          top: 10px;
+          left: 20px; }
+        .main .service_step .point-description .image img.step2 {
+          position: relative;
+          top: 40px;
+          left: 5px; }
+        .main .service_step .point-description .image img.step3 {
+          position: relative;
+          top: 50px;
+          left: 0px; }
+        .main .service_step .point-description .image img.pt1 {
+          position: relative;
+          top: 36px;
+          left: 24px; }
+        .main .service_step .point-description .image img.pt2 {
+          position: relative;
+          top: 30px;
+          left: 20px; }
+        .main .service_step .point-description .image img.pt3 {
+          position: relative;
+          top: 10px;
+          left: 30px; }
+    .main .service_step .button-01 {
+      text-align: center; }
+      .main .service_step .button-01 img {
+        margin-top: -20px;
+        margin-left: 12px; }
+  .main .agent_comment {
+    margin-top: 30px; }
+    .main .agent_comment h2 {
+      border-left: solid 5px #333;
+      display: inline-block;
+      height: 28px;
+      line-height: 28px;
+      margin-left: 10px; }
+      .main .agent_comment h2 .text {
+        display: inline-block;
+        margin-left: 10px; }
+    .main .agent_comment .two-button_service {
+      text-align: center; }
+      .main .agent_comment .two-button_service img {
+        width: 290px;
+        height: 74px;
+        margin: 0 10px; }
+    .main .agent_comment .point-description {
+      width: 680px;
+      border: 6px #ecece5 solid;
+      padding: 20px;
+      overflow: hidden;
+      padding-bottom: 0; }
+      .main .agent_comment .point-description .title {
+        font-size: 14px;
+        font-weight: bold;
+        float: left; }
+        .main .agent_comment .point-description .title .power {
+          font-size: 22px;
+          font-weight: bold;
+          margin-right: 10px; }
+      .main .agent_comment .point-description .body {
+        width: 502px;
+        font-size: 12px;
+        margin-top: 0px;
+        line-height: 22px;
+        display: inline-block;
+        vertical-align: top; }
+      .main .agent_comment .point-description .image {
+        display: inline-block;
+        width: auto;
+        vertical-align: top; }
+        .main .agent_comment .point-description .image img {
+          width: auto;
+          height: auto;
+          margin-left: 8px;
+          margin-top: -4px; }
+    .main .agent_comment .button-01 {
+      text-align: center; }
+      .main .agent_comment .button-01 img {
+        margin-top: -20px;
+        margin-left: 12px; }
+    .main .agent_comment .p-d-pink {
+      border: 6px #ff636b solid;
+      padding: 20px; }
+      .main .agent_comment .p-d-pink .title {
+        color: #ff636b;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-right: 10px;
+        width: 100%; }
+      .main .agent_comment .p-d-pink .body {
+        width: 502px;
+        font-size: 12px;
+        margin-top: 0px;
+        line-height: 22px;
+        display: inline-block;
+        vertical-align: top; }
+      .main .agent_comment .p-d-pink .image {
+        display: inline-block;
+        width: auto;
+        vertical-align: top; }
+        .main .agent_comment .p-d-pink .image img {
+          width: auto;
+          height: auto;
+          margin-left: 8px;
+          margin-top: -4px; }
+  .main .hikoukai_box_wrap h2.black_bar, .main .popular-offer h2.black_bar {
+    border-left: solid 5px #333;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-left: 10px; }
+    .main .hikoukai_box_wrap h2.black_bar .text, .main .popular-offer h2.black_bar .text {
+      display: inline-block;
+      margin-left: 10px;
+      margin-top: 0; }
+  .main .hikoukai_box_wrap .hikoukai_box, .main .popular-offer .hikoukai_box {
+    width: 680px;
+    border: 6px #ecece5 solid;
+    padding: 0px;
+    overflow: hidden;
+    padding-bottom: 0;
+    height: 250px;
+    line-height: 250px;
+    display: inline-block;
+    background: url(../../img/pc/en_bokasi.png);
+    background-size: cover;
+    vertical-align: middle;
+    text-align: center; }
+  .main .area_job_wrap h2.black_bar {
+    border-left: solid 5px #333;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-left: 10px; }
+    .main .area_job_wrap h2.black_bar .text {
+      display: inline-block;
+      margin-left: 10px;
+      margin-top: 0; }
+  .main .area_job_wrap .read {
+    padding: 0 20px;
+    font-size: 1.2rem;
+    line-height: 3rem; }
+    .main .area_job_wrap .read .power {
+      color: #ff636b;
+      font-weight: bold; }
+  .main .area_job_wrap .area_job {
+    width: 680px;
+    border: 6px #ecece5 solid;
+    padding: 20px;
+    overflow: hidden;
+    padding-bottom: 0;
+    padding: 20px; }
+    .main .area_job_wrap .area_job a {
+      width: 45%;
+      display: inline-block;
+      color: #333;
+      font-size: 12px;
+      line-height: 3rem; }
+      .main .area_job_wrap .area_job a span.caret-right {
+        color: #53bfe2;
+        margin-right: 2px; }
+
+.gaiyou_table h2.black_bar {
+  border-left: solid 5px #333;
+  display: inline-block;
+  height: 28px;
+  line-height: 28px;
+  margin-left: 10px; }
+  .gaiyou_table h2.black_bar .text {
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 0; }
+.gaiyou_table table {
+  width: 100%;
+  border: solid 1px #ebece7; }
+  .gaiyou_table table td:nth-of-type(1) {
+    width: 20%;
+    background: #ebece7;
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold; }
+  .gaiyou_table table td:nth-of-type(2) {
+    background: #fff;
+    border-bottom: solid 1px #ebece7;
+    text-align: left;
+    padding: 10px 20px;
+    font-weight: normal; }
+    .gaiyou_table table td:nth-of-type(2) .iconbox {
+      color: #ff636b;
+      display: inline-block;
+      border: solid 1px #ff636b;
+      padding: 2px 4px;
+      margin-right: 2px;
+      font-size: 1rem; }
+    .gaiyou_table table td:nth-of-type(2) .tread {
+      font-size: 1.3rem;
+      line-height: 2.2rem;
+      margin: 10px 0;
+      display: inline-block; }
+
+.kyuujin_top {
+  position: relative; }
+  .kyuujin_top .favorite-icon {
+    position: absolute;
+    top: 0px;
+    right: 0; }
+  .kyuujin_top .title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: inline-block; }
+  .kyuujin_top .read {
+    color: #ff636b;
+    display: block;
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    width: 80%; }
+  .kyuujin_top .iconbox {
+    color: #ff636b;
+    display: inline-block;
+    border: solid 1px #ff636b;
+    padding: 2px 4px;
+    margin-right: 2px; }
+  .kyuujin_top .photo_read_wrap {
+    margin-top: 20px; }
+    .kyuujin_top .photo_read_wrap img {
+      width: 200px; }
+    .kyuujin_top .photo_read_wrap .photo_read {
+      vertical-align: top;
+      margin-left: 20px; }
+
+/* ========== 27登録フォーム  ========== */
+.wrap_regist {
+  background: #acdeff;
+  width: 100%;
+  margin: 0 auto; }
+
+.wrap .main_regist {
+  width: 100%;
+  margin: 0 auto; }
+
+.regist-27 {
+  margin: 0 auto;
+  background: #f00;
+  background: url("../../img/pc/27bg.png") no-repeat left top;
+  width: 980px;
+  height: 548px;
+  position: relative;
+  overflow: hidden; }
+  .regist-27 .step_wrap {
+    position: absolute;
+    top: 10px;
+    right: 3px;
+    width: 524px; }
+    .regist-27 .step_wrap h2 {
+      padding-top: 15px;
+      text-align: center;
+      background: #fff;
+      border-radius: 10px 10px 0 0; }
+    .regist-27 .step_wrap .service-form {
+      width: 524px;
+      height: 440px;
+      background: #fff;
+      border-radius: 0 0 10px 10px;
+      padding: 12px; }
+      .regist-27 .step_wrap .service-form .carousel-inner {
+        margin-bottom: 0px;
+        height: 510px; }
+        .regist-27 .step_wrap .service-form .carousel-inner .form-head {
+          margin-left: 10px; }
+          .regist-27 .step_wrap .service-form .carousel-inner .form-head span {
+            margin-left: 8px; }
+          .regist-27 .step_wrap .service-form .carousel-inner .form-head .pull-right {
+            margin-top: 4px; }
+      .regist-27 .step_wrap .service-form .carousel-inner > div {
+        height: 500px; }
+      .regist-27 .step_wrap .service-form .carousel-control {
+        position: absolute;
+        top: 342px;
+        left: 32px;
+        opacity: 1;
+        margin-left: 40px; }
+        .regist-27 .step_wrap .service-form .carousel-control:hover {
+          opacity: 0.4; }
+      .regist-27 .step_wrap .service-form .carousel-control-next {
+        position: absolute;
+        top: 342px;
+        left: 188px;
+        opacity: 1;
+        margin-left: 40px; }
+        .regist-27 .step_wrap .service-form .carousel-control-next:hover {
+          opacity: 0.4; }
+      .regist-27 .step_wrap .service-form .carousel-control-prev {
+        position: absolute;
+        top: 342px;
+        left: 0px;
+        opacity: 1;
+        margin-left: 40px; }
+        .regist-27 .step_wrap .service-form .carousel-control-prev:hover {
+          opacity: 0.4; }
+      .regist-27 .step_wrap .service-form .carousel-control-submit {
+        position: absolute;
+        top: 312px;
+        left: 188px;
+        opacity: 1;
+        margin-left: 40px;
+        border: 0; }
+        .regist-27 .step_wrap .service-form .carousel-control-submit:hover {
+          opacity: 0.4; }
+      .regist-27 .step_wrap .service-form .carousel-control-prev2 {
+        position: absolute;
+        top: 312px;
+        left: 0px;
+        opacity: 1;
+        margin-left: 40px; }
+        .regist-27 .step_wrap .service-form .carousel-control-prev2:hover {
+          opacity: 0.4; }
+      .regist-27 .step_wrap .service-form .question-1 {
+        margin-top: 16px; }
+        .regist-27 .step_wrap .service-form .question-1 .value {
+          position: relative;
+          display: block; }
+          .regist-27 .step_wrap .service-form .question-1 .value .items {
+            font-size: 12px;
+            width: 154px;
+            height: 58px;
+            line-height: 58px;
+            display: inline-block;
+            vertical-align: top;
+            margin: 5px 0px 5px 10px;
+            border: 1px solid #ecece5;
+            padding: 0; }
+            .regist-27 .step_wrap .service-form .question-1 .value .items input[type="checkbox"] {
+              display: none; }
+            .regist-27 .step_wrap .service-form .question-1 .value .items label {
+              margin: 0px;
+              width: 150px;
+              height: 58px;
+              display: block;
+              font-weight: normal;
+              padding: 0;
+              padding-left: 10px;
+              position: relative;
+              z-index: 10001; }
+              .regist-27 .step_wrap .service-form .question-1 .value .items label .checkbox-icon:after {
+                content: '';
+                width: 22px;
+                height: 22px;
+                font-size: 15px;
+                display: inline-block;
+                background-color: white;
+                border: 1px solid #ecece5;
+                vertical-align: middle;
+                z-index: 10001; }
+              .regist-27 .step_wrap .service-form .question-1 .value .items label input[type="checkbox"]:checked + .checkbox-icon:after {
+                position: relative;
+                content: '\2713';
+                background-color: white;
+                border: 1px solid #ecece5;
+                color: #ff636b;
+                text-align: center;
+                line-height: 1.8rem;
+                z-index: 10001; }
+              .regist-27 .step_wrap .service-form .question-1 .value .items label input[type="checkbox"]:checked + .checkbox-icon:before {
+                position: absolute;
+                left: 0;
+                content: '';
+                background-color: #ff636b;
+                display: inline-block;
+                border: 1px solid #ff636b;
+                width: 154px;
+                height: 58px;
+                text-align: center;
+                line-height: 1.8rem;
+                z-index: 10000; }
+              .regist-27 .step_wrap .service-form .question-1 .value .items label .text {
+                position: relative;
+                z-index: 10001;
+                display: inline-block;
+                margin: 0 0 0 5px;
+                line-height: 1.4rem;
+                height: 100%; }
+              .regist-27 .step_wrap .service-form .question-1 .value .items label .twoline {
+                top: 8px; }
+              .regist-27 .step_wrap .service-form .question-1 .value .items label input[type="checkbox"]:checked + .checkbox-icon + .text {
+                color: #fff; }
+      .regist-27 .step_wrap .service-form .button-02 {
+        text-align: center;
+        padding-top: 8px; }
+        .regist-27 .step_wrap .service-form .button-02 .kiyaku1 {
+          position: relative;
+          top: 90px;
+          left: 0px; }
+          .regist-27 .step_wrap .service-form .button-02 .kiyaku1 .text {
+            color: #333;
+            font-size: 1.2rem; }
+        .regist-27 .step_wrap .service-form .button-02 .kiyaku2 {
+          position: relative;
+          top: 90px;
+          left: 20px; }
+          .regist-27 .step_wrap .service-form .button-02 .kiyaku2 .text {
+            color: #333;
+            font-size: 1.2rem; }
+      .regist-27 .step_wrap .service-form .button-02ex-prev {
+        margin: 0 10px;
+        display: inline-block;
+        width: 170px;
+        height: 70px;
+        line-height: 70px;
+        border-radius: 6px;
+        text-align: center;
+        color: #333;
+        font-size: 1.8rem;
+        font-weight: bold; }
+      .regist-27 .step_wrap .service-form .button-02ex-next {
+        margin: 0 10px;
+        display: inline-block;
+        width: 292px;
+        height: 70px;
+        line-height: 70px;
+        border-radius: 6px;
+        text-align: center;
+        color: #fff;
+        font-size: 1.8rem;
+        font-weight: bold; }
+        .regist-27 .step_wrap .service-form .button-02ex-next::before {
+          content: "";
+          width: 290px;
+          height: 70px;
+          background: url(../../img/pc/sd-right.png) no-repeat right 14px center;
+          background-size: 4%;
+          color: #fff;
+          font-size: 2rem;
+          position: absolute;
+          left: 0px;
+          top: 0px; }
+      .regist-27 .step_wrap .service-form .btn_blue {
+        background: #53a3e2; }
+      .regist-27 .step_wrap .service-form .glay_line {
+        background: #fff;
+        border: 1px solid #ecece5; }
+      .regist-27 .step_wrap .service-form .question-2, .regist-27 .step_wrap .service-form .question-3, .regist-27 .step_wrap .service-form .question-4 {
+        margin-top: 16px; }
+        .regist-27 .step_wrap .service-form .question-2 .key, .regist-27 .step_wrap .service-form .question-3 .key, .regist-27 .step_wrap .service-form .question-4 .key {
+          float: left;
+          font-size: 12px;
+          font-weight: bold;
+          width: 144px;
+          position: relative;
+          margin-top: 24px; }
+          .regist-27 .step_wrap .service-form .question-2 .key .text, .regist-27 .step_wrap .service-form .question-3 .key .text, .regist-27 .step_wrap .service-form .question-4 .key .text {
+            margin-left: 10px; }
+          .regist-27 .step_wrap .service-form .question-2 .key .power-reverse, .regist-27 .step_wrap .service-form .question-3 .key .power-reverse, .regist-27 .step_wrap .service-form .question-4 .key .power-reverse {
+            border-radius: 0;
+            width: 30px;
+            font-size: 10px;
+            margin-left: 3px;
+            text-align: center; }
+          .regist-27 .step_wrap .service-form .question-2 .key .not-power-reverse, .regist-27 .step_wrap .service-form .question-3 .key .not-power-reverse, .regist-27 .step_wrap .service-form .question-4 .key .not-power-reverse {
+            border-radius: 0;
+            width: 30px;
+            font-size: 10px;
+            margin-left: 3px;
+            text-align: center;
+            background: #ccc;
+            padding: 2px 5px; }
+        .regist-27 .step_wrap .service-form .question-2 .value, .regist-27 .step_wrap .service-form .question-3 .value, .regist-27 .step_wrap .service-form .question-4 .value {
+          float: left;
+          width: 500px;
+          width: auto; }
+          .regist-27 .step_wrap .service-form .question-2 .value .items, .regist-27 .step_wrap .service-form .question-3 .value .items, .regist-27 .step_wrap .service-form .question-4 .value .items {
+            margin-top: -4px;
+            margin-left: -8px;
+            margin-bottom: 13px;
+            font-size: 12px;
+            position: relative;
+            height: 20px; }
+          .regist-27 .step_wrap .service-form .question-2 .value .items, .regist-27 .step_wrap .service-form .question-3 .value .items, .regist-27 .step_wrap .service-form .question-4 .value .items {
+            margin-top: 8px; }
+            .regist-27 .step_wrap .service-form .question-2 .value .items .form-control, .regist-27 .step_wrap .service-form .question-3 .value .items .form-control, .regist-27 .step_wrap .service-form .question-4 .value .items .form-control {
+              display: inline-block;
+              width: 360px;
+              height: 48px; }
+
+/**/
+/* ========== 27登録フォーム  ========== */
+.wrap_regist {
+  background: #acdeff;
+  width: 100%;
+  margin: 0 auto; }
+
+.wrap .main_regist {
+  width: 100%;
+  margin: 0 auto; }
+
+.regist-27cp {
+  margin: 20px auto 0;
+  width: 680px;
+  height: 544px;
+  position: relative;
+  overflow: hidden; }
+  .regist-27cp .step_wrap {
+    margin: 0 auto;
+    width: 100%; }
+    .regist-27cp .step_wrap h2 {
+      padding-top: 15px;
+      text-align: left;
+      background: #fff;
+      border-radius: 0;
+      margin-bottom: 10px; }
+    .regist-27cp .step_wrap .service-form {
+      width: 100%;
+      height: 480px;
+      background: #fff;
+      border-radius: 0;
+      padding: 12px;
+      border: 6px #ecece5 solid;
+      padding: 20px 20px; }
+      .regist-27cp .step_wrap .service-form .carousel-inner {
+        margin-bottom: 0px;
+        height: 510px; }
+        .regist-27cp .step_wrap .service-form .carousel-inner .form-head {
+          margin-left: 10px; }
+          .regist-27cp .step_wrap .service-form .carousel-inner .form-head span {
+            margin-left: 8px; }
+          .regist-27cp .step_wrap .service-form .carousel-inner .form-head .pull-right {
+            margin-top: 4px;
+            margin-right: 20px; }
+      .regist-27cp .step_wrap .service-form .carousel-inner > div {
+        height: 500px; }
+      .regist-27cp .step_wrap .service-form .carousel-control {
+        position: absolute;
+        top: 352px;
+        left: 64px;
+        opacity: 1;
+        margin-left: 40px; }
+        .regist-27cp .step_wrap .service-form .carousel-control:hover {
+          opacity: 0.4; }
+      .regist-27cp .step_wrap .service-form .carousel-control-next {
+        position: absolute;
+        top: 352px;
+        left: 236px;
+        opacity: 1;
+        margin-left: 40px; }
+        .regist-27cp .step_wrap .service-form .carousel-control-next:hover {
+          opacity: 0.4; }
+      .regist-27cp .step_wrap .service-form .carousel-control-prev {
+        position: absolute;
+        top: 352px;
+        left: 52px;
+        opacity: 1;
+        margin-left: 40px; }
+        .regist-27cp .step_wrap .service-form .carousel-control-prev:hover {
+          opacity: 0.4; }
+      .regist-27cp .step_wrap .service-form .carousel-control-submit {
+        position: absolute;
+        top: 322px;
+        left: 236px;
+        opacity: 1;
+        margin-left: 40px;
+        border: 0; }
+        .regist-27cp .step_wrap .service-form .carousel-control-submit:hover {
+          opacity: 0.4; }
+      .regist-27cp .step_wrap .service-form .carousel-control-prev2 {
+        position: absolute;
+        top: 322px;
+        left: 52px;
+        opacity: 1;
+        margin-left: 40px; }
+        .regist-27cp .step_wrap .service-form .carousel-control-prev2:hover {
+          opacity: 0.4; }
+      .regist-27cp .step_wrap .service-form .question-1 {
+        margin-top: 16px; }
+        .regist-27cp .step_wrap .service-form .question-1 .value {
+          position: relative;
+          display: block; }
+          .regist-27cp .step_wrap .service-form .question-1 .value .items {
+            font-size: 12px;
+            width: 184px;
+            height: 58px;
+            line-height: 58px;
+            display: inline-block;
+            vertical-align: top;
+            margin: 5px 0px 5px 10px;
+            border: 1px solid #ecece5;
+            padding: 0; }
+            .regist-27cp .step_wrap .service-form .question-1 .value .items input[type="checkbox"] {
+              display: none; }
+            .regist-27cp .step_wrap .service-form .question-1 .value .items label {
+              margin: 0px;
+              width: 180px;
+              height: 58px;
+              display: block;
+              font-weight: normal;
+              padding: 0;
+              padding-left: 10px;
+              position: relative;
+              z-index: 10001; }
+              .regist-27cp .step_wrap .service-form .question-1 .value .items label .checkbox-icon:after {
+                content: '';
+                width: 22px;
+                height: 22px;
+                font-size: 15px;
+                display: inline-block;
+                background-color: white;
+                border: 1px solid #ecece5;
+                vertical-align: middle;
+                z-index: 10001; }
+              .regist-27cp .step_wrap .service-form .question-1 .value .items label input[type="checkbox"]:checked + .checkbox-icon:after {
+                position: relative;
+                content: '\2713';
+                background-color: white;
+                border: 1px solid #ecece5;
+                color: #ff636b;
+                text-align: center;
+                line-height: 1.8rem;
+                z-index: 10001; }
+              .regist-27cp .step_wrap .service-form .question-1 .value .items label input[type="checkbox"]:checked + .checkbox-icon:before {
+                position: absolute;
+                left: 0;
+                content: '';
+                background-color: #ff636b;
+                display: inline-block;
+                border: 1px solid #ff636b;
+                width: 184px;
+                height: 58px;
+                text-align: center;
+                line-height: 1.8rem;
+                z-index: 10000; }
+              .regist-27cp .step_wrap .service-form .question-1 .value .items label .text {
+                position: relative;
+                z-index: 10001;
+                display: inline-block;
+                margin: 0 0 0 5px;
+                line-height: 1.4rem;
+                height: 100%; }
+              .regist-27cp .step_wrap .service-form .question-1 .value .items label .twoline {
+                top: 8px; }
+              .regist-27cp .step_wrap .service-form .question-1 .value .items label input[type="checkbox"]:checked + .checkbox-icon + .text {
+                color: #fff; }
+      .regist-27cp .step_wrap .service-form .button-02 {
+        text-align: center;
+        padding-top: 8px; }
+        .regist-27cp .step_wrap .service-form .button-02 .kiyaku1 {
+          position: relative;
+          top: 110px;
+          left: 0px; }
+          .regist-27cp .step_wrap .service-form .button-02 .kiyaku1 .text {
+            color: #333;
+            font-size: 1.2rem; }
+        .regist-27cp .step_wrap .service-form .button-02 .kiyaku2 {
+          position: relative;
+          top: 110px;
+          left: 20px; }
+          .regist-27cp .step_wrap .service-form .button-02 .kiyaku2 .text {
+            color: #333;
+            font-size: 1.2rem; }
+      .regist-27cp .step_wrap .service-form .button-02ex-prev {
+        margin: 0 10px;
+        display: inline-block;
+        width: 170px;
+        height: 70px;
+        line-height: 70px;
+        border-radius: 6px;
+        text-align: center;
+        color: #333;
+        font-size: 1.8rem;
+        font-weight: bold; }
+      .regist-27cp .step_wrap .service-form .button-02ex-next {
+        margin: 0 10px;
+        display: inline-block;
+        width: 292px;
+        height: 70px;
+        line-height: 70px;
+        border-radius: 6px;
+        text-align: center;
+        color: #fff;
+        font-size: 1.8rem;
+        font-weight: bold; }
+        .regist-27cp .step_wrap .service-form .button-02ex-next::before {
+          content: "";
+          width: 290px;
+          height: 70px;
+          background: url(../../img/pc/sd-right.png) no-repeat right 14px center;
+          background-size: 4%;
+          color: #fff;
+          font-size: 2rem;
+          position: absolute;
+          left: 0px;
+          top: 0px; }
+      .regist-27cp .step_wrap .service-form .btn_blue {
+        background: #53a3e2; }
+      .regist-27cp .step_wrap .service-form .glay_line {
+        background: #fff;
+        border: 1px solid #ecece5; }
+      .regist-27cp .step_wrap .service-form .question-2, .regist-27cp .step_wrap .service-form .question-3, .regist-27cp .step_wrap .service-form .question-4 {
+        margin-top: 16px; }
+        .regist-27cp .step_wrap .service-form .question-2 .key, .regist-27cp .step_wrap .service-form .question-3 .key, .regist-27cp .step_wrap .service-form .question-4 .key {
+          float: left;
+          font-size: 12px;
+          font-weight: bold;
+          width: 144px;
+          position: relative;
+          margin-top: 24px; }
+          .regist-27cp .step_wrap .service-form .question-2 .key .text, .regist-27cp .step_wrap .service-form .question-3 .key .text, .regist-27cp .step_wrap .service-form .question-4 .key .text {
+            margin-left: 10px; }
+          .regist-27cp .step_wrap .service-form .question-2 .key .power-reverse, .regist-27cp .step_wrap .service-form .question-3 .key .power-reverse, .regist-27cp .step_wrap .service-form .question-4 .key .power-reverse {
+            border-radius: 0;
+            width: 30px;
+            font-size: 10px;
+            margin-left: 3px;
+            text-align: center; }
+          .regist-27cp .step_wrap .service-form .question-2 .key .not-power-reverse, .regist-27cp .step_wrap .service-form .question-3 .key .not-power-reverse, .regist-27cp .step_wrap .service-form .question-4 .key .not-power-reverse {
+            border-radius: 0;
+            width: 30px;
+            font-size: 10px;
+            margin-left: 3px;
+            text-align: center;
+            background: #ccc;
+            padding: 2px 5px; }
+        .regist-27cp .step_wrap .service-form .question-2 .value, .regist-27cp .step_wrap .service-form .question-3 .value, .regist-27cp .step_wrap .service-form .question-4 .value {
+          float: left;
+          width: 500px;
+          width: auto; }
+          .regist-27cp .step_wrap .service-form .question-2 .value .items, .regist-27cp .step_wrap .service-form .question-3 .value .items, .regist-27cp .step_wrap .service-form .question-4 .value .items {
+            margin-top: -4px;
+            margin-left: -8px;
+            margin-bottom: 13px;
+            font-size: 12px;
+            position: relative;
+            height: 20px; }
+          .regist-27cp .step_wrap .service-form .question-2 .value .items, .regist-27cp .step_wrap .service-form .question-3 .value .items, .regist-27cp .step_wrap .service-form .question-4 .value .items {
+            margin-top: 8px; }
+            .regist-27cp .step_wrap .service-form .question-2 .value .items .form-control, .regist-27cp .step_wrap .service-form .question-3 .value .items .form-control, .regist-27cp .step_wrap .service-form .question-4 .value .items .form-control {
+              display: inline-block;
+              width: 440px;
+              height: 48px; }
+
+/**/
+.miryoku .point-description {
+  width: 680px;
+  border: 6px #ecece5 solid;
+  padding: 20px;
+  overflow: hidden; }
+.miryoku .title {
+  overflow: hidden;
+  position: relative; }
+  .miryoku .title span:nth-of-type(1) {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: block; }
+  .miryoku .title span:nth-of-type(2) {
+    font-size: 1.4rem;
+    font-weight: normal; }
+  .miryoku .title .font_big {
+    font-size: 2rem !important; }
+  .miryoku .title span.user {
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: block;
+    margin: 5px 0 10px; }
+  .miryoku .title .body {
+    width: 460px;
+    display: block;
+    float: left;
+    font-size: 1.2rem;
+    line-height: 2rem; }
+  .miryoku .title img.illust {
+    position: absolute;
+    bottom: 20px;
+    right: 20px; }
+.miryoku .body {
+  margin-top: 10px; }
+  .miryoku .body div {
+    width: 47%;
+    display: inline-block;
+    vertical-align: top; }
+    .miryoku .body div span:nth-of-type(1) {
+      font-size: 16px;
+      font-weight: bold;
+      background: #f00;
+      display: block;
+      text-align: center;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      line-height: 3rem;
+      margin-bottom: 8px; }
+    .miryoku .body div .bg_pink {
+      background: #ff636b !important; }
+    .miryoku .body div .bg_blue {
+      background: #53bfe2 !important; }
+    .miryoku .body div span:nth-of-type(2) {
+      font-size: 12px; }
+  .miryoku .body div:nth-of-type(1) {
+    margin-right: 30px; }
+.miryoku .btn_pink {
+  margin: 0 10px;
+  display: inline-block;
+  position: relative;
+  width: 122px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: 0;
+  background: #ff636b; }
+.miryoku .btn_pink_border {
+  background: #fff;
+  border: solid 1px #ff636b;
+  color: #ff636b; }
+.miryoku .freeword {
+  width: 350px;
+  height: 40px;
+  border-radius: 6px;
+  border: solid 1px #ccc;
+  padding: 0 10px; }
+.miryoku .free-word {
+  width: 680px;
+  border: 6px #ecece5 solid;
+  padding: 20px;
+  margin-bottom: 16px; }
+  .miryoku .free-word .free-word-search-btn {
+    float: left; }
+    .miryoku .free-word .free-word-search-btn span {
+      margin-left: 10px; }
+  .miryoku .free-word .free-word-search-change-btn {
+    float: right; }
+.miryoku dl {
+  font-size: 12px; }
+  .miryoku dl dt {
+    display: inline-block;
+    width: 20%;
+    color: #ff636b;
+    vertical-align: top;
+    padding: 10px 5px; }
+  .miryoku dl dd {
+    display: inline-block;
+    position: relative;
+    width: 78%;
+    padding: 10px 0;
+    font-weight: bold; }
+    .miryoku dl dd::before {
+      position: absolute;
+      width: calc((100/78)*20% + 100%);
+      content: "";
+      border-bottom: solid 1px #ccc;
+      left: calc((100/78)*-20%);
+      bottom: 0; }

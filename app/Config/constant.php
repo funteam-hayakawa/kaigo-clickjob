@@ -70,8 +70,8 @@ $config['institution_type_search_disp'] = array(
   '1'  => array('text' => '特別養護老人ホーム',       'search_key' => array(4)),
   '2'  => array('text' => '有料老人ホーム',           'search_key' => array(5, 26)),
   '3'  => array('text' => '介護老人保健施設',         'search_key' => array(3)),
-  '4'  => array('text' => 'サービス付き高齢者向け住宅', 'search_key' => array(22)),
   '5'  => array('text' => 'グループホーム',           'search_key' => array(19)),
+  '4'  => array('text' => 'サービス付き高齢者向け住宅', 'search_key' => array(22)),
   '6'  => array('text' => '小規模多機能',             'search_key' => array(24)),
   '7'  => array('text' => 'デイサービス・デイケア',    'search_key' => array(12)),
   '8'  => array('text' => '訪問介護',                'search_key' => array(20)),
@@ -119,9 +119,11 @@ $config['application_license_search_disp'] = array(
   '6'  => array('text' => 'ケアマネジャー',          'search_key' => array(5)),
   '7'  => array('text' => '社会福祉主事',            'search_key' => array(15)),
   '8'  => array('text' => '社会福祉士',              'search_key' => array(10)),
-  '9'  => array('text' => 'PT・OT',                'search_key' => array(12, 13)),
-  '10' => array('text' => '正・准看護師',            'search_key' => array(1, 2, 3, 4)),
-  '11' => array('text' => 'その他',                 'search_key' => array(17, 18, 19, 20, 21, 22, 23)),
+  '9'  => array('text' => 'PT',                'search_key' => array(12)),
+  '10'  => array('text' => 'OT',                'search_key' => array(13)),
+  '11' => array('text' => '正看護師',            'search_key' => array(1, 3, 4)),
+  '12' => array('text' => '准看護師',            'search_key' => array(2, 3, 4)),
+  '13' => array('text' => 'その他',                 'search_key' => array(17, 18, 19, 20, 21, 22, 23)),
 );
 
 //雇用形態から探す (雇用形態)
@@ -137,10 +139,12 @@ $config['employment_type'] = array(
 
 //雇用形態から探す (雇用形態 検索用選択枝)
 $config['employment_type_search_disp'] = array(
-  '1' => array('text' => '正社員・契約社員',          'search_key' => array(1, 2, 6, 7)),
-  '2' => array('text' => '正社員・契約社員(日勤のみ)', 'search_key' => array(6, 7)),
-  '3' => array('text' => 'パート',                  'search_key' => array(3, 4, 5)),
-  '4' => array('text' => 'パート(日勤のみ)',          'search_key' => array(4)),
+  '1' => array('text' => '正社員',          'search_key' => array(1, 6)),
+  '2' => array('text' => '契約社員',          'search_key' => array(2, 7)),
+  '5' => array('text' => 'パート',                  'search_key' => array(3, 4, 5)),
+  '3' => array('text' => '正社員(日勤のみ)', 'search_key' => array(6)),
+  '4' => array('text' => '契約社員(日勤のみ)', 'search_key' => array(7)),
+  '6' => array('text' => 'パート(日勤のみ)',          'search_key' => array(4)),
 );
 
 //働きやすさから探す" (融通)

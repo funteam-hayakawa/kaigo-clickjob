@@ -1,0 +1,46 @@
+@charset "UTF-8";
+/* ========== キービジュアル ========== */
+.key-visual {
+  width: 100%;
+  height: 320px;
+  text-align: center;
+  margin-top: 0px;
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden; }
+  .key-visual img {
+    width: 1280px;
+    margin: 0 auto; }
+  .key-visual .slick-prev {
+    left: 32px;
+    z-index: 100; }
+  .key-visual .slick-next {
+    right: 32px; }
+  .key-visual .slide1, .key-visual .slide2 {
+    width: 100%;
+    background: #f00; }
+  .key-visual .slide1 {
+    background: #96c6e8; }
+  .key-visual .slide2 {
+    background: #daf0fd; }
+
+.side .contents-4 .side-offer .item .image img {
+  width: 100%;
+  height: auto; }
+
+.main .contents-9 h2 .power-reverse {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 10px;
+  padding-top: 0px;
+  padding-left: 16px;
+  padding-right: 8px;
+  height: 28px;
+  line-height: 28px;
+  margin-top: -3px; }
+
+/**/
+.main .contents-1 .search-map img {
+  position: absolute;
+  top: 15px;
+  width: 640px; }

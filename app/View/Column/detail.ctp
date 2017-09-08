@@ -59,7 +59,7 @@ $(function(){
     });
 });    
 </script>
-<link rel="stylesheet" type="text/css" href="/css/column.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/css/column/column.css" media="screen">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->

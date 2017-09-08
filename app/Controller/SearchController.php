@@ -229,6 +229,12 @@ class SearchController extends AppController {
         $this->render("detail");
     }
     public function result() {
+        if (isset($this->request->data['x'])){
+            unset($this->request->data['x']);
+        }
+        if (isset($this->request->data['y'])){
+            unset($this->request->data['y']);
+        }
         $this->Prg->commonProcess();
         $searchCond = $this->Prg->parsedParams();
         
@@ -250,7 +256,12 @@ class SearchController extends AppController {
             $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
         }
         if (isset($searchCond['line'])){
-            $this->set('stationArray', $this->stationOptions($searchCond['line']));
+            $tmp = $this->stationOptions($searchCond['line']);
+            $stationArray = array();
+            foreach ($tmp as $k=>$t){
+                $stationArray[$k] = $t['line'].'/'.$t['station'];
+            }
+            $this->set('stationArray', $stationArray);
         }
         
         $this->set('officeSearchResult',$officeSearchResult);
@@ -340,13 +351,6 @@ class SearchController extends AppController {
         $this->set('retirement', Configure::read("retirement"));
         $this->set('reemployment', Configure::read("reemployment"));
         $this->set('retirement_pay', Configure::read("retirement_pay"));
-    }
-    private function extractDispArray($array){
-        $r = array();
-        foreach ($array as $k => $d){
-            $r[$k] = $d['text'];
-        }
-        return $r;
     }
     private function createFindCond($searchCond){
         $officeCond = array(); /* officeの条件をこっちに詰める */
@@ -729,23 +733,6 @@ class SearchController extends AppController {
         }
         return !empty($returnCond) ? $returnCond : array();
     }
-    private function formatRecruitFlexTypeLabel($flexTypeArray){
-        $conf = Configure::read("recruit_flex_type_label");
-        $idxArray = array();
-        $ret = array();
-        foreach ($flexTypeArray as $f){
-            $idxArray[$f] = 1;
-        }
-        foreach ($conf as $i=>$c){
-            if (!isset($ret[$c['type']])){
-                $ret[$c['type']] = array();
-            }
-            if (isset($idxArray[$i])){
-                $ret[$c['type']][] = $c['text'];
-            }
-        }
-        return $ret;
-    }
     /* こだわり条件URL情報コンフィグロード、整形 */
     private function getCommitmentConf(){
         /* こだわり条件のURLと検索条件のセット */
@@ -845,14 +832,30 @@ class SearchController extends AppController {
         return $c == count($cond['line']);
     }
     private function isValidStationCode($cond){
+        $stations = array();
+        $lines = array();
+        foreach ($cond['station'] as $s){
+            $t = explode(':', $s);
+            if (!isset($t[0]) || !isset($t[0])){
+                return false;
+            }
+            $lines[$t[0]] = $t[0];
+            $stations[$t[1]] = $t[1];
+        }
+        foreach ($lines as $l){
+            if (!in_array($l, $cond['line'])){
+                return false;
+            }
+        }
         $c = $this->Station->find('count', array(
           'conditions' => array(
-            'Station.line_code' => $cond['line'],
-            'Station.station_code' => $cond['station'],
+            array('Station.line_code' => $cond['line']),
+            'Station.line_code' => $lines,
+            'Station.station_code' => $stations,
             'Station.del_flg' => 0,
           ),
           'group' => array('Station.station_code'),
         ));
-        return $c == count($cond['station']);
+        return $c == count($stations);
     }
 }
