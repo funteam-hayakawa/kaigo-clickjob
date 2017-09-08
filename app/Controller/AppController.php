@@ -68,6 +68,7 @@ class AppController extends Controller {
             array("FIND_IN_SET('20', Office.institution_type)"),
             array("FIND_IN_SET('21', Office.institution_type)"),
             array("FIND_IN_SET('22', Office.institution_type)"),
+            array("FIND_IN_SET('23', Office.institution_type)"),
             array("FIND_IN_SET('24', Office.institution_type)"),
             array("FIND_IN_SET('25', Office.institution_type)"),
             array("FIND_IN_SET('26', Office.institution_type)"),
@@ -247,12 +248,13 @@ class AppController extends Controller {
             'Station.line_code' => $lineIds,
             'Station.del_flg' => 0,
           ),
-          'group' => array('Station.station_code'),
-          'order' => array('Station.station_code'),
+          'group' => array('Station.line_code, Station.station_code'),
+          'order' => array('Station.line_code, Station.station_code'),
         ));
         $ret = array();
+        
         foreach ($station as $s){
-            $ret[$s['Station']['station_code']] = $s['Station']['station_name'];
+            $ret[$s['Station']['line_code'].':'.$s['Station']['station_code']] = array('line' => $s['Station']['line_name'], 'station' => $s['Station']['station_name']);
         }
         return $ret;
     }
@@ -402,10 +404,18 @@ class AppController extends Controller {
         if (empty($array) || !is_array($array)){
             return array();
         }
+        $stations = array();
+        foreach ($array as $s){
+            $t = explode(':', $s);
+            if (!isset($t[0]) || !isset($t[0])){
+                return array();
+            }
+            $stations[$t[1]] = $t[1];
+        }
         $conditions = array();
         $station = $this->Station->find('all', array(
           'conditions' => array(
-            'Station.station_code' => $array,
+            'Station.station_code' => $stations,
             'Station.del_flg' => 0,
           ),
           'group' => array('Station.station_code'),

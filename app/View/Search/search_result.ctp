@@ -61,17 +61,20 @@
               });//ajax
           });
           $(document).on('change', '.Search-line input',function(){
-            checked = $('[name="data[Search][line][]"]:checked').map(function(){
+            var checked_lines = $('[name="data[Search][line][]"]:checked').map(function(){
               return $(this).val();
             }).get();
-            if (!checked.length){
+            if (!checked_lines.length){
               $('.Search-station').remove();
               return;
             }
+            var checked_stations = $('[name="data[Search][station][]"]:checked').map(function(){
+              return $(this).val();
+            }).get();
             $.ajax({
                type: "POST",
                url: "/area_option/station/",
-               data: {'line_ids' : checked},
+               data: {'line_ids' : checked_lines},
                success: function(msg){
                  if (!isJSON(msg)){
                     alert("予期しないエラーが発生しました");
@@ -81,8 +84,12 @@
                  $('.Search-station').remove();
                  var htm = '';
                  $.each(result.value, function(i, e){
-                     htm += '<div class="Search-station"><input type="checkbox" name="data[Search][station][]" value="' + i + 
-                     '" id="SearchStation' + i + '" /><label for="SearchStation' + i + '">'+ e +'</label></div>' + "\n";
+                   var checked_str = '';
+                   if($.inArray(i, checked_stations) >= 0){
+                     checked_str = ' checked="checked" ';
+                   }
+                   htm += '<div class="Search-station"><input type="checkbox" name="data[Search][station][]" value="' + i + 
+                     '" id="SearchStation' + i + '" '+checked_str+'/><label for="SearchStation' + i + '">'+ e.line +'/'+ e.station +'</label></div>' + "\n";
                  });
                  $('#Search-station-div').append(htm);
                }

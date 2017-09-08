@@ -250,7 +250,12 @@ class SearchController extends AppController {
             $this->set('lineArray', $this->lineOptions($searchCond['prefecture']));
         }
         if (isset($searchCond['line'])){
-            $this->set('stationArray', $this->stationOptions($searchCond['line']));
+            $tmp = $this->stationOptions($searchCond['line']);
+            $stationArray = array();
+            foreach ($tmp as $k=>$t){
+                $stationArray[$k] = $t['line'].'/'.$t['station'];
+            }
+            $this->set('stationArray', $stationArray);
         }
         
         $this->set('officeSearchResult',$officeSearchResult);
@@ -845,14 +850,30 @@ class SearchController extends AppController {
         return $c == count($cond['line']);
     }
     private function isValidStationCode($cond){
+        $stations = array();
+        $lines = array();
+        foreach ($cond['station'] as $s){
+            $t = explode(':', $s);
+            if (!isset($t[0]) || !isset($t[0])){
+                return false;
+            }
+            $lines[$t[0]] = $t[0];
+            $stations[$t[1]] = $t[1];
+        }
+        foreach ($lines as $l){
+            if (!in_array($l, $cond['line'])){
+                return false;
+            }
+        }
         $c = $this->Station->find('count', array(
           'conditions' => array(
-            'Station.line_code' => $cond['line'],
-            'Station.station_code' => $cond['station'],
+            array('Station.line_code' => $cond['line']),
+            'Station.line_code' => $lines,
+            'Station.station_code' => $stations,
             'Station.del_flg' => 0,
           ),
           'group' => array('Station.station_code'),
         ));
-        return $c == count($cond['station']);
+        return $c == count($stations);
     }
 }
