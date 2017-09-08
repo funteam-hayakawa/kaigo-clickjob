@@ -78,7 +78,7 @@ class AppController extends Controller {
     ); 
     /* 高収入求人特集 */
     public function searchRecruitHighIncome(){
-        return $this->RecruitSheet->find('all', array(
+        $ranking = $this->RecruitSheet->find('all', array(
           'recursive' => 2,
           'conditions' => array_merge($this->commonSearchConditios['recruitSheet'] + $this->commonSearchConditios['office'],
           array(
@@ -90,10 +90,14 @@ class AppController extends Controller {
           'order' => array('RecruitSheet.receipted DESC', 'RecruitSheet.updated DESC'),
           'limit' => 3
         ));
+        foreach ($ranking as $i => $r){
+            $ranking[$i]['RecruitSheet']['recruit_flex_type_label'] = $this->formatRecruitFlexTypeLabel(explode(',', $r['RecruitSheet']['recruit_flex_type']));
+        }
+        return $ranking;
     }
     /* 人気求人ランキング */
     public function searchRecruitRanking(){
-        return $this->RecruitSheetAttention->find('all', array(
+        $ranking = $this->RecruitSheetAttention->find('all', array(
           'joins' => array(
               array(
                   'type' => 'INNER',
@@ -106,6 +110,10 @@ class AppController extends Controller {
           'conditions' => $this->commonSearchConditios['recruitSheet'] + $this->commonSearchConditios['office'],
           'order' => 'RecruitSheetAttention.number',
         ));
+        foreach ($ranking as $i => $r){
+            $ranking[$i]['RecruitSheet']['recruit_flex_type_label'] = $this->formatRecruitFlexTypeLabel(explode(',', $r['RecruitSheet']['recruit_flex_type']));
+        }
+        return $ranking;
     }
     /* サイドバーの求人数取得 */
     public function getRecruitSheetCount(){
@@ -407,10 +415,11 @@ class AppController extends Controller {
         $stations = array();
         foreach ($array as $s){
             $t = explode(':', $s);
-            if (!isset($t[0]) || !isset($t[0])){
-                return array();
+            if (!isset($t[1])){
+                $stations[$t[0]] = $t[0];
+            } else {
+                $stations[$t[1]] = $t[1];
             }
-            $stations[$t[1]] = $t[1];
         }
         $conditions = array();
         $station = $this->Station->find('all', array(
@@ -424,6 +433,30 @@ class AppController extends Controller {
             $conditions[] = array('OfficeStation.station' => $s['Station']['station_name']);
         }
         return !empty($conditions) ? array(array('OR' => $conditions)) : array();
+    }
+    public function extractDispArray($array){
+        $r = array();
+        foreach ($array as $k => $d){
+            $r[$k] = $d['text'];
+        }
+        return $r;
+    }
+    public function formatRecruitFlexTypeLabel($flexTypeArray){
+        $conf = Configure::read("recruit_flex_type_label");
+        $idxArray = array();
+        $ret = array();
+        foreach ($flexTypeArray as $f){
+            $idxArray[$f] = 1;
+        }
+        foreach ($conf as $i=>$c){
+            if (!isset($ret[$c['type']])){
+                $ret[$c['type']] = array();
+            }
+            if (isset($idxArray[$i])){
+                $ret[$c['type']][] = $c['text'];
+            }
+        }
+        return $ret;
     }
     public function beforeFilter() {
         $this->Security->validatePost = false;

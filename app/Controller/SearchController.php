@@ -229,6 +229,12 @@ class SearchController extends AppController {
         $this->render("detail");
     }
     public function result() {
+        if (isset($this->request->data['x'])){
+            unset($this->request->data['x']);
+        }
+        if (isset($this->request->data['y'])){
+            unset($this->request->data['y']);
+        }
         $this->Prg->commonProcess();
         $searchCond = $this->Prg->parsedParams();
         
@@ -345,13 +351,6 @@ class SearchController extends AppController {
         $this->set('retirement', Configure::read("retirement"));
         $this->set('reemployment', Configure::read("reemployment"));
         $this->set('retirement_pay', Configure::read("retirement_pay"));
-    }
-    private function extractDispArray($array){
-        $r = array();
-        foreach ($array as $k => $d){
-            $r[$k] = $d['text'];
-        }
-        return $r;
     }
     private function createFindCond($searchCond){
         $officeCond = array(); /* officeの条件をこっちに詰める */
@@ -733,23 +732,6 @@ class SearchController extends AppController {
             $returnCond[] = array('OR' => $conditions);
         }
         return !empty($returnCond) ? $returnCond : array();
-    }
-    private function formatRecruitFlexTypeLabel($flexTypeArray){
-        $conf = Configure::read("recruit_flex_type_label");
-        $idxArray = array();
-        $ret = array();
-        foreach ($flexTypeArray as $f){
-            $idxArray[$f] = 1;
-        }
-        foreach ($conf as $i=>$c){
-            if (!isset($ret[$c['type']])){
-                $ret[$c['type']] = array();
-            }
-            if (isset($idxArray[$i])){
-                $ret[$c['type']][] = $c['text'];
-            }
-        }
-        return $ret;
     }
     /* こだわり条件URL情報コンフィグロード、整形 */
     private function getCommitmentConf(){
