@@ -1110,13 +1110,13 @@
           <div class="padding-10"></div>
           <div class="border"></div>
           <div class="padding-20"></div>
-          <?php foreach($ranking as $i => $r): ?>
+          <?php foreach($highIncome as $i => $r): ?>
             <a href="<?php echo '/detail/'.$r['RecruitSheet']['recruit_sheet_id'] ?>" class="item">
               <div class="image">
-                <?php if (!empty($r['RecruitSheet']['Office']['OfficeImage']) && !empty($r['Office']['OfficeImage']['name'])): ?>
-                <img src="<?php echo '/read/hospital/'.$r['RecruitSheet']['Office']['OfficeImage']['name']; ?>" alt="">
+                <?php if (!empty($r['Office']['OfficeImage']) && !empty($r['Office']['OfficeImage']['name'])): ?>
+                <img src="<?php echo '/read/hospital/'.$r['Office']['OfficeImage']['name']; ?>" alt="">
                 <?php else: ?>
-                <img src="<?php echo '/img/hospital/nophoto'.($r['RecruitSheet']['Office']['id']%50+1).'.png'; ?>" alt="">
+                <img src="<?php echo '/img/hospital/nophoto'.($r['Office']['id']%50+1).'.png'; ?>" alt="">
                 <?php endif; ?>
                 <span class="rank"><?php echo ($i+1) ?></span>
               </div>
@@ -1124,15 +1124,15 @@
               <div class="description-1">
                 <?php 
                   $str = '';
-                  $str .= $r['RecruitSheet']['Office']['Prefecture']['name'];
-                  if (!empty($r['RecruitSheet']['Office']['State'])){
-                    $str .= $r['RecruitSheet']['Office']['State']['name'];
+                  $str .= $r['Office']['Prefecture']['name'];
+                  if (!empty($r['Office']['State'])){
+                    $str .= $r['Office']['State']['name'];
                   }
-                  if (!empty($r['RecruitSheet']['Office']['City'])){
-                    $str .= $r['RecruitSheet']['Office']['City']['name'];
+                  if (!empty($r['Office']['City'])){
+                    $str .= $r['Office']['City']['name'];
                   }
                  ?>
-                <span><?php echo $r['RecruitSheet']['Office']['name']; ?><?php echo $str ;?></span>
+                <span><?php echo $r['Office']['name']; ?><?php echo $str ;?></span>
                 <?php 
                   foreach ($r['RecruitSheet']['recruit_flex_type_label'] as $k => $label){
                       foreach ($label as $l){
@@ -1159,17 +1159,16 @@
           <div class="border-left">
             <strong>人気の求人特集</strong>
           </div>
-
           <div class="padding-10"></div>
           <div class="border"></div>
           <div class="padding-20"></div>
-          <?php foreach($highIncome as $i => $r): ?>
+          <?php foreach($ranking as $i => $r): ?>
             <a href="<?php echo '/detail/'.$r['RecruitSheet']['recruit_sheet_id'] ?>" class="item">
               <div class="image">
-                <?php if (!empty($r['Office']['OfficeImage']) && !empty($r['Office']['OfficeImage']['name'])): ?>
-                <img src="<?php echo '/read/hospital/'.$r['Office']['OfficeImage']['name']; ?>" alt="">
+                <?php if (!empty($r['RecruitSheet']['Office']['OfficeImage']) && !empty($r['RecruitSheet']['Office']['OfficeImage']['name'])): ?>
+                <img src="<?php echo '/read/hospital/'.$r['RecruitSheet']['Office']['OfficeImage']['name']; ?>" alt="">
                 <?php else: ?>
-                <img src="<?php echo '/img/hospital/nophoto'.($r['Office']['id']%50+1).'.png'; ?>" alt="">
+                <img src="<?php echo '/img/hospital/nophoto'.($r['RecruitSheet']['Office']['id']%50+1).'.png'; ?>" alt="">
                 <?php endif; ?>
                 <span class="rank"><?php echo ($i+1) ?></span>
               </div>
@@ -1177,15 +1176,15 @@
               <div class="description-1">
                 <?php 
                   $str = '';
-                  $str .= $r['Office']['Prefecture']['name'];
-                  if (!empty($r['Office']['State'])){
-                    $str .= $r['Office']['State']['name'];
+                  $str .= $r['RecruitSheet']['Office']['Prefecture']['name'];
+                  if (!empty($r['RecruitSheet']['Office']['State'])){
+                    $str .= $r['RecruitSheet']['Office']['State']['name'];
                   }
-                  if (!empty($r['Office']['City'])){
-                    $str .= $r['Office']['City']['name'];
+                  if (!empty($r['RecruitSheet']['Office']['City'])){
+                    $str .= $r['RecruitSheet']['Office']['City']['name'];
                   }
                  ?>
-                <span><?php echo $r['Office']['name']; ?><?php echo $str ;?></span>
+                <span><?php echo $r['RecruitSheet']['Office']['name']; ?><?php echo $str ;?></span>
                 <?php 
                   foreach ($r['RecruitSheet']['recruit_flex_type_label'] as $k => $label){
                       foreach ($label as $l){
