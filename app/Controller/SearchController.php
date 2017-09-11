@@ -691,12 +691,13 @@ class SearchController extends AppController {
 
         $freewordFields = array(
             'Office.name',
-            'Office.address',
             'OfficeInfo.introduce_title',
             'OfficeInfo.introduce_memo',
-            'Prefecture.name',
-            'State.name',
-            'City.name',
+            //'Prefecture.name',
+            //'State.name',
+            //'City.name',
+            //'Office.address',
+            'concat(ifnull(`Prefecture`.`name`, ""), ifnull(`State`.`name`, ""), ifnull(`City`.`name`, ""), ifnull(`Office`.`address`, ""))',
             'OfficeStation.station',
             'OfficeStation.line',
             'RecruitSheet.sheet_title',
@@ -709,12 +710,22 @@ class SearchController extends AppController {
             'RecruitSheet.application_license' => array('type' => 'set' , 'conf' => Configure::read("application_license")),
             'RecruitSheet.employment_type' => array('type' => 'val' , 'conf' => Configure::read("employment_type")),
             'RecruitSheet.recruit_flex_type' => array('type' => 'set' , 'conf' => Configure::read("recruit_flex_type_for_freeword")),
-            'OfficeStation.access_type' => array('type' => 'val' , 'conf' => Configure::read("access_type")),
+            /* str2stationQueryでaccess_typeもクエリ生成するので不要 */
+            //'OfficeStation.access_type' => array('type' => 'val' , 'conf' => Configure::read("access_type")),
         );
         $returnCond = array();
         foreach ($words as $w){
             $conditions = array();
             foreach ($freewordFields as $f){
+                if ($f == 'OfficeStation.station'){
+                    $conditions[] = $this->str2stationQuery($w);
+                    continue;
+                }
+                if ($f == 'OfficeStation.line'){
+                    $tmp = mb_strtoupper(mb_convert_kana($w, 'R'));
+                    $conditions[] = array("$f LIKE" => '%'.$tmp.'%');
+                    continue;
+                }
                 $conditions[] = array("$f LIKE" => '%'.$w.'%');
             }
             foreach ($freewordSearchOptionTable as $key => $opt){
@@ -732,6 +743,40 @@ class SearchController extends AppController {
             $returnCond[] = array('OR' => $conditions);
         }
         return !empty($returnCond) ? $returnCond : array();
+    }
+    private function str2stationQuery($word){
+        $type = Configure::read("access_type");
+        /* 入力を全て全角にして、数字のみ半角にする */
+        $tmp = mb_convert_kana(mb_convert_kana($word, 'A'),'n');
+        $station = '';
+        if (($p = mb_strrpos($tmp, '駅')) !== false){
+            $station = mb_substr($tmp, 0, $p);
+            $tmp = mb_substr($tmp, $p + 1, mb_strlen($tmp));
+        }
+        $typeStr = '';
+        if (($s = mb_ereg_replace("\d+.*", "", $tmp)) !== false){
+            $typeStr = $s;
+            $tmp = mb_ereg_replace($typeStr, "", $tmp);
+        }
+        $timeStr = '';
+        if (mb_ereg_match("^\d+分?$", $tmp)){
+            $timeStr = mb_ereg_replace("分.*", "", $tmp);
+        }
+        $ret = array();
+        if (!empty($station)){
+            $ret[] = array("OfficeStation.station LIKE" => '%'.$station.'%');
+        }
+        if (!empty($typeStr)){
+            foreach ($type as $val => $str){
+                if (mb_strpos($str, $typeStr) !== FALSE){
+                    $ret[] = array("OfficeStation.access_type" => $val);
+                }
+            }
+        }
+        if (!empty($timeStr)){
+            $ret[] = array("OfficeStation.access_interval <=" => $timeStr);
+        }
+        return $ret;
     }
     /* こだわり条件URL情報コンフィグロード、整形 */
     private function getCommitmentConf(){
