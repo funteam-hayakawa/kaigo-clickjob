@@ -413,7 +413,7 @@ class SearchController extends AppController {
                         'type' => 'LEFT',
                         'table' => 'public_info',
                         'alias' => 'OfficeInfo',
-                        'conditions' => array('`OfficeInfo`.`id` = `Office`.`id`')
+                        'conditions' => array('`OfficeInfo`.`id` = `Office`.`id`', '`OfficeInfo`.`deleted` = 0')
                     ),
                     array(
                         'type' => 'LEFT',
@@ -437,7 +437,7 @@ class SearchController extends AppController {
                         'type' => 'LEFT',
                         'table' => 'station_office',
                         'alias' => 'OfficeStation',
-                        'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`')
+                        'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`', '`OfficeStation`.`deleted` = 0')
                     ),
                 )
               )
@@ -468,7 +468,7 @@ class SearchController extends AppController {
                         'type' => 'LEFT',
                         'table' => 'station_office',
                         'alias' => 'OfficeStation',
-                        'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`')
+                        'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`', '`OfficeStation`.`deleted` = 0')
                     ),
                 )
             )
@@ -496,7 +496,7 @@ class SearchController extends AppController {
                   'type' => 'LEFT',
                   'table' => 'station_office',
                   'alias' => 'OfficeStation',
-                  'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`')
+                  'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`', '`OfficeStation`.`deleted` = 0')
               ),
           ),
           'group' => 'RecruitSheet.recruit_sheet_id',
@@ -718,7 +718,10 @@ class SearchController extends AppController {
             $conditions = array();
             foreach ($freewordFields as $f){
                 if ($f == 'OfficeStation.station'){
-                    $conditions[] = $this->str2stationQuery($w);
+                    $tmp = $this->str2stationQuery($w);
+                    if (!empty($tmp)){
+                        $conditions[] = $tmp;
+                    }
                     continue;
                 }
                 if ($f == 'OfficeStation.line'){
@@ -749,29 +752,54 @@ class SearchController extends AppController {
         /* 入力を全て全角にして、数字のみ半角にする */
         $tmp = mb_convert_kana(mb_convert_kana($word, 'A'),'n');
         $station = '';
+        $ekiflg = 0;
         if (($p = mb_strrpos($tmp, '駅')) !== false){
             $station = mb_substr($tmp, 0, $p);
             $tmp = mb_substr($tmp, $p + 1, mb_strlen($tmp));
+            $ekiflg = 1;
+        } else {
+            $f = 0;
+            if (!mb_ereg_match("^.*\d+分$", $tmp)){
+                $f = 1;
+                foreach ($type as $val => $str){
+                    if ($str == $tmp){
+                        $f = 0;
+                    }
+                }
+            }
+            if ($f){
+                $station = mb_convert_kana($tmp, 'A');
+            }
         }
         $typeStr = '';
         if (($s = mb_ereg_replace("\d+.*", "", $tmp)) !== false){
             $typeStr = $s;
             $tmp = mb_ereg_replace($typeStr, "", $tmp);
         }
-        $timeStr = '';
-        if (mb_ereg_match("^\d+分?$", $tmp)){
-            $timeStr = mb_ereg_replace("分.*", "", $tmp);
+        if ($ekiflg){
+            if (mb_ereg_match("^\d+分?$", $tmp)){
+                $timeStr = mb_ereg_replace("分.*", "", $tmp);
+            }
+        } else {
+            if (mb_ereg_match("^\d+分$", $tmp)){
+                $timeStr = mb_ereg_replace("分.*", "", $tmp);
+            }
         }
         $ret = array();
-        if (!empty($station)){
-            $ret[] = array("OfficeStation.station LIKE" => '%'.$station.'%');
-        }
         if (!empty($typeStr)){
+            $f = 0;
             foreach ($type as $val => $str){
                 if (mb_strpos($str, $typeStr) !== FALSE){
                     $ret[] = array("OfficeStation.access_type" => $val);
+                    $f = 1;
                 }
             }
+            if (!$f){
+                $station = $typeStr;
+            }
+        }
+        if (!empty($station)){
+            $ret[] = array("OfficeStation.station LIKE" => '%'.$station.'%');
         }
         if (!empty($timeStr)){
             $ret[] = array("OfficeStation.access_interval <=" => $timeStr);
