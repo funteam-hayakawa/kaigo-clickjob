@@ -790,7 +790,10 @@ class SearchController extends AppController {
             $f = 0;
             foreach ($type as $val => $str){
                 if (mb_strpos($str, $typeStr) !== FALSE){
-                    $ret[] = array("OfficeStation.access_type" => $val);
+                    if (!isset($ret['OR'])){
+                        $ret['OR'] = array();
+                    }
+                    $ret['OR'][] = array("OfficeStation.access_type" => $val);
                     $f = 1;
                 }
             }
