@@ -36,6 +36,9 @@ class AppController extends Controller {
         'Security',
         'Session',
     );
+    /*
+     * RecruitSheetとOfficeを検索するときの共通条件
+     */
     public $commonSearchConditios = array(
       'recruitSheet' => array(
         'RecruitSheet.recruit_public' => 2,
@@ -76,7 +79,9 @@ class AppController extends Controller {
         ),
       ),
     ); 
-    /* 高収入求人特集 */
+    /* 高収入求人特集 
+     * 東京 神奈川 千葉 埼玉 大阪 兵庫の求人のうち、recruit_flex_type = 7（給与多め）の求人を受理日時降順で取得
+     */
     public function searchRecruitHighIncome(){
         $ranking = $this->RecruitSheet->find('all', array(
           'recursive' => 2,
@@ -90,12 +95,15 @@ class AppController extends Controller {
           'order' => array('RecruitSheet.receipted DESC', 'RecruitSheet.updated DESC'),
           'limit' => 3
         ));
+        /* こだわり条件をカテゴリ別に並べ直す */
         foreach ($ranking as $i => $r){
             $ranking[$i]['RecruitSheet']['recruit_flex_type_label'] = $this->formatRecruitFlexTypeLabel(explode(',', $r['RecruitSheet']['recruit_flex_type']));
         }
         return $ranking;
     }
-    /* 人気求人ランキング */
+    /* 人気求人ランキング 
+     * adminで手動メンテしている人気求人、最大3件取得
+     */
     public function searchRecruitRanking(){
         $ranking = $this->RecruitSheetAttention->find('all', array(
           'joins' => array(
@@ -110,12 +118,16 @@ class AppController extends Controller {
           'conditions' => $this->commonSearchConditios['recruitSheet'] + $this->commonSearchConditios['office'],
           'order' => 'RecruitSheetAttention.number',
         ));
+        /* こだわり条件をカテゴリ別に並べ直す */
         foreach ($ranking as $i => $r){
             $ranking[$i]['RecruitSheet']['recruit_flex_type_label'] = $this->formatRecruitFlexTypeLabel(explode(',', $r['RecruitSheet']['recruit_flex_type']));
         }
         return $ranking;
     }
-    /* サイドバーの求人数取得 */
+    /* サイドバーの求人数取得 
+     * allに全求人数
+     * hwにハロワ求人の数、ハロワ求人とみなすロジックが先方から提示されていないので暫定 TODO
+     */
     public function getRecruitSheetCount(){
         $rc = array();
         $cond = $this->commonSearchConditios['recruitSheet'] + $this->commonSearchConditios['office'];
@@ -128,10 +140,14 @@ class AppController extends Controller {
         $rc['hw'] = $this->RecruitSheet->find('count',array('conditions' => $cond));
         return $rc;
     }
+    /*
+     * DBのお気に入り求人の取得、メンバー登録会員に対してはDBでの永続的な機能を提供
+     */
     public function findFavorite($member){
         $favorite = $this->MembersFavoriteRecruitsheets->find('all', array(
           'conditions' => array(
             'MembersFavoriteRecruitsheets.favorite_flg' => 1,
+            'MembersFavoriteRecruitsheets.del_flg' => 0,
             'MembersFavoriteRecruitsheets.member_id' => $member['Member']['id'],
           ) + $this->commonSearchConditios['recruitSheet'] +
           $this->commonSearchConditios['office'],
@@ -149,6 +165,9 @@ class AppController extends Controller {
         ));
         return $favorite;
     }
+    /*
+     * セッション変数のお気に入り求人の取得、非メンバー登録会員に対してはセッションでの一時的な機能を提供
+     */
     public function findSessionFavorite(){
         $result = array();
         if ($this->Session->check('favorite')){
@@ -178,9 +197,13 @@ class AppController extends Controller {
         }
         return $result;
     }
+    /*
+     * DB格納された閲覧履歴の取得、メンバー登録会員に対してはDBでの永続的な機能を提供
+     */
     public function findHistory($member){
         $histories = $this->MembersRecruitsheetAccessHistory->find('all', array(
-          'conditions' => array('MembersRecruitsheetAccessHistory.member_id' => $member['Member']['id'],) + 
+          'conditions' => array('MembersRecruitsheetAccessHistory.member_id' => $member['Member']['id'],
+                                'MembersRecruitsheetAccessHistory.del_flg' => 0) + 
                                  $this->commonSearchConditios['recruitSheet'] +
                                  $this->commonSearchConditios['office'],
           'joins' => array(
@@ -197,6 +220,9 @@ class AppController extends Controller {
         ));
         return $histories;
     }
+    /*
+     * セッション変数の求人閲覧履歴の取得、非メンバー登録会員に対してはセッションでの一時的な機能を提供
+     */
     public function findSessionHistory(){
         $result = array();
         if ($this->Session->check('history')){
@@ -226,6 +252,9 @@ class AppController extends Controller {
         }
         return $result;
     }
+    /*
+     * $recruitSheetIdが閲覧可能状態にあるかを判定
+     */
     public function isValidRecruitSheet($recruitSheetId){
         $r = $this->RecruitSheet->find('count', array(
           'recursive' => 0,
@@ -235,6 +264,9 @@ class AppController extends Controller {
         ));
         return $r;
     }
+    /*
+     * 誕生年セレクタのオプション配列を生成
+     */
     public function birthdayYearOptions(){
         $b = Configure::read("birthday_year_selector");
         $wareki = Configure::read("wareki");
@@ -250,6 +282,9 @@ class AppController extends Controller {
         }
         return $ret;
     }
+    /*
+     * 駅のオプション配列を生成、路線コードを配列、または文字列にて与える
+     */
     public function stationOptions($lineIds){
         $station = $this->Station->find('all', array(
           'conditions' => array(
@@ -260,12 +295,14 @@ class AppController extends Controller {
           'order' => array('Station.line_code, Station.station_code'),
         ));
         $ret = array();
-        
         foreach ($station as $s){
             $ret[$s['Station']['line_code'].':'.$s['Station']['station_code']] = array('line' => $s['Station']['line_name'], 'station' => $s['Station']['station_name']);
         }
         return $ret;
     }
+    /*
+     * 路線のオプション配列を生成、県コードを文字列で与える
+     */
     public function lineOptions($prefId){
         if (!($pref = $this->Prefecture->find('first', array('conditions' => array('Prefecture.no' => $prefId), 'recursive' => -1)))){
             return array();
@@ -284,6 +321,9 @@ class AppController extends Controller {
         }
         return $ret;
     }
+    /*
+     * 市区町村のオプション配列を生成、県コードを文字列で与える
+     */
     public function cityOptions($prefId){
         if (!$this->Prefecture->find('first', array('conditions' => array('Prefecture.no' => $prefId), 'recursive' => -1))){
             return array();
@@ -354,6 +394,10 @@ class AppController extends Controller {
         }
         return $cityArray;
     }
+    /*
+     * stateまたはcityコードを引数に、対応する条件を生成
+     * cityを与えた場合は単一条件、stateを与えた場合はstate配下の全てのcity条件を生成
+     */
     public function getConditionCities($val){
         if (empty($val)){
             return array();
@@ -380,6 +424,10 @@ class AppController extends Controller {
         }
         return !empty($conditions) ? array(array('OR' => $conditions)) : array();
     }
+    /*
+     * 路線コードから条件を生成
+     * 路線での条件と、路線配下のstationでの条件を生成する
+     */
     public function getConditionLine($array){
         if (empty($array) || !is_array($array)){
             return array();
@@ -408,13 +456,22 @@ class AppController extends Controller {
         }
         return !empty($conditions) ? array(array('OR' => $conditions)) : array();
     }
+    /*
+      駅コードから条件を作成
+      以下の2パターンの引数を取りうる。ここで分解するのは綺麗じゃないかもしれない。
+      引数が正しいフォーマットでコール前提のコードなので、コール前に引数のフォーマットチェックを。
+      路線コード：駅コード
+      駅コード
+    */
     public function getConditionStation($array){
         if (empty($array) || !is_array($array)){
             return array();
         }
         $stations = array();
+        /* :で区切れるかどうかでフォーマットを判別 */
         foreach ($array as $s){
             $t = explode(':', $s);
+            /* 駅コード重複が有りうるので添字は必要 */
             if (!isset($t[1])){
                 $stations[$t[0]] = $t[0];
             } else {
@@ -434,6 +491,9 @@ class AppController extends Controller {
         }
         return !empty($conditions) ? array(array('OR' => $conditions)) : array();
     }
+    /*
+     * $configで定義された_search_disp系の配列を表示に都合の良い形にフォーマットする
+     */
     public function extractDispArray($array){
         $r = array();
         foreach ($array as $k => $d){
@@ -441,6 +501,9 @@ class AppController extends Controller {
         }
         return $r;
     }
+    /*
+     * こだわり条件の配列を、こだわり条件種別ごとの配列に組み替える 
+     */
     public function formatRecruitFlexTypeLabel($flexTypeArray){
         $conf = Configure::read("recruit_flex_type_label");
         $idxArray = array();
