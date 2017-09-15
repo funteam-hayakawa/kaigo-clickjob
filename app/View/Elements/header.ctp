@@ -40,7 +40,7 @@
   <div class="header-2">
     <div class="items">
       <a class="item-1" href="/search">求人を探す</a>
-      <a class="item-2" href="XXX">サービス紹介</a>
+      <a class="item-2" href="/service">サービス紹介</a>
       <a class="item-3" href="XXX">転職お役立ちコンテンツ</a>
       <a class="item-4" href="/column">介護 NEWS・コラム</a>
       <a class="item-5" href="/register">転職相談 <span class="power">無料</span></a>

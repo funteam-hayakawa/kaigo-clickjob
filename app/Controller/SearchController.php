@@ -23,6 +23,9 @@ class SearchController extends AppController {
         $this->Auth->allow();
     }
 
+    /*
+     * /area
+     */
     public function area_idx(){
         $area = $this->Area->find('all');
         $pref = $this->Prefecture->find('all');
@@ -31,7 +34,9 @@ class SearchController extends AppController {
         $this->set('prefecture', $pref);
         $this->render("area_index");
     }
-
+    /*
+     * /area/県/（市区町村 or こだわり条件）/（なし or こだわり条件）
+     */
     public function area($pref=null, $cond1=null, $cond2=null){
         $p = $this->Prefecture->find('first', array('conditions' => array('short_name' => $pref),
                                                     'fields' => array('Prefecture.no')
@@ -147,10 +152,16 @@ class SearchController extends AppController {
         }
         $this->render("area_result");
     }
+    /*
+     * /feature
+     */
     public function feature_idx(){
         $this->set('commitmentTextConf', $this->getCommitmentConf());
         $this->render("feature_index");
     }
+    /*
+     * /feature/こだわり条件
+     */
     public function feature($fearure){
         $searchCond = array();
 
@@ -163,6 +174,8 @@ class SearchController extends AppController {
             throw new NotFoundException();
         }
         /*
+        TODO 
+        // ここで表示するSEOテキストが未定
         $seoCond = array(
             'prefecture_code' => $prefId, 
             'state_code' => $stateCode, 
@@ -206,7 +219,9 @@ class SearchController extends AppController {
         }
         $this->render("feature_result");
     }
-    
+    /*
+     * /detail/求人id
+     */
     public function detail($id){
         $this->RecruitSheet->Office->hasMany['RecruitSheet']['conditions'] = $this->commonSearchConditios['recruitSheet'];
         $r = $this->RecruitSheet->find('first', array(
@@ -228,6 +243,9 @@ class SearchController extends AppController {
         $this->set('recruitSheet', $r);
         $this->render("detail");
     }
+    /*
+     * /search
+     */
     public function result() {
         if (isset($this->request->data['x'])){
             unset($this->request->data['x']);
@@ -274,6 +292,10 @@ class SearchController extends AppController {
         }
         $this->render("search_result");
     }
+    /*
+     * $recruitSheetからその求人を見つけるための検索条件を生成
+     * 似た求人を検索するための検索条件の初期値を作る
+     */
     private function getConditionsFromRecruitSheet($recruitSheet){
         $cond = array();
         $cond['prefecture'] = $recruitSheet['Office']['prefecture'];
@@ -413,7 +435,7 @@ class SearchController extends AppController {
                         'type' => 'LEFT',
                         'table' => 'public_info',
                         'alias' => 'OfficeInfo',
-                        'conditions' => array('`OfficeInfo`.`id` = `Office`.`id`')
+                        'conditions' => array('`OfficeInfo`.`id` = `Office`.`id`', '`OfficeInfo`.`deleted` = 0')
                     ),
                     array(
                         'type' => 'LEFT',
@@ -437,7 +459,7 @@ class SearchController extends AppController {
                         'type' => 'LEFT',
                         'table' => 'station_office',
                         'alias' => 'OfficeStation',
-                        'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`')
+                        'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`', '`OfficeStation`.`deleted` = 0')
                     ),
                 )
               )
@@ -468,7 +490,7 @@ class SearchController extends AppController {
                         'type' => 'LEFT',
                         'table' => 'station_office',
                         'alias' => 'OfficeStation',
-                        'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`')
+                        'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`', '`OfficeStation`.`deleted` = 0')
                     ),
                 )
             )
@@ -496,7 +518,7 @@ class SearchController extends AppController {
                   'type' => 'LEFT',
                   'table' => 'station_office',
                   'alias' => 'OfficeStation',
-                  'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`')
+                  'conditions' => array('`OfficeStation`.`office_id` = `Office`.`id`', '`OfficeStation`.`deleted` = 0')
               ),
           ),
           'group' => 'RecruitSheet.recruit_sheet_id',
@@ -689,32 +711,50 @@ class SearchController extends AppController {
         $words = explode(' ',$freeword);
         $words = array_filter($words, "strlen");
 
+        /* DBの検索対象にするカラムリスト */
         $freewordFields = array(
             'Office.name',
-            'Office.address',
             'OfficeInfo.introduce_title',
             'OfficeInfo.introduce_memo',
-            'Prefecture.name',
-            'State.name',
-            'City.name',
+            //'Prefecture.name',
+            //'State.name',
+            //'City.name',
+            //'Office.address',
+            /* 県市区町村住所は画面上で連結表示されているので、「東京都練馬区」のようなワードで引っ掛けるためにconcatで検索、性能問題が発生したら項目毎の検索に修正 */
+            'concat(ifnull(`Prefecture`.`name`, ""), ifnull(`State`.`name`, ""), ifnull(`City`.`name`, ""), ifnull(`Office`.`address`, ""))',
             'OfficeStation.station',
             'OfficeStation.line',
             'RecruitSheet.sheet_title',
             'RecruitSheet.recruit_introduce_title',
             'RecruitSheet.salary',
         );
+        /* DB上ではコード値で対応文字列がConfigにあるもの */
         $freewordSearchOptionTable = array(
             'RecruitSheet.occupation' => array('type' => 'val' , 'conf' => Configure::read("occupation")),
             'Office.institution_type' => array('type' => 'set' , 'conf' => Configure::read("institution_type")),
             'RecruitSheet.application_license' => array('type' => 'set' , 'conf' => Configure::read("application_license")),
             'RecruitSheet.employment_type' => array('type' => 'val' , 'conf' => Configure::read("employment_type")),
             'RecruitSheet.recruit_flex_type' => array('type' => 'set' , 'conf' => Configure::read("recruit_flex_type_for_freeword")),
-            'OfficeStation.access_type' => array('type' => 'val' , 'conf' => Configure::read("access_type")),
+            /* str2stationQueryでaccess_typeもクエリ生成するので不要 */
+            //'OfficeStation.access_type' => array('type' => 'val' , 'conf' => Configure::read("access_type")),
         );
         $returnCond = array();
         foreach ($words as $w){
             $conditions = array();
             foreach ($freewordFields as $f){
+                if ($f == 'OfficeStation.station'){
+                    $tmp = $this->str2stationQuery($w);
+                    if (!empty($tmp)){
+                        $conditions[] = $tmp;
+                    }
+                    continue;
+                }
+                if ($f == 'OfficeStation.line'){
+                    /* 駅DBは英字が全て全角大文字なので、半角文字や小文字が入力された場合に対応 */
+                    $tmp = mb_strtoupper(mb_convert_kana($w, 'R'));
+                    $conditions[] = array("$f LIKE" => '%'.$tmp.'%');
+                    continue;
+                }
                 $conditions[] = array("$f LIKE" => '%'.$w.'%');
             }
             foreach ($freewordSearchOptionTable as $key => $opt){
@@ -732,6 +772,87 @@ class SearchController extends AppController {
             $returnCond[] = array('OR' => $conditions);
         }
         return !empty($returnCond) ? $returnCond : array();
+    }
+    /* 暇つぶしで作ったロジックなのでバグってたら機能そのものを削除で
+     * 要求仕様には無い裏コマンドです。
+     */
+    /*
+      例えば「光が丘駅徒歩7分」というワードに対して
+      OfficeStation.station LIKE => "%光が丘%"
+      OfficeStation.access_type = 3 -- 徒歩
+      OfficeStation.access_interval <= 7 -- 7分以内
+      のクエリを返す。
+      現在以下のバリエーションに対応
+        光が丘
+        光が丘駅
+        光が丘駅7分
+        光が丘駅7
+        光が丘7分
+        光が丘駅徒歩
+        徒歩7分
+        7分
+    */
+    private function str2stationQuery($word){
+        $type = Configure::read("access_type");
+        /* 入力を全て全角にして、数字のみ半角にする */
+        $tmp = mb_convert_kana(mb_convert_kana($word, 'A'),'n');
+        $station = '';
+        $ekiflg = 0;
+        if (($p = mb_strrpos($tmp, '駅')) !== false){
+            $station = mb_substr($tmp, 0, $p);
+            $tmp = mb_substr($tmp, $p + 1, mb_strlen($tmp));
+            $ekiflg = 1;
+        } else {
+            $f = 0;
+            if (!mb_ereg_match("^.*\d+分$", $tmp)){
+                $f = 1;
+                foreach ($type as $val => $str){
+                    if ($str == $tmp){
+                        $f = 0;
+                    }
+                }
+            }
+            if ($f){
+                $station = mb_convert_kana($tmp, 'A');
+            }
+        }
+        $typeStr = '';
+        if (($s = mb_ereg_replace("\d+.*", "", $tmp)) !== false){
+            $typeStr = $s;
+            $tmp = mb_ereg_replace($typeStr, "", $tmp);
+        }
+        if ($ekiflg){
+            if (mb_ereg_match("^\d+分?$", $tmp)){
+                $timeStr = mb_ereg_replace("分.*", "", $tmp);
+            }
+        } else {
+            if (mb_ereg_match("^\d+分$", $tmp)){
+                $timeStr = mb_ereg_replace("分.*", "", $tmp);
+            }
+        }
+        $ret = array();
+        if (!empty($typeStr)){
+            $f = 0;
+            foreach ($type as $val => $str){
+                if (mb_strpos($str, $typeStr) !== FALSE){
+                    if (!isset($ret['OR'])){
+                        $ret['OR'] = array();
+                    }
+                    $ret['OR'][] = array("OfficeStation.access_type" => $val);
+                    $f = 1;
+                }
+            }
+            if (!$f){
+                $station = $typeStr;
+            }
+        }
+        if (!empty($station)){
+            $ret[] = array("OfficeStation.station LIKE" => '%'.$station.'%');
+        }
+        if (!empty($timeStr)){
+            $ret[] = array("OfficeStation.access_interval <=" => $timeStr);
+        }
+        return $ret;
     }
     /* こだわり条件URL情報コンフィグロード、整形 */
     private function getCommitmentConf(){

@@ -44,7 +44,7 @@ class ColumnController extends AppController {
                         'type' => 'LEFT',
                         'table' => 'seo_kaigo_column_contents',
                         'alias' => 'ColumnContent',
-                        'conditions' => array('`Column`.`id` = `ColumnContent`.`parent_id`'),
+                        'conditions' => array('`Column`.`id` = `ColumnContent`.`parent_id`', '`ColumnContent`.`del_flg` = 0'),
                     ),
                 )
             )
